@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hoja de Vida – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="RRHH.html" class="nav-link">Dashboard</a></li>
+          <li><a href="hojasdevida.html" class="nav-link">Hojas de Vida</a></li>
+          <li><a href="postulantes.html" class="nav-link">Postulantes</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <main style="padding:2.5rem 1.5rem;background:var(--gris-bg);min-height:calc(100vh - 150px);" aria-labelledby="hdv-title">
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <a href="hojasdevida.html" style="color:var(--azul-claro);font-size:0.9rem;">← Volver a Hojas de Vida</a>
+        <h1 id="hdv-title" style="font-size:1.5rem;color:var(--azul-oscuro);">Hoja de Vida del Aspirante</h1>
+      </div>
+
+      <div class="hdv-layout">
+        <!-- SIDEBAR PERFIL -->
+        <aside class="hdv-sidebar">
+          <div class="hdv-avatar" aria-hidden="true">👤</div>
+          <div class="hdv-name">Carlos Romero Silva</div>
+          <div class="hdv-cargo">Aspirante · Supervisor de Seguridad</div>
+          <span class="badge badge-aprobado" style="margin-bottom:1rem;">Aprobado</span>
+          <ul class="hdv-info-list">
+            <li><strong>Cédula:</strong> 1034567890</li>
+            <li><strong>Teléfono:</strong> 3109876543</li>
+            <li><strong>Email:</strong> carlos.romero@mail.com</li>
+            <li><strong>Ciudad:</strong> Bogotá D.C.</li>
+            <li><strong>Nacimiento:</strong> 15/03/1990</li>
+            <li><strong>Postulación:</strong> 07/04/2025</li>
+          </ul>
+          <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.6rem;">
+            <a href="agenda.html" class="btn btn-primary btn-sm" style="text-align:center;">Agendar Entrevista</a>
+            <a href="evaluacion.html" class="btn btn-outline btn-sm" style="border-color:var(--azul-claro);color:var(--azul-claro);text-align:center;">Evaluar</a>
+          </div>
+        </aside>
+
+        <!-- MAIN INFO -->
+        <div class="hdv-main">
+          <section class="hdv-section" aria-labelledby="exp-title">
+            <h3 id="exp-title">Experiencia Laboral</h3>
+            <div class="exp-item">
+              <h4>Supervisor de Seguridad</h4>
+              <span>Empresa Securitas Colombia · 2020 – 2025</span>
+              <p>Supervisión de personal operativo en centros comerciales, coordinación de turnos y reporte de incidencias.</p>
+            </div>
+            <div class="exp-item">
+              <h4>Guarda de Seguridad</h4>
+              <span>Cosinte Ltda. · 2017 – 2020</span>
+              <p>Control de acceso en edificios corporativos y manejo de sistemas de videovigilancia.</p>
+            </div>
+          </section>
+
+          <section class="hdv-section" aria-labelledby="edu-title">
+            <h3 id="edu-title">Educación</h3>
+            <div class="exp-item">
+              <h4>Tecnólogo en Seguridad Privada</h4>
+              <span>SENA · 2015 – 2017</span>
+            </div>
+            <div class="exp-item">
+              <h4>Bachiller Académico</h4>
+              <span>Colegio Distrital Los Andes · 2009 – 2014</span>
+            </div>
+          </section>
+
+          <section class="hdv-section" aria-labelledby="cert-title">
+            <h3 id="cert-title">Certificaciones</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">Curso de Vigilancia Vigente</span>
+              <span class="skill-tag">Primeros Auxilios</span>
+              <span class="skill-tag">Manejo de CCTV</span>
+              <span class="skill-tag">Defensa Personal</span>
+              <span class="skill-tag">Control de Acceso</span>
+            </div>
+          </section>
+
+          <section class="hdv-section" aria-labelledby="docs-title">
+            <h3 id="docs-title">Documentos Adjuntos</h3>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+              <div style="background:var(--gris-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem 1.25rem;font-size:0.88rem;">
+                📄 <strong>Hoja_de_Vida.pdf</strong><br/>
+                <span style="color:var(--gris-claro);">Subido el 07/04/2025</span>
+              </div>
+              <div style="background:var(--gris-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem 1.25rem;font-size:0.88rem;">
+                🪪 <strong>Cedula_Copia.pdf</strong><br/>
+                <span style="color:var(--gris-claro);">Subido el 07/04/2025</span>
+              </div>
+              <div style="background:var(--gris-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem 1.25rem;font-size:0.88rem;">
+                📜 <strong>Certificado_Vigilancia.pdf</strong><br/>
+                <span style="color:var(--gris-claro);">Subido el 07/04/2025</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+      <nav aria-label="Pie de página"><ul class="footer-nav"><li><a href="RRHH.html">Dashboard</a></li><li><a href="postulantes.html">Postulantes</a></li></ul></nav>
+    </div>
+  </footer>
+  <script src="js/nav.js"></script>
+</body>
+</html>

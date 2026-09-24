@@ -1,0 +1,482 @@
+/* Acceso principal y redes del pie */
+.header-status{display:flex!important;align-items:center;gap:10px;padding:10px 15px;border:1px solid var(--red);border-radius:5px;background:var(--red);color:#fff;font-family:var(--font-display);font-size:.84rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.header-status:hover{background:var(--red-dark);color:#fff}.header-status span{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.18)}
+.social-links{display:flex;align-items:center;gap:18px}.social-links a{color:#fff;font-family:var(--font-display);font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.social-links a:hover{color:#ffccd1}
+@media(max-width:620px){.header-status{display:flex;font-size:.72rem;padding:8px 10px}.social-links{width:100%;justify-content:center}}
+:root { --ink:#121a29; --slate:#536071; --line:#1c3e67; --paper:#fff; --mist:#f3f5f7; --red:#c8192b; --red-dark:#a91424; }
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #121a29;
+    background-image:
+            linear-gradient(rgba(4,8,18,.22), rgba(4,8,18,.22)),
+            url('../img/imagen_inicio.png');
+    background-position: center top;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    color: #fff;
+}
+.site-footer { margin-top:auto; min-height:220px; display:flex; align-items:center; background:#123d78!important; border-top:8px solid #0b2b58!important; padding:3.5rem 1.75rem!important; box-shadow:0 -12px 30px rgba(4,17,42,.32); }
+.site-footer p,.social-links a { color:rgba(255,255,255,.9); }
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: linear-gradient(
+            to right,
+            #ffffff 0%,
+            #ffffff 50%,
+            var(--red) 50%,
+            var(--red) 100%
+    ) !important;
+    box-shadow: 0 5px 20px rgba(70,0,10,.28);
+    backdrop-filter: none;
+}
+.header-inner { max-width:1240px!important; height:78px!important; margin:auto; padding:0 28px!important; display:flex!important; align-items:center!important; justify-content:space-between!important; }
+.brand { display:flex; align-items:center; gap:18px; color:#fff; }.brand-logo-img{height:50px;width:auto}.brand-kicker{border-left:2px solid rgba(255,255,255,.75);padding-left:18px;font-family:var(--font-display);font-size:.92rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.header-status{display:flex;align-items:center;gap:10px;padding:10px 15px;border:1px solid rgba(255,255,255,.75);border-radius:999px;color:#fff;font-family:var(--font-display);font-size:.84rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.header-status span,.chat-presence,.badge-dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.2)}
+.hero{position:relative;overflow:hidden;padding:72px 28px 58px;background:linear-gradient(115deg,#f8f9fa 0%,#f0f2f4 57%,#e9edf1 100%)}.hero::after{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--red)}.hero-bg-lines{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(20,30,45,.045) 1px,transparent 1px),linear-gradient(rgba(20,30,45,.035) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(90deg,#000,transparent 96%)}
+.hero-inner{position:relative;z-index:1;max-width:1240px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.8fr);align-items:center;gap:64px}.hero-content{max-width:670px}.hero-eyebrow,.section-heading>span{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:var(--red);font-family:var(--font-display);font-size:.91rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.hero-eyebrow::before{content:"";width:31px;height:3px;background:var(--red)}.hero-brand-img{width:min(260px,90%);margin:0 0 20px;filter:drop-shadow(0 8px 15px rgba(8,16,28,.12))}.hero h1{max-width:640px;margin:0 0 18px;color:var(--ink);font-size:clamp(2.65rem,5.1vw,5rem);line-height:.98;letter-spacing:-.025em}.hero-desc{max-width:570px;margin:0 0 27px;color:var(--slate);font-size:1.13rem;line-height:1.6}.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 22px!important;border-radius:5px;font-family:var(--font-display);font-size:1rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.nav-cta{background:var(--red)!important;color:#fff!important;border:1px solid var(--red)}.nav-cta:hover{background:var(--red-dark)!important}.nav-secondary{border:1px solid #bec6cf;background:#fff!important;color:var(--ink)!important}.hero-login{padding:11px 4px;color:var(--ink);font-weight:600}.hero-login span{color:var(--red);font-size:1.3rem;margin-left:5px}.hero-metrics{display:flex;gap:26px;margin-top:43px;padding-top:22px;border-top:1px solid #cbd2da}.hero-metrics div{display:flex;align-items:center;gap:9px}.hero-metrics strong{color:var(--red);font-family:var(--font-display);font-size:1.7rem}.hero-metrics span{color:var(--slate);font-size:.83rem;line-height:1.2}
+.hero-visual{position:relative}.image-frame{position:relative;overflow:hidden;border:10px solid #fff;box-shadow:0 24px 52px rgba(16,28,42,.17)}.image-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(145deg,transparent 45%,rgba(16,28,42,.22))}.image-frame img{width:100%;min-height:480px;object-fit:cover;object-position:center}.hero-badge{position:absolute;z-index:2;bottom:-27px;left:-28px;display:flex;gap:13px;max-width:288px;padding:18px;background:#fff;border-left:4px solid var(--red);box-shadow:0 14px 30px rgba(16,28,42,.16)}.hero-badge strong,.hero-badge span{display:block}.hero-badge strong{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.04em}.hero-badge div>span{margin-top:4px;color:var(--slate);font-size:.86rem;line-height:1.35}
+.security-strip{padding:32px 0;background:#fff;border-bottom:1px solid var(--line)}.security-strip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.security-strip-grid>div{padding:22px 23px;background:linear-gradient(135deg,#fff,#f6f7f8);border:1px solid var(--line);border-left:4px solid var(--red)}.security-strip-grid strong,.security-strip-grid span{display:block}.security-strip-grid strong{font-family:var(--font-display);font-size:1.18rem;letter-spacing:.06em;text-transform:uppercase}.security-strip-grid span{margin-top:6px;color:var(--slate);line-height:1.45}
+.services-section{padding:82px 0;background:var(--mist);background-image:linear-gradient(90deg,rgba(18,26,41,.035) 1px,transparent 1px);background-size:72px 72px}.services-layout{display:grid;grid-template-columns:.72fr 1.55fr;gap:46px;align-items:start}.section-heading h2{color:var(--ink);font-size:clamp(2rem,3.2vw,3.25rem);letter-spacing:-.02em}.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.service-card{min-height:275px;padding:26px;border:1px solid var(--line);background:#fff;box-shadow:0 12px 28px rgba(16,28,42,.06)}.service-number{display:block;margin-bottom:64px;color:var(--red);font-family:var(--font-display);font-size:1.6rem;font-weight:800}.service-card h3{color:var(--ink);font-size:1.42rem}.service-card p{margin-top:9px;color:var(--slate);line-height:1.55}
+.gallery-section{padding:86px 0;background:#fff}.section-heading.centered{max-width:750px;margin:0 auto 36px;text-align:center}.section-heading.centered>span{justify-content:center}.section-heading p{margin-top:12px;color:var(--slate)}.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:205px;gap:15px}.gallery-item{position:relative;overflow:hidden;margin:0;background:var(--ink);box-shadow:0 11px 24px rgba(16,28,42,.12)}.gallery-item.large{grid-column:span 2;grid-row:span 2}.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;opacity:.9}.gallery-item:hover img{transform:scale(1.05)}.gallery-item figcaption{position:absolute;right:0;bottom:0;left:0;padding:13px 15px;background:linear-gradient(90deg,rgba(18,26,41,.92),rgba(18,26,41,.45));color:#fff;font-family:var(--font-display);font-size:1rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.site-footer{background:var(--ink)!important;border-top:4px solid var(--red)}
+.chat-trigger{position:fixed;z-index:50;right:25px;bottom:24px;display:flex;align-items:center;gap:9px;padding:13px 17px;border:0;border-radius:999px;background:var(--red);color:#fff;box-shadow:0 12px 28px rgba(120,14,29,.28);font-family:var(--font-body);font-weight:700;cursor:pointer}.chat-trigger span:first-child{font-size:22px;line-height:0}.chat-panel{position:fixed;z-index:51;right:25px;bottom:86px;width:min(360px,calc(100vw - 32px));overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 20px 48px rgba(14,23,36,.22)}.chat-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:var(--ink);color:#fff}.chat-head>div{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center}.chat-head strong{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.05em}.chat-head small{grid-column:2;color:#cdd3dc}.chat-head button{border:0;background:none;color:#fff;font-size:26px;cursor:pointer}.chat-body{max-height:235px;overflow:auto;padding:16px;background:#f5f6f8}.bot-message,.user-message{width:max-content;max-width:89%;margin:0 0 12px;padding:10px 12px;border-radius:4px;font-size:.93rem;line-height:1.4}.bot-message{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(16,28,42,.1)}.user-message{margin-left:auto;background:var(--ink);color:#fff}.chat-options{display:flex;flex-wrap:wrap;gap:8px;padding:13px;border-top:1px solid var(--line)}.chat-options button{padding:7px 9px;border:1px solid #c8ced6;background:#fff;color:var(--ink);font:600 .82rem var(--font-body);cursor:pointer}.chat-options button:hover{border-color:var(--red);color:var(--red)}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:44px}.hero-visual{max-width:590px;justify-self:center}.image-frame img{min-height:360px}.services-layout{grid-template-columns:1fr}.security-strip-grid,.service-grid{grid-template-columns:1fr}.service-card{min-height:0}.service-number{margin-bottom:17px}.brand-kicker{font-size:.75rem}.hero{padding-top:52px}}@media(max-width:620px){.header-inner{height:65px!important;padding:0 16px!important}.brand-logo-img{height:42px}.brand-kicker,.header-status{display:none}.hero{padding:43px 18px 46px}.hero h1{font-size:2.7rem}.hero-metrics{gap:12px}.hero-metrics strong{font-size:1.35rem}.hero-metrics span{font-size:.72rem}.hero-badge{position:relative;bottom:auto;left:auto;max-width:100%;margin:-1px 0 0}.image-frame{border-width:6px}.gallery-section,.services-section{padding:58px 0}.gallery-grid{grid-template-columns:1fr;grid-auto-rows:230px}.gallery-item.large{grid-column:auto;grid-row:auto}.chat-trigger{right:16px;bottom:16px}.chat-panel{right:16px;bottom:76px}.container{padding:0 18px}.hero-actions{align-items:stretch}.hero-actions>*{width:100%}.hero-login{text-align:center}}
+/* =========================================
+   CAJA SIDOVI
+   ========================================= */
+.sidovi-box {
+    width: 650px;
+    max-width: 90%;
+    margin: 70px auto 90px;
+    padding: 40px;
+    background: rgba(10, 18, 32, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+}
+/* Título SIDOVI */
+.sidovi-box h1 {
+    margin: 0 0 15px;
+    color: #ffffff;
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+/* Descripción */
+.sidovi-box p {
+    margin: 0 auto 30px;
+    max-width: 520px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 16px;
+    line-height: 1.6;
+}
+/* =========================================
+   BOTONES VER OFERTAS / POSTULARME
+   ========================================= */
+.sidovi-box .hero-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.sidovi-box .nav-link {
+    min-width: 160px;
+    box-sizing: border-box;
+    text-align: center;
+}
+/* Ver ofertas */
+.sidovi-box .nav-cta {
+    background: #c8192b !important;
+    color: #ffffff !important;
+    border: 1px solid #c8192b;
+}
+.sidovi-box .nav-cta:hover {
+    background: #a91424 !important;
+}
+/* Postularme */
+.sidovi-box .nav-secondary {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+}
+.sidovi-box .nav-secondary:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+/* =========================================
+   BOTÓN ¿NECESITAS AYUDA?
+   ========================================= */
+.chat-trigger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.chat-trigger span:last-child {
+    display: inline !important;
+    visibility: visible !important;
+}
+/* =========================================
+   CELULAR
+   ========================================= */
+@media (max-width: 620px) {
+    .sidovi-box {
+        width: calc(100% - 30px);
+        max-width: none;
+        margin: 45px auto 60px;
+        padding: 30px 20px;
+    }
+    .sidovi-box h1 {
+        font-size: 38px;
+    }
+    .sidovi-box p {
+        font-size: 15px;
+    }
+    .sidovi-box .hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    .sidovi-box .nav-link {
+        width: 100%;
+        min-width: 0;
+    }
+    .chat-trigger {
+        right: 16px;
+        bottom: 16px;
+        padding: 12px 16px;
+    }
+}
+/* =========================================
+   ICONOS REDES SOCIALES
+   ========================================= */
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.social-links a {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08);
+
+    text-decoration: none;
+
+    font-size: 18px;
+
+    transition: all 0.25s ease;
+}
+.social-links a:hover {
+    background: #c8192b;
+    border-color: #c8192b;
+    color: #ffffff !important;
+    transform: translateY(-3px);
+}
+.social-links i {
+    line-height: 1;
+}
+/* =========================================
+   LOGO SIDOVI EN LA CAJA PRINCIPAL
+   ========================================= */
+
+.sidovi-main-logo {
+    display: block;
+
+    width: 240px;
+    max-width: 80%;
+
+    height: auto;
+
+    margin: 0 auto 25px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================
+   FOOTER AZUL MÁS PEQUEÑO
+   ========================================= */
+
+.site-footer {
+    min-height: 100px !important;
+
+    padding: 18px 28px !important;
+
+    border-top: 4px solid #0b2b58 !important;
+}
+
+
+/* Contenido del footer */
+
+.site-footer .footer-inner {
+    min-height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* Logo SIDOVI del footer */
+
+.site-footer .footer-logo {
+    max-height: 45px;
+
+    width: auto;
+}
+
+
+/* Texto del footer */
+
+.site-footer p {
+    margin: 0;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+/* Redes sociales */
+
+.site-footer .social-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* Botones de redes */
+
+.site-footer .social-links a {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+/* =========================================
+   LOGO SIDOVI EN LA CAJA PRINCIPAL
+   ========================================= */
+
+.sidovi-main-logo {
+    display: block;
+
+    width: 240px;
+    max-width: 80%;
+
+    height: auto;
+
+    margin: 0 auto 25px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================
+   FOOTER AZUL MÁS PEQUEÑO
+   ========================================= */
+
+.site-footer {
+    min-height: 100px !important;
+
+    padding: 18px 28px !important;
+
+    border-top: 4px solid #0b2b58 !important;
+}
+
+
+/* Contenido del footer */
+
+.site-footer .footer-inner {
+    min-height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* Logo SIDOVI del footer */
+
+.site-footer .footer-logo {
+    max-height: 45px;
+
+    width: auto;
+}
+
+
+/* Texto del footer */
+
+.site-footer p {
+    margin: 0;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+/* Redes sociales */
+
+.site-footer .social-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* Botones de redes */
+
+.site-footer .social-links a {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+/* =========================================
+   LOGO SIDOVI EN LA CAJA PRINCIPAL
+   ========================================= */
+
+.sidovi-main-logo {
+    display: block;
+
+    width: 240px;
+    max-width: 80%;
+
+    height: auto;
+
+    margin: 0 auto 25px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================
+   FOOTER AZUL MÁS PEQUEÑO
+   ========================================= */
+
+.site-footer {
+    min-height: 100px !important;
+
+    padding: 18px 28px !important;
+
+    border-top: 4px solid #0b2b58 !important;
+}
+
+
+/* Contenido del footer */
+
+.site-footer .footer-inner {
+    min-height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* Logo SIDOVI del footer */
+
+.site-footer .footer-logo {
+    max-height: 45px;
+
+    width: auto;
+}
+
+
+/* Texto del footer */
+
+.site-footer p {
+    margin: 0;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+/* Redes sociales */
+
+.site-footer .social-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* Botones de redes */
+.site-footer .social-links a {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 620px) {
+
+    .sidovi-main-logo {
+        width: 200px;
+    }
+
+    .site-footer {
+        padding: 15px !important;
+    }
+
+    .site-footer .footer-inner {
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .site-footer p {
+        font-size: 11px;
+    }
+
+}

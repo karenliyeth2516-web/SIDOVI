@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Postulación – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" />
+      </div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Inicio</a></li>
+          <li><a href="ofertas.html" class="nav-link">Ofertas</a></li>
+          <li><a href="postulacion.html" class="nav-link active" aria-current="page">Postularse</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Acceso Personal</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero" aria-labelledby="form-page-title">
+      <div class="container">
+        <h1 id="form-page-title">Formulario de <span class="accent">Postulación</span></h1>
+        <p>Completa el formulario con tus datos y adjunta tu hoja de vida para iniciar tu proceso de vinculación en Colviseg Ltda.</p>
+      </div>
+    </section>
+
+    <section class="form-section" aria-labelledby="form-title">
+      <div class="container form-container">
+
+        <h2 id="form-title">Datos del Aspirante</h2>
+
+        <div id="form-alert" class="form-alert" role="alert" aria-live="polite" hidden></div>
+
+        <!-- FORM (no <form> tag for HTML artifact compatibility; uses divs + JS) -->
+        <div class="postulation-form" id="postForm">
+
+          <!-- DATOS PERSONALES -->
+          <fieldset class="form-group">
+            <legend>Información Personal</legend>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="nombre">Nombre Completo <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez García" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="cedula">Número de Cédula <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="cedula" name="cedula" placeholder="Ej. 1012345678" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="email">Correo Electrónico <span class="required" aria-label="requerido">*</span></label>
+                <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="telefono">Teléfono de Contacto <span class="required" aria-label="requerido">*</span></label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Ej. 3001234567" autocomplete="tel" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="ciudad">Ciudad de Residencia <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="ciudad" name="ciudad" placeholder="Ej. Bogotá" required />
+              </div>
+              <div class="field">
+                <label for="fecha_nac">Fecha de Nacimiento <span class="required" aria-label="requerido">*</span></label>
+                <input type="date" id="fecha_nac" name="fecha_nac" required />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- DATOS LABORALES -->
+          <fieldset class="form-group">
+            <legend>Información Laboral</legend>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="cargo">Cargo al que se Postula <span class="required" aria-label="requerido">*</span></label>
+                <select id="cargo" name="cargo" required>
+                  <option value="" disabled selected>Selecciona una opción</option>
+                  <option value="guarda">Guarda de Seguridad</option>
+                  <option value="supervisor">Supervisor de Seguridad</option>
+                  <option value="rrhh">Auxiliar de RRHH</option>
+                  <option value="cctv">Técnico CCTV</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="experiencia">Años de Experiencia <span class="required" aria-label="requerido">*</span></label>
+                <select id="experiencia" name="experiencia" required>
+                  <option value="" disabled selected>Selecciona</option>
+                  <option value="0">Sin experiencia</option>
+                  <option value="1">1 año</option>
+                  <option value="2">2 años</option>
+                  <option value="3">3 o más años</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field full-width">
+              <label for="descripcion">Descripción de Experiencia Laboral</label>
+              <textarea id="descripcion" name="descripcion" rows="4" placeholder="Describe brevemente tu experiencia previa relevante para el cargo..."></textarea>
+            </div>
+          </fieldset>
+
+          <!-- DOCUMENTOS -->
+          <fieldset class="form-group">
+            <legend>Documentos</legend>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="hoja_vida">Hoja de Vida (PDF) <span class="required" aria-label="requerido">*</span></label>
+                <input type="file" id="hoja_vida" name="hoja_vida" accept=".pdf,.doc,.docx" required />
+              </div>
+              <div class="field">
+                <label for="cedula_doc">Copia de Cédula (imagen o PDF) <span class="required" aria-label="requerido">*</span></label>
+                <input type="file" id="cedula_doc" name="cedula_doc" accept=".pdf,.jpg,.jpeg,.png" required />
+              </div>
+            </div>
+
+            <div class="field full-width">
+              <label for="foto">Foto del Aspirante <span class="required" aria-label="requerido">*</span></label>
+              <input type="file" id="foto" name="foto" accept=".jpg,.jpeg,.png,.webp" required />
+              <small>Adjunta una foto reciente tipo documento. Máximo 5 MB.</small>
+            </div>
+
+            <div class="field full-width">
+              <label class="checkbox-label">
+                <input type="checkbox" id="terminos" name="terminos" required />
+                Acepto el tratamiento de mis datos personales conforme a la política de privacidad de Colviseg Ltda. <span class="required" aria-label="requerido">*</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- BOTONES -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" id="btnLimpiar">Limpiar Formulario</button>
+            <button type="button" class="btn btn-primary" id="btnEnviar">Enviar Postulación</button>
+          </div>
+
+        </div>
+
+        <!-- CONFIRMACIÓN -->
+        <div class="confirmation" id="confirmacion" hidden aria-live="polite">
+          <div class="confirm-icon" aria-hidden="true">✅</div>
+          <h2>¡Postulación Enviada!</h2>
+          <p>Tu información ha sido recibida exitosamente. El equipo de RRHH de Colviseg Ltda. revisará tu hoja de vida y se comunicará contigo en los próximos días.</p>
+          <p style="font-size:0.9rem;color:var(--gris-claro);">Número de radicado: <strong id="radicadoPostulacion">—</strong>. Guárdalo para futuras consultas.</p>
+          <div class="confirm-actions">
+            <a href="ofertas.html" class="btn btn-outline">Ver Más Ofertas</a>
+            <a href="index.html" class="btn btn-primary">Volver al Inicio</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI logo" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda. · Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/postulacion.js"></script>
+</body>
+</html>
