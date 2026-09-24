@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trabajadores Activos – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="gerente.html" class="nav-link">Gerencia</a></li>
+          <li><a href="trabajadores.html" class="nav-link active" aria-current="page">Trabajadores</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="panel-layout">
+    <aside class="sidebar" aria-label="Menú del panel">
+      <span class="sidebar-title">Gerencia</span>
+      <a href="gerente.html" class="sidebar-link"><span class="icon">🏢</span> Dashboard</a>
+      <a href="evaluar.html" class="sidebar-link"><span class="icon">📝</span> Evaluar</a>
+      <a href="trabajadores.html" class="sidebar-link active" aria-current="page"><span class="icon">👷</span> Trabajadores</a>
+      <a href="contrato.html" class="sidebar-link"><span class="icon">📑</span> Contratos</a>
+      <span class="sidebar-title" style="margin-top:1rem;">Información</span>
+      <a href="reporte.html" class="sidebar-link"><span class="icon">📊</span> Reportes</a>
+    </aside>
+
+    <main class="panel-content" aria-labelledby="trab-title">
+      <div class="panel-header">
+        <h1 id="trab-title">Personal Activo</h1>
+        <p>Registro completo de trabajadores vinculados a Colviseg Ltda.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-num">18</div><div class="stat-label">Total Trabajadores</div></div>
+        <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">Operativos</div></div>
+        <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">Administrativos</div></div>
+        <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Nuevos este mes</div></div>
+      </div>
+
+      <div class="filter-bar" role="search" aria-label="Filtrar trabajadores">
+        <input type="text" id="buscarTrab" placeholder="🔍 Buscar por nombre o cargo..." aria-label="Buscar trabajador" />
+        <select id="filtroArea" aria-label="Filtrar por área">
+          <option value="">Todas las áreas</option>
+          <option>Operativa</option>
+          <option>Administrativa</option>
+          <option>Tecnología</option>
+        </select>
+        <select id="filtroContrato" aria-label="Filtrar por contrato">
+          <option value="">Tipo de contrato</option>
+          <option>Término Fijo</option>
+          <option>Término Indefinido</option>
+        </select>
+      </div>
+
+      <div class="data-table-wrap">
+        <h2>Lista de Personal (18 trabajadores)</h2>
+        <table id="tablaTrabajadores">
+          <thead>
+            <tr>
+              <th scope="col">Trabajador</th>
+              <th scope="col">Cargo</th>
+              <th scope="col">Área</th>
+              <th scope="col">Inicio Contrato</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Carlos Romero Silva</strong></td><td>Supervisor Seguridad</td><td>Operativa</td><td>15/04/2025</td><td>Término Fijo 1 año</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>Valentina Castro G.</strong></td><td>Técnico CCTV</td><td>Tecnología</td><td>01/04/2025</td><td>Término Fijo 1 año</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>María López Ruiz</strong></td><td>Auxiliar RRHH</td><td>Administrativa</td><td>01/03/2025</td><td>Término Indefinido</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>Roberto Cifuentes</strong></td><td>Guarda de Seguridad</td><td>Operativa</td><td>01/01/2025</td><td>Término Fijo 6 meses</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>Claudia Vargas</strong></td><td>Guarda de Seguridad</td><td>Operativa</td><td>15/02/2025</td><td>Término Fijo 1 año</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>Fernando Mora Ríos</strong></td><td>Supervisor Seguridad</td><td>Operativa</td><td>01/12/2024</td><td>Término Indefinido</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>Liliana Ospina</strong></td><td>Auxiliar Administrativa</td><td>Administrativa</td><td>01/10/2024</td><td>Término Indefinido</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+            <tr><td><strong>Andrés Bermúdez</strong></td><td>Técnico CCTV</td><td>Tecnología</td><td>15/09/2024</td><td>Término Fijo 1 año</td><td><span class="badge badge-activo">Activo</span></td><td><a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+      <nav aria-label="Pie de página"><ul class="footer-nav"><li><a href="gerente.html">Gerencia</a></li><li><a href="login.html">Salir</a></li></ul></nav>
+    </div>
+  </footer>
+  <script src="js/trabajadores.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+ALTER TABLE postulacion DROP CONSTRAINT IF EXISTS postulacion_estado_check;
+
+ALTER TABLE postulacion
+ADD CONSTRAINT postulacion_estado_check
+CHECK (
+  estado IN (
+    'EN_REVISION',
+    'APROBADO_RRHH',
+    'RECHAZADO_RRHH',
+    'ENTREVISTA',
+    'APROBADO',
+    'RECHAZADO',
+    'CONTRATADO',
+    'EXAMENES_PENDIENTES',
+    'EXAMENES_AGENDADOS',
+    'EXAMENES_EN_REVISION',
+    'PENDIENTE_CONTRATO',
+    'FIRMA_CONTRATO_AGENDADA'
+  )
+);

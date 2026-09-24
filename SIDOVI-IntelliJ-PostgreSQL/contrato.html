@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Contratos – SIDOVI</title>
+
+  <link rel="stylesheet" href="css/estilos.css" />
+
+  <style>
+    .contratos-page {
+      padding: 2.5rem 1.5rem;
+      background: var(--gris-bg);
+      min-height: calc(100vh - 150px);
+    }
+
+    .contratos-header {
+      margin-bottom: 2rem;
+    }
+
+    .contratos-header h1 {
+      color: var(--azul-oscuro);
+      margin-bottom: 0.5rem;
+    }
+
+    .contratos-header p {
+      color: var(--gris-claro);
+      margin: 0;
+    }
+
+    .contratos-section {
+      margin-bottom: 2rem;
+    }
+
+    .contratos-section h2 {
+      margin: 0;
+      padding: 1.1rem 1.25rem;
+      color: var(--azul-oscuro);
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .tabla-contenedor {
+      overflow-x: auto;
+    }
+
+    .tabla-contenedor table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tabla-contenedor th,
+    .tabla-contenedor td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .tabla-contenedor th {
+      white-space: nowrap;
+    }
+
+    .acciones-contrato {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-contrato {
+      border: 0;
+      border-radius: 7px;
+      padding: 0.55rem 0.85rem;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: 0.2s ease;
+    }
+
+    .btn-generar {
+      background: var(--azul-oscuro);
+      color: #fff;
+    }
+
+    .btn-generar:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-editar {
+      background: #f1f3f5;
+      color: var(--azul-oscuro);
+      border: 1px solid var(--border);
+    }
+
+    .btn-editar:hover {
+      background: #e7e9ec;
+    }
+
+    .btn-pdf {
+      background: var(--vinotinto, #7A1F2B);
+      color: #fff;
+    }
+
+    .btn-pdf:hover {
+      opacity: 0.9;
+    }
+
+    .estado-contrato {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .estado-pendiente {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .estado-contratado {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .estado-activo {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .estado-borrador {
+      background: #e2e3e5;
+      color: #41464b;
+    }
+
+    .sin-registros {
+      text-align: center !important;
+      color: var(--gris-claro);
+      padding: 2rem !important;
+    }
+
+    /* Modal de contrato */
+    .contrato-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 31, 58, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 9999;
+    }
+
+    .contrato-modal[hidden] {
+      display: none;
+    }
+
+    .contrato-modal-content {
+      width: min(1100px, 100%);
+      max-height: 94vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .contrato-modal-header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--azul-oscuro);
+      color: #fff;
+    }
+
+    .contrato-modal-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .cerrar-modal {
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 1.7rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .contrato-modal-body {
+      padding: 1.5rem;
+    }
+
+    .form-alert {
+      margin-bottom: 1rem;
+    }
+
+    .datos-candidato {
+      padding: 1.1rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--gris-bg);
+    }
+
+    .datos-candidato h3 {
+      margin-top: 0;
+      color: var(--azul-oscuro);
+    }
+
+    .dato-item strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--azul-oscuro);
+    }
+
+    .dato-item p {
+      margin: 0;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Documento que después usará el PDF */
+    .contrato-documento {
+      margin-top: 1.5rem;
+      padding: 2rem;
+      border: 1px solid #d9dde3;
+      background: #fff;
+    }
+
+    .contrato-documento[hidden] {
+      display: none;
+    }
+
+    .contrato-documento-header {
+      text-align: center;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid var(--azul-oscuro);
+      margin-bottom: 1.5rem;
+    }
+
+    .contrato-documento-header img {
+      height: 65px;
+      max-width: 220px;
+      object-fit: contain;
+      margin-bottom: 0.75rem;
+    }
+
+    .contrato-documento-header h2 {
+      color: var(--azul-oscuro);
+      margin: 0 0 0.5rem;
+    }
+
+    .contrato-documento-header p {
+      margin: 0.25rem 0;
+      color: #555;
+    }
+
+    .clausula {
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .clausula h3 {
+      color: var(--azul-oscuro);
+      font-size: 1rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .firmas-contrato {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .firma {
+      text-align: center;
+      padding-top: 2.5rem;
+    }
+
+    .firma-linea {
+      border-top: 1px solid #222;
+      margin-bottom: 0.5rem;
+    }
+
+    .firma p {
+      margin: 0.2rem 0;
+    }
+
+    @media (max-width: 800px) {
+      .contrato-modal {
+        padding: 0;
+      }
+
+      .contrato-modal-content {
+        max-height: 100vh;
+        height: 100vh;
+        border-radius: 0;
+      }
+
+      .firmas-contrato {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .tabla-contenedor th,
+      .tabla-contenedor td {
+        white-space: nowrap;
+      }
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #contratoDocumento,
+      #contratoDocumento * {
+        visibility: visible;
+      }
+
+      #contratoDocumento {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================= -->
+<!-- ENCABEZADO -->
+<!-- ============================= -->
+
+<header class="site-header">
+  <div class="header-inner">
+
+    <div class="brand">
+      <img
+              src="img/logo_sidovi.png"
+              alt="Logo SIDOVI"
+              class="brand-logo"
+      />
+    </div>
+
+    <nav aria-label="Navegación principal">
+      <ul class="nav-list">
+
+        <li>
+          <a href="gerente.html" class="nav-link">
+            Gerencia
+          </a>
+        </li>
+
+        <li>
+          <a href="evaluar.html" class="nav-link">
+            Evaluaciones
+          </a>
+        </li>
+
+        <li>
+          <a
+                  href="contrato.html"
+                  class="nav-link active"
+                  aria-current="page"
+          >
+            Contratos
+          </a>
+        </li>
+
+        <li>
+          <a href="login.html" class="nav-link nav-cta">
+            Cerrar Sesión
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <button
+            class="menu-toggle"
+            aria-label="Abrir menú"
+            id="menuToggle"
+    >
+      &#9776;
+    </button>
+
+  </div>
+</header>
+
+
+<!-- ============================= -->
+<!-- CONTENIDO PRINCIPAL -->
+<!-- ============================= -->
+
+<main
+        class="contratos-page"
+        aria-labelledby="contrato-title"
+>
+
+  <div class="container">
+
+    <div class="contratos-header">
+
+      <h1 id="contrato-title">
+        Gestión de Contratos
+      </h1>
+
+      <p>
+        Administra los contratos de las personas que han finalizado satisfactoriamente su proceso de selección.
+      </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- 1. PERSONAS PRÓXIMAS A CONTRATO -->
+    <!-- ================================================= -->
+
+    <section
+            class="data-table-wrap contratos-section"
+            aria-labelledby="proximosContratoTitle"
+    >
+
+      <h2 id="proximosContratoTitle">
+        Personas próximas a contrato
+      </h2>
+
+      <div class="tabla-contenedor">
+
+        <table>
+
+          <thead>
+
+          <tr>
+            <th>Persona</th>
+            <th>Documento</th>
+            <th>Cargo</th>
+            <th>Sede</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+
+          </thead>
+
+          <tbody id="proximosContratoBody">
+
+          <tr>
+            <td
+                    colspan="6"
+                    class="sin-registros"
+            >
+              Cargando personas...
+            </td>
+          </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- 2. PERSONAS CONTRATADAS -->
+    <!-- ================================================= -->
+
+    <section
+            class="data-table-wrap contratos-section"
+            aria-labelledby="contratadosTitle"
+    >
+
+      <h2 id="contratadosTitle">
+        Personas contratadas
+      </h2>
+
+      <div class="tabla-contenedor">
+
+        <table>
+
+          <thead>
+
+          <tr>
+            <th>Persona</th>
+            <th>Documento</th>
+            <th>Cargo</th>
+            <th>Fecha de inicio</th>
+            <th>Estado</th>
+            <th>Contrato</th>
+          </tr>
+
+          </thead>
+
+          <tbody id="contratadosBody">
+
+          <tr>
+            <td
+                    colspan="6"
+                    class="sin-registros"
+            >
+              Cargando personas contratadas...
+            </td>
+          </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<!-- ================================================= -->
+<!-- MODAL PARA GENERAR / EDITAR CONTRATO -->
+<!-- ================================================= -->
+
+<div
+        id="contratoModal"
+        class="contrato-modal"
+        hidden
+>
+
+  <div
+          class="contrato-modal-content"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contratoModalTitle"
+  >
+
+    <div class="contrato-modal-header">
+
+      <h2 id="contratoModalTitle">
+        Generar contrato
+      </h2>
+
+      <button
+              type="button"
+              class="cerrar-modal"
+              id="cerrarContratoModal"
+              aria-label="Cerrar"
+      >
+        &times;
+      </button>
+
+    </div>
+
+
+    <div class="contrato-modal-body">
+
+      <div
+              id="contratoAlert"
+              class="form-alert"
+              hidden
+      ></div>
+
+
+      <!-- ============================================= -->
+      <!-- DATOS DEL CANDIDATO -->
+      <!-- ============================================= -->
+
+      <section
+              id="datosCandidatoContrato"
+              class="datos-candidato"
+              hidden
+      >
+
+        <h3>
+          Datos de la persona
+        </h3>
+
+        <div class="form-row">
+
+          <div class="field dato-item">
+            <strong>Nombre completo</strong>
+            <p id="datoNombreCandidato">—</p>
+          </div>
+
+          <div class="field dato-item">
+            <strong>Documento</strong>
+            <p id="datoDocumentoCandidato">—</p>
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="field dato-item">
+            <strong>Correo</strong>
+            <p id="datoCorreoCandidato">—</p>
+          </div>
+
+          <div class="field dato-item">
+            <strong>Teléfono</strong>
+            <p id="datoTelefonoCandidato">—</p>
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="field dato-item">
+            <strong>Cargo</strong>
+            <p id="datoCargoCandidato">—</p>
+          </div>
+
+          <div class="field dato-item">
+            <strong>Sede</strong>
+            <p id="datoSedeCandidato">—</p>
+          </div>
+
+        </div>
+
+
+        <div class="field dato-item">
+
+          <strong>Estado del proceso</strong>
+
+          <p id="datoEstadoCandidato">
+            —
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ============================================= -->
+      <!-- FORMULARIO DEL CONTRATO -->
+      <!-- ============================================= -->
+
+      <form id="contratoForm">
+
+        <input
+                type="hidden"
+                id="contratoId"
+        />
+
+
+        <input
+                type="hidden"
+                id="postulacionContrato"
+        />
+
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label for="tipoContrato">
+              Tipo de contrato
+            </label>
+
+            <input
+                    id="tipoContrato"
+                    type="text"
+                    value="Término Fijo"
+                    maxlength="60"
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="salario">
+              Salario
+            </label>
+
+            <input
+                    id="salario"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="1423500"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label for="fechaInicio">
+              Fecha de inicio
+              <span class="required">*</span>
+            </label>
+
+            <input
+                    id="fechaInicio"
+                    type="date"
+                    required
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="fechaFin">
+              Fecha de finalización
+            </label>
+
+            <input
+                    id="fechaFin"
+                    type="date"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label for="fechaFirma">
+              Fecha de firma
+            </label>
+
+            <input
+                    id="fechaFirma"
+                    type="date"
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="horaFirma">
+              Hora de firma
+            </label>
+
+            <input
+                    id="horaFirma"
+                    type="time"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label for="lugarFirma">
+              Lugar o modalidad de firma
+            </label>
+
+            <input
+                    id="lugarFirma"
+                    type="text"
+                    placeholder="Sede principal, virtual..."
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="direccionFirma">
+              Dirección o enlace
+            </label>
+
+            <input
+                    id="direccionFirma"
+                    type="text"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="observaciones">
+            Observaciones
+          </label>
+
+          <textarea
+                  id="observaciones"
+                  rows="3"
+          ></textarea>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+                  type="button"
+                  class="btn btn-outline"
+                  id="cancelarContrato"
+          >
+            Cancelar
+          </button>
+
+          <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="guardarContrato"
+          >
+            Generar contrato
+          </button>
+
+          <div class="campo-formulario">
+            <label for="mensajeFirma">Mensaje para el candidato</label>
+
+            <textarea
+                    id="mensajeFirma"
+                    rows="5"
+                    readonly
+                    placeholder="Aquí aparecerá el mensaje de la firma..."
+            ></textarea>
+          </div>
+
+
+          <button
+                  type="button"
+                  class="btn btn-outline"
+                  id="programarFirma"
+          >
+            Enviar mensaje
+          </button>
+
+        </div>
+
+      </form>
+
+
+      <!-- ============================================= -->
+      <!-- DOCUMENTO DEL CONTRATO -->
+      <!-- SOLO SE MUESTRA AL GENERAR / EDITAR -->
+      <!-- ============================================= -->
+
+      <section
+              id="contratoDocumento"
+              class="contrato-documento"
+              hidden
+      >
+
+        <div class="contrato-documento-header">
+
+          <img
+                  src="img/colviseg.png"
+                  alt="Logo Colviseg"
+          />
+
+          <h2>
+            Contrato de Trabajo a Término Fijo
+          </h2>
+
+          <p>
+            Colviseg Ltda. · NIT: 900.123.456-7 · Bogotá D.C., Colombia
+          </p>
+
+          <p>
+
+            Contrato N.°
+            <strong id="docNumeroContrato">
+              —
+            </strong>
+
+            · Fecha:
+
+            <span id="docFechaContrato">
+                —
+              </span>
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 1 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Primera – Partes del Contrato
+          </h3>
+
+          <p>
+
+            Entre
+            <strong>Colviseg Ltda.</strong>,
+            identificada con NIT 900.123.456-7,
+            representada legalmente por su Gerente General,
+            en adelante EL EMPLEADOR;
+
+            y
+
+            <strong id="docNombreTrabajador">
+              —
+            </strong>,
+
+            identificado con cédula
+
+            <strong id="docDocumentoTrabajador">
+              —
+            </strong>,
+
+            en adelante EL TRABAJADOR.
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 2 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Segunda – Objeto del Contrato
+          </h3>
+
+          <p>
+
+            EL TRABAJADOR se obliga a prestar sus servicios personales
+            al EMPLEADOR en el cargo de
+
+            <strong id="docCargoTrabajador">
+              —
+            </strong>,
+
+            desempeñando las funciones inherentes a dicho cargo y las
+            demás que le sean asignadas por la empresa.
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 3 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Tercera – Duración
+          </h3>
+
+          <p>
+
+            El presente contrato tendrá vigencia desde el
+
+            <strong id="docFechaInicio">
+              —
+            </strong>
+
+            hasta el
+
+            <strong id="docFechaFin">
+              —
+            </strong>,
+
+            de acuerdo con las condiciones registradas.
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 4 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Cuarta – Salario
+          </h3>
+
+          <p>
+
+            EL EMPLEADOR pagará al TRABAJADOR un salario mensual de
+
+            <strong id="docSalario">
+              $0 COP
+            </strong>,
+
+            pagadero conforme a las políticas de la empresa y la
+            normativa laboral vigente.
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 5 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Quinta – Jornada Laboral
+          </h3>
+
+          <p>
+
+            La jornada de trabajo será distribuida de conformidad
+            con las necesidades del servicio y la normativa laboral
+            colombiana vigente.
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 6 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Sexta – Lugar de Trabajo
+          </h3>
+
+          <p>
+
+            EL TRABAJADOR prestará sus servicios principalmente en
+
+            <strong id="docSedeTrabajador">
+              —
+            </strong>,
+
+            sin perjuicio de que el EMPLEADOR pueda asignarlo
+            temporalmente en otras ciudades cuando las necesidades
+            del servicio lo requieran.
+
+          </p>
+
+        </div>
+
+
+        <!-- CLÁUSULA 7 -->
+
+        <div class="clausula">
+
+          <h3>
+            Cláusula Séptima – Obligaciones del Trabajador
+          </h3>
+
+          <p>
+
+            EL TRABAJADOR se obliga a cumplir con diligencia y cuidado
+            las órdenes e instrucciones del EMPLEADOR, guardar reserva
+            sobre la información confidencial y actuar en todo momento
+            con ética profesional.
+
+          </p>
+
+        </div>
+
+
+        <!-- FIRMAS -->
+
+        <div class="firmas-contrato">
+
+          <div class="firma">
+
+            <div class="firma-linea"></div>
+
+            <strong>
+              Colviseg Ltda.
+            </strong>
+
+            <p>
+              Representante Legal
+            </p>
+
+            <p>
+              NIT: 900.123.456-7
+            </p>
+
+          </div>
+
+
+          <div class="firma">
+
+            <div class="firma-linea"></div>
+
+            <strong id="docFirmaTrabajador">
+              El Trabajador
+            </strong>
+
+            <p>
+              C.C.
+              <span id="docFirmaDocumento">
+                  —
+                </span>
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACCIONES DEL DOCUMENTO -->
+
+        <div
+                class="modal-actions"
+                style="margin-top:2rem;"
+        >
+
+          <button
+                  type="button"
+                  class="btn btn-outline"
+                  id="cerrarDocumento"
+          >
+            Cerrar
+          </button>
+
+          <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="exportarPDF"
+          >
+            Exportar contrato en PDF
+          </button>
+
+          <button
+                  type="button"
+                  class="btn btn-outline"
+                  id="imprimirContrato"
+          >
+            Imprimir
+          </button>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- PIE DE PÁGINA -->
+<!-- ============================= -->
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <img
+            src="img/logo_sidovi.png"
+            alt="SIDOVI"
+            class="footer-logo"
+    />
+
+    <p>
+      &copy; 2025 SIDOVI · Colviseg Ltda.
+    </p>
+
+    <nav aria-label="Pie de página">
+
+      <ul class="footer-nav">
+
+        <li>
+          <a href="gerente.html">
+            Gerencia
+          </a>
+        </li>
+
+        <li>
+          <a href="trabajadores.html">
+            Trabajadores
+          </a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </div>
+
+</footer>
+
+
+<!-- ============================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================= -->
+
+<script src="js/nav.js"></script>
+<script src="js/contrato.js"></script>
+
+</body>
+</html>

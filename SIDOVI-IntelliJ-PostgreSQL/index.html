@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SIDOVI | Colviseg</title>
+
+  <!-- Estilos generales -->
+  <link rel="stylesheet" href="css/estilos.css" />
+
+  <!-- Estilos específicos del inicio -->
+  <link rel="stylesheet" href="css/index.css" />
+
+  <!-- Iconos Font Awesome -->
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+<body>
+
+<!-- =====================================================
+     ENCABEZADO
+     ===================================================== -->
+
+<header class="site-header">
+
+  <div class="header-inner">
+
+    <!-- Logo Colviseg -->
+    <a
+            class="brand"
+            href="index.html"
+            aria-label="Inicio Colviseg"
+    >
+
+      <img
+              src="img/colviseg.png"
+              alt="Colviseg"
+              class="brand-logo-img"
+      />
+
+      <span class="brand-kicker">
+          Seguridad privada en Colombia
+        </span>
+
+    </a>
+
+
+    <!-- Acceso a SIDOVI -->
+    <a
+            class="header-status"
+            href="login.html"
+    >
+
+      <span></span>
+
+      Plataforma SIDOVI
+
+    </a>
+
+  </div>
+
+</header>
+
+<!-- =====================================================
+     CAJA PRINCIPAL SIDOVI
+     ===================================================== -->
+<main>
+  <section class="sidovi-box">
+    <img
+            src="img/logo_sidovi_hero.png"
+            alt="Logo SIDOVI"
+            class="sidovi-main-logo"
+    >
+    <p>
+      Sistema de información para la gestión de procesos de selección
+      y vinculación de personal de seguridad privada.
+    </p>
+    <!-- Botones principales -->
+    <div
+            class="hero-actions"
+            aria-label="Opciones principales"
+    >
+      <a
+              href="ofertas.html"
+              class="nav-link nav-cta"
+      >
+        Ver ofertas
+      </a>
+
+
+      <a
+              href="postulacion.html"
+              class="nav-link nav-secondary"
+      >
+        Postularme
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =====================================================
+     BOTÓN DEL CHATBOT
+     ===================================================== -->
+
+<button
+        class="chat-trigger"
+        id="chatTrigger"
+        aria-label="Abrir asistente SIDOVI"
+>
+
+    <span
+            class="chat-icon"
+            aria-hidden="true"
+    >
+      💬
+    </span>
+
+  <span>
+      ¿Necesitas ayuda?
+    </span>
+
+</button>
+
+
+<!-- =====================================================
+     VENTANA DEL CHATBOT
+     ===================================================== -->
+
+<aside
+        class="chat-panel"
+        id="chatPanel"
+        aria-label="Asistente virtual SIDOVI"
+        hidden
+>
+
+  <div class="chat-head">
+
+    <div>
+
+      <span class="chat-presence"></span>
+
+      <strong>
+        Asistente SIDOVI
+      </strong>
+
+      <small>
+        En línea
+      </small>
+
+    </div>
+
+
+    <button
+            id="chatClose"
+            aria-label="Cerrar chat"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div
+          class="chat-body"
+          id="chatMessages"
+  >
+
+    <p class="bot-message">
+      ¡Hola! Soy el asistente virtual de SIDOVI.
+      ¿En qué puedo orientarte?
+    </p>
+
+  </div>
+
+
+  <div class="chat-options">
+
+    <button data-answer="Quiero ver ofertas de empleo">
+      Ver ofertas
+    </button>
+
+    <button data-answer="Necesito ayuda para postularme">
+      Postularme
+    </button>
+
+    <button data-answer="Quiero acceder a mi cuenta">
+      Acceso personal
+    </button>
+
+  </div>
+
+</aside>
+
+
+<!-- =====================================================
+     PIE DE PÁGINA
+     ===================================================== -->
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <!-- Logo SIDOVI -->
+    <img
+            src="img/logo_sidovi.png"
+            alt="SIDOVI logo"
+            class="footer-logo"
+    />
+
+
+    <!-- Copyright -->
+    <p>
+      © 2026 SIDOVI · Colviseg Ltda. · Todos los derechos reservados.
+    </p>
+
+
+    <!-- Redes sociales -->
+
+    <nav
+            class="social-links"
+            aria-label="Redes sociales"
+    >
+
+      <!-- Facebook -->
+
+      <a
+              href="https://www.facebook.com/colviseg"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              title="Facebook"
+      >
+        <i class="fa-brands fa-facebook-f"></i>
+      </a>
+
+
+      <!-- Instagram -->
+
+      <a
+              href="https://www.instagram.com/cvs_colviseg/?hl=es"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              title="Instagram"
+      >
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+
+
+      <!-- X -->
+
+      <a
+              href="https://x.com/colviseg"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+              title="X"
+      >
+        <i class="fa-brands fa-x-twitter"></i>
+      </a>
+
+    </nav>
+
+  </div>
+
+</footer>
+
+
+<!-- JavaScript del index -->
+<script src="js/index.js"></script>
+</body>
+</html>
