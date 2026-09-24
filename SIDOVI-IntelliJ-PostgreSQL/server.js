@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 
 const crypto = require('crypto');
 const express = require('express');
@@ -52,8 +52,8 @@ function getSessionToken(req) {
 function requireRoles(...roles) {
   return (req, res, next) => {
     const session = getSession(req);
-    if (!session) return res.status(401).json({ error: 'Sesión requerida.' });
-    if (roles.length && !roles.includes(session.rol)) return res.status(403).json({ error: 'No tienes permisos para este módulo.' });
+    if (!session) return res.status(401).json({ error: 'SesiÃ³n requerida.' });
+    if (roles.length && !roles.includes(session.rol)) return res.status(403).json({ error: 'No tienes permisos para este mÃ³dulo.' });
     req.session = session;
     next();
   };
@@ -86,7 +86,8 @@ app.use((req, res, next) => {
 app.use('/api', (req, res, next) => {
   if (publicApi(req)) return next();
   if (req.path === '/dashboard' || req.path === '/cargos') return requireRoles('RRHH', 'Gerente')(req, res, next);
-  if (req.path.startsWith('/contratos') || req.path.startsWith('/evaluaciones')) return requireRoles('Gerente')(req, res, next);
+  if (req.path.startsWith('/contratos')) return requireRoles('RRHH', 'Gerente')(req, res, next);
+  if (req.path.startsWith('/evaluaciones')) return requireRoles('Gerente')(req, res, next);
   if (req.path.startsWith('/postulaciones') || req.path.startsWith('/aspirantes') || req.path.startsWith('/documentos') || req.path.startsWith('/entrevistas')) return requireRoles('RRHH', 'Gerente')(req, res, next);
   if (req.path.startsWith('/trabajadores') || req.path.startsWith('/reportes') || req.path.startsWith('/examenes')) return requireRoles('RRHH', 'Gerente')(req, res, next);
   return next();
@@ -156,7 +157,7 @@ app.get('/api/vacantes', async (req, res) => {
     if (req.query.idSede) { values.push(req.query.idSede); clause = `WHERE v.id_sede = $${values.length}`; }
     const result = await db.query(`SELECT v.*, v.nombre_cargo AS titulo, s.nombre_sede, c.id_cargo, c.nombre_cargo, u.nombre_completo AS responsable, COUNT(p.id_postulacion)::int AS total_postulaciones FROM vacante v LEFT JOIN sede s ON s.id_sede = v.id_sede LEFT JOIN cargo c ON c.id_cargo = v.id_cargo LEFT JOIN usuario u ON u.id_usuario = v.id_usuario LEFT JOIN postulacion p ON p.id_vacante = v.id_vacante ${clause} GROUP BY v.id_vacante, s.nombre_sede, c.id_cargo, c.nombre_cargo, u.nombre_completo ORDER BY v.id_vacante DESC`, values);
     res.json(result.rows);
-  } catch (error) { errorResponse(res, error, 'No fue posible consultar las vacantes. Ejecuta primero la migración de sedes y cargos.'); }
+  } catch (error) { errorResponse(res, error, 'No fue posible consultar las vacantes. Ejecuta primero la migraciÃ³n de sedes y cargos.'); }
 });
 
 app.get('/api/vacantes/:id', async (req, res) => {
@@ -166,7 +167,7 @@ app.get('/api/vacantes/:id', async (req, res) => {
 
 app.post('/api/vacantes', async (req, res) => {
   const { titulo, descripcion, requisitos = '', fechaPublicacion = new Date(), estado = 'ABIERTA', idUsuario = 2, idSede, id_sede, idCargo, id_cargo } = req.body;
-  if (!titulo || !descripcion) return res.status(400).json({ error: 'Título y descripción son obligatorios.' });
+  if (!titulo || !descripcion) return res.status(400).json({ error: 'TÃ­tulo y descripciÃ³n son obligatorios.' });
   try { const result = await db.query(`INSERT INTO vacante (titulo, descripcion, requisitos, fecha_publicacion, estado, id_usuario, id_sede, id_cargo) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`, [titulo, descripcion, requisitos, fechaPublicacion, estado, idUsuario, idSede || id_sede || null, idCargo || id_cargo || null]); res.status(201).json(result.rows[0]); }
   catch (error) { errorResponse(res, error, 'No fue posible crear la vacante.'); }
 });
@@ -194,7 +195,7 @@ app.get('/api/aspirantes/:id', async (req, res) => {
 
 app.post('/api/aspirantes', async (req, res) => {
   const { nombre, apellido, documento, correo, telefono, direccion, fechaRegistro = new Date() } = req.body;
-  if (!nombre || !apellido || !documento || !correo || !telefono || !direccion) return res.status(400).json({ error: 'Nombre, apellido, documento, correo, teléfono y dirección son obligatorios.' });
+  if (!nombre || !apellido || !documento || !correo || !telefono || !direccion) return res.status(400).json({ error: 'Nombre, apellido, documento, correo, telÃ©fono y direcciÃ³n son obligatorios.' });
   try { const result = await db.query('INSERT INTO aspirante (tipo_documento, numero_documento, nombre_completo, correo, telefono, direccion, fecha_registro, activo) VALUES ($1,$2,$3,$4,$5,$6,$7,true) RETURNING *', ['CC', documento, `${nombre} ${apellido}`.trim(), correo, telefono, direccion, fechaRegistro]); res.status(201).json(result.rows[0]); }
   catch (error) { errorResponse(res, error, 'No fue posible crear el aspirante.'); }
 });
@@ -211,8 +212,45 @@ app.delete('/api/aspirantes/:id', async (req, res) => {
   catch (error) { await client.query('ROLLBACK'); errorResponse(res, error, 'No fue posible eliminar el aspirante.'); } finally { client.release(); }
 });
 
-const postulacionQuery = `SELECT p.id_postulacion, p.id_aspirante, p.id_vacante, p.fecha_postulacion, p.estado AS estado, a.nombre_completo, a.numero_documento, a.correo, a.telefono, a.direccion, v.nombre_cargo AS cargo, v.descripcion AS descripcion_vacante, v.estado AS estado_vacante, v.id_sede, s.nombre_sede FROM postulacion p JOIN aspirante a ON a.id_aspirante = p.id_aspirante JOIN vacante v ON v.id_vacante = p.id_vacante LEFT JOIN sede s ON s.id_sede = v.id_sede`;
+const postulacionQuery = `
+SELECT
+  p.id_postulacion,
+  p.id_aspirante,
+  p.id_vacante,
+  p.fecha_postulacion,
+  p.estado AS estado,
 
+  a.nombre_completo,
+  a.numero_documento,
+  a.correo,
+  a.telefono,
+  a.direccion,
+
+  v.nombre_cargo AS cargo,
+  v.descripcion AS descripcion_vacante,
+  v.estado AS estado_vacante,
+  v.id_sede,
+
+  s.nombre_sede,
+
+  p.fecha_firma_programada,
+  p.hora_firma,
+  p.lugar_firma,
+  p.direccion_firma,
+  p.responsable_firma,
+  p.observaciones_firma
+
+FROM postulacion p
+
+JOIN aspirante a
+  ON a.id_aspirante = p.id_aspirante
+
+JOIN vacante v
+  ON v.id_vacante = p.id_vacante
+
+LEFT JOIN sede s
+  ON s.id_sede = v.id_sede
+`;
 app.get('/api/dashboard', async (req, res) => {
   try {
     const values = [];
@@ -242,8 +280,8 @@ app.get('/api/postulaciones', async (req, res) => {
 });
 
 app.get('/api/postulaciones/:id', async (req, res) => {
-  try { const result = await db.query(`${postulacionQuery} WHERE p.id_postulacion = $1`, [req.params.id]); if (!result.rowCount) return res.status(404).json({ error: 'Postulación no encontrada.' }); const row = result.rows[0]; const docs = await db.query('SELECT * FROM documento WHERE id_aspirante = $1 ORDER BY id_documento', [row.id_aspirante]); const entrevistas = await db.query('SELECT * FROM entrevista WHERE id_postulacion = $1 ORDER BY id_entrevista DESC', [req.params.id]); res.json({ ...row, documentos: docs.rows, entrevista: entrevistas.rows[0] || null }); }
-  catch (error) { errorResponse(res, error, 'No fue posible consultar la postulación.'); }
+  try { const result = await db.query(`${postulacionQuery} WHERE p.id_postulacion = $1`, [req.params.id]); if (!result.rowCount) return res.status(404).json({ error: 'PostulaciÃ³n no encontrada.' }); const row = result.rows[0]; const docs = await db.query('SELECT * FROM documento WHERE id_aspirante = $1 ORDER BY id_documento', [row.id_aspirante]); const entrevistas = await db.query('SELECT * FROM entrevista WHERE id_postulacion = $1 ORDER BY id_entrevista DESC', [req.params.id]); res.json({ ...row, documentos: docs.rows, entrevista: entrevistas.rows[0] || null }); }
+  catch (error) { errorResponse(res, error, 'No fue posible consultar la postulaciÃ³n.'); }
 });
 
 app.get('/api/hojas-de-vida', requireRoles('RRHH', 'Gerente'), async (_req, res) => {
@@ -257,7 +295,7 @@ app.get('/api/hojas-de-vida', requireRoles('RRHH', 'Gerente'), async (_req, res)
 // REPORTES / CONCEPTOS DE RRHH SOBRE HOJAS DE VIDA
 // ============================================================
 
-// Consultar el reporte de RRHH de una postulación.
+// Consultar el reporte de RRHH de una postulaciÃ³n.
 // RRHH y Gerencia pueden visualizarlo.
 app.get(
     '/api/reportes-rrhh/:idPostulacion',
@@ -335,7 +373,7 @@ app.put(
       if (!idPostulacion) {
 
         return res.status(400).json({
-          error: 'La postulación es obligatoria.'
+          error: 'La postulaciÃ³n es obligatoria.'
         });
 
       }
@@ -352,7 +390,7 @@ app.put(
 
       try {
 
-        // Verificar que la postulación exista.
+        // Verificar que la postulaciÃ³n exista.
         const postulacion = await db.query(
             `
         SELECT
@@ -367,13 +405,13 @@ app.put(
         if (!postulacion.rowCount) {
 
           return res.status(404).json({
-            error: 'La postulación no existe.'
+            error: 'La postulaciÃ³n no existe.'
           });
 
         }
 
 
-        // Buscar el registro de RRHH asociado a la sesión.
+        // Buscar el registro de RRHH asociado a la sesiÃ³n.
         const rrhh = await db.query(
             `
         SELECT id_rrhh
@@ -389,7 +427,7 @@ app.put(
         if (!rrhh.rowCount) {
 
           return res.status(403).json({
-            error: 'El usuario actual no está registrado como Recursos Humanos.'
+            error: 'El usuario actual no estÃ¡ registrado como Recursos Humanos.'
           });
 
         }
@@ -466,11 +504,11 @@ app.post('/api/postulaciones', async (req, res) => {
     const post = await client.query(`INSERT INTO postulacion (id_aspirante, id_vacante, fecha_postulacion, estado) VALUES ($1,$2,CURRENT_DATE,'EN_REVISION') RETURNING *`, [id, vacancyId]);
     for (const doc of documentos) {
       const archivo = String(doc.archivo || doc.rutaArchivo || 'pendiente');
-      if (archivo.length > 8 * 1024 * 1024) throw Object.assign(new Error('Uno de los documentos supera el límite permitido.'), { status: 413 });
+      if (archivo.length > 8 * 1024 * 1024) throw Object.assign(new Error('Uno de los documentos supera el lÃ­mite permitido.'), { status: 413 });
       await client.query('INSERT INTO documento (nombre_documento, tipo_documento, archivo, id_aspirante) VALUES ($1,$2,$3,$4)', [doc.nombreArchivo || doc.nombreDocumento || 'Documento', doc.tipoDocumento || doc.tipoArchivo || 'PDF', archivo, id]);
     }
     await client.query('COMMIT'); res.status(201).json({ idPostulacion: post.rows[0].id_postulacion, ...post.rows[0] });
-  } catch (error) { await client.query('ROLLBACK'); errorResponse(res, error, 'No fue posible registrar la postulación.'); } finally { client.release(); }
+  } catch (error) { await client.query('ROLLBACK'); errorResponse(res, error, 'No fue posible registrar la postulaciÃ³n.'); } finally { client.release(); }
 });
 
 const ESTADOS_POSTULACION_DB = {
@@ -541,7 +579,7 @@ app.patch('/api/postulaciones/:id', async (req, res) => {
 
   if (!estadoNormalizado) {
     return res.status(400).json({
-      error: 'Estado de postulación no válido.'
+      error: 'Estado de postulaciÃ³n no vÃ¡lido.'
     });
   }
 
@@ -549,7 +587,7 @@ app.patch('/api/postulaciones/:id', async (req, res) => {
 
   if (!Number.isInteger(idPostulacion)) {
     return res.status(400).json({
-      error: 'El ID de la postulación no es válido.'
+      error: 'El ID de la postulaciÃ³n no es vÃ¡lido.'
     });
   }
 
@@ -583,7 +621,7 @@ app.patch('/api/postulaciones/:id', async (req, res) => {
 
     if (!result.rowCount) {
       return res.status(404).json({
-        error: 'Postulación no encontrada.'
+        error: 'PostulaciÃ³n no encontrada.'
       });
     }
 
@@ -617,7 +655,7 @@ app.patch('/api/postulaciones/:id/datos', async (req, res) => {
 
   if (!Number.isInteger(idPostulacion)) {
     return res.status(400).json({
-      error: 'El ID de la postulación no es válido.'
+      error: 'El ID de la postulaciÃ³n no es vÃ¡lido.'
     });
   }
 
@@ -629,7 +667,7 @@ app.patch('/api/postulaciones/:id/datos', async (req, res) => {
 
     if (!post.rowCount) {
       return res.status(404).json({
-        error: 'Postulación no encontrada.'
+        error: 'PostulaciÃ³n no encontrada.'
       });
     }
 
@@ -672,12 +710,12 @@ WHERE id_aspirante = $6`,
 
 
 app.delete('/api/postulaciones/:id', async (req, res) => {
-  const client = await db.connect(); try { await client.query('BEGIN'); const p = await client.query('SELECT id_aspirante FROM postulacion WHERE id_postulacion = $1', [req.params.id]); if (!p.rowCount) return res.status(404).json({ error: 'Postulación no encontrada.' }); const id = p.rows[0].id_aspirante; await client.query('DELETE FROM evaluacion WHERE id_entrevista IN (SELECT id_entrevista FROM entrevista WHERE id_postulacion = $1)', [req.params.id]); await client.query('DELETE FROM entrevista WHERE id_postulacion = $1', [req.params.id]); await client.query('DELETE FROM evidencia WHERE id_postulacion = $1', [req.params.id]); await client.query('DELETE FROM postulacion WHERE id_postulacion = $1', [req.params.id]); await client.query('DELETE FROM documento WHERE id_aspirante = $1', [id]); await client.query('DELETE FROM aspirante WHERE id_aspirante = $1', [id]); await client.query('COMMIT'); res.status(204).end(); } catch (error) { await client.query('ROLLBACK'); errorResponse(res, error, 'No fue posible eliminar la postulación.'); } finally { client.release(); }
+  const client = await db.connect(); try { await client.query('BEGIN'); const p = await client.query('SELECT id_aspirante FROM postulacion WHERE id_postulacion = $1', [req.params.id]); if (!p.rowCount) return res.status(404).json({ error: 'PostulaciÃ³n no encontrada.' }); const id = p.rows[0].id_aspirante; await client.query('DELETE FROM evaluacion WHERE id_entrevista IN (SELECT id_entrevista FROM entrevista WHERE id_postulacion = $1)', [req.params.id]); await client.query('DELETE FROM entrevista WHERE id_postulacion = $1', [req.params.id]); await client.query('DELETE FROM evidencia WHERE id_postulacion = $1', [req.params.id]); await client.query('DELETE FROM postulacion WHERE id_postulacion = $1', [req.params.id]); await client.query('DELETE FROM documento WHERE id_aspirante = $1', [id]); await client.query('DELETE FROM aspirante WHERE id_aspirante = $1', [id]); await client.query('COMMIT'); res.status(204).end(); } catch (error) { await client.query('ROLLBACK'); errorResponse(res, error, 'No fue posible eliminar la postulaciÃ³n.'); } finally { client.release(); }
 });
-
 
 app.get('/api/entrevistas', async (_req, res) => {
   try {
+
     const result = await db.query(`
       SELECT
         e.id_entrevista,
@@ -685,34 +723,46 @@ app.get('/api/entrevistas', async (_req, res) => {
         e.modalidad,
         e.estado AS resultado,
         e.observacion AS observaciones,
+
         s.id_seleccionado,
         s.id_postulacion,
+
         p.id_aspirante,
+
         po.nombre_completo AS candidato,
+        po.telefono AS telefono,
+        po.correo AS correo,
+
         v.nombre_cargo AS cargo
+
       FROM entrevista e
+
       JOIN aspirantes_seleccionados s
         ON s.id_seleccionado = e.id_seleccionado
+
       JOIN postulacion p
         ON p.id_postulacion = s.id_postulacion
+
       JOIN aspirante po
         ON po.id_aspirante = p.id_aspirante
+
       JOIN vacante v
         ON v.id_vacante = p.id_vacante
+
       ORDER BY e.fecha_entrevista DESC
     `);
 
     res.json(result.rows);
+
   } catch (error) {
+
     errorResponse(
-      res,
-      error,
-      'No fue posible obtener las entrevistas.'
+        res,
+        error,
+        'No fue posible obtener las entrevistas.'
     );
   }
 });
-
-
 
 app.get('/api/entrevistas/:id', async (req, res) => {
   try {
@@ -768,7 +818,7 @@ app.post('/api/entrevistas', async (req, res) => {
 
     if (!approved.rowCount) {
       return res.status(400).json({
-        error: 'La postulación debe estar aprobada antes de agendar la entrevista.'
+        error: 'La postulaciÃ³n debe estar aprobada antes de agendar la entrevista.'
       });
     }
     const rrhhOwner = await db.query('SELECT id_rrhh FROM recursos_humanos WHERE activo = true ORDER BY id_rrhh LIMIT 1');
@@ -801,15 +851,17 @@ app.post('/api/entrevistas', async (req, res) => {
       return res.status(400).json({ error: 'No existe un usuario activo con rol Gerente. Registra o activa el gerente antes de agendar.' });
     }
 
+    const fechaHoraEntrevista =
+        `${fecha || fechaEntrevista} ${hora || '00:00'}:00`;
+
     const result = await db.query(`
   INSERT INTO entrevista
-    (fecha_entrevista, hora_entrevista, modalidad, estado, observacion,
+    (fecha_entrevista, modalidad, estado, observacion,
      id_seleccionado, id_gerente, id_postulacion)
-  VALUES ($1, $2, $3, 'PROGRAMADA', $4, $5, $6, $7)
+  VALUES ($1, $2, 'PROGRAMADA', $3, $4, $5, $6)
   RETURNING *
 `, [
-      fecha || fechaEntrevista,
-      hora,
+      fechaHoraEntrevista,
       modalidadDB,
       indicaciones || observaciones,
       selected.rows[0].id_seleccionado,
@@ -838,6 +890,7 @@ app.post('/api/entrevistas', async (req, res) => {
 });
 
 app.patch('/api/entrevistas/:id', async (req, res) => {
+
   const {
     fecha,
     fechaEntrevista,
@@ -849,7 +902,9 @@ app.patch('/api/entrevistas/:id', async (req, res) => {
     estado
   } = req.body;
 
-  const estadoRecibido = String(estado || resultado || 'PROGRAMADA')
+  const estadoRecibido = String(
+      estado || resultado || 'PROGRAMADA'
+  )
       .trim()
       .toUpperCase()
       .replace(/\s+/g, '_');
@@ -862,40 +917,174 @@ app.patch('/api/entrevistas/:id', async (req, res) => {
   }[estadoRecibido] || 'PROGRAMADA';
 
   const modalidadDB = modalidad
-      ? (String(modalidad).toLowerCase().includes('virtual') ? 'Virtual' : 'Presencial')
+      ? (
+          String(modalidad)
+              .toLowerCase()
+              .includes('virtual')
+              ? 'Virtual'
+              : 'Presencial'
+      )
       : null;
 
   try {
+
+    /* =====================================================
+       BUSCAR LA ENTREVISTA POR SU ID REAL
+    ===================================================== */
+
+    const actual = await db.query(`
+      SELECT *
+      FROM entrevista
+      WHERE id_entrevista = $1
+      LIMIT 1
+    `, [
+      Number(req.params.id)
+    ]);
+
+
+    if (!actual.rowCount) {
+      return res.status(404).json({
+        error: 'Entrevista no encontrada.'
+      });
+    }
+
+
+    const entrevistaActual =
+        actual.rows[0];
+
+
+    /* =====================================================
+       OBTENER FECHA ACTUAL
+    ===================================================== */
+
+    const fechaActual =
+        entrevistaActual.fecha_entrevista
+            ? new Date(
+                entrevistaActual.fecha_entrevista
+            )
+            : null;
+
+
+    /* =====================================================
+       NUEVA FECHA
+    ===================================================== */
+
+    const fechaNueva =
+        fecha ||
+        fechaEntrevista ||
+        (
+            fechaActual
+                ? fechaActual
+                    .toISOString()
+                    .slice(0, 10)
+                : null
+        );
+
+
+    /* =====================================================
+       NUEVA HORA
+    ===================================================== */
+
+    const horaNueva =
+        hora ||
+        horaEntrevista ||
+        (
+            fechaActual
+                ? fechaActual
+                    .toTimeString()
+                    .slice(0, 5)
+                : '00:00'
+        );
+
+
+    if (!fechaNueva) {
+      return res.status(400).json({
+        error:
+            'La fecha de la entrevista es obligatoria.'
+      });
+    }
+
+
+    /* =====================================================
+       UNIR FECHA + HORA
+    ===================================================== */
+
+    const fechaHoraEntrevista =
+        `${fechaNueva} ${horaNueva}:00`;
+
+
+    /* =====================================================
+       ACTUALIZAR
+    ===================================================== */
+
     const result = await db.query(`
       UPDATE entrevista
-      SET fecha_entrevista = COALESCE($1, fecha_entrevista),
-          hora_entrevista = COALESCE($2, hora_entrevista),
-          modalidad = COALESCE($3, modalidad),
-          observacion = $4,
-          estado = $5
-      WHERE id_seleccionado = $6
+      SET
+        fecha_entrevista = $1,
+        modalidad = COALESCE($2, modalidad),
+        observacion = $3,
+        estado = $4
+      WHERE id_entrevista = $5
       RETURNING *
     `, [
-      fecha || fechaEntrevista || null,
-      hora || horaEntrevista || null,
+      fechaHoraEntrevista,
       modalidadDB,
       observaciones,
       estadoDB,
-      req.params.id
+      Number(req.params.id)
     ]);
 
+
     if (!result.rowCount) {
-      return res.status(404).json({ error: 'Entrevista no encontrada.' });
+      return res.status(404).json({
+        error:
+            'No fue posible actualizar la entrevista.'
+      });
     }
 
+
+    const entrevista =
+        result.rows[0];
+
+
+    /* =====================================================
+       RESPUESTA
+    ===================================================== */
+
     res.json({
-      ...result.rows[0],
-      id_entrevista: result.rows[0].id_seleccionado,
-      observaciones: result.rows[0].observacion,
-      resultado: result.rows[0].estado
+      ...entrevista,
+
+      id_entrevista:
+      entrevista.id_entrevista,
+
+      fecha_entrevista:
+      entrevista.fecha_entrevista,
+
+      hora_entrevista:
+      horaNueva,
+
+      observaciones:
+      entrevista.observacion,
+
+      resultado:
+      entrevista.estado,
+
+      mensaje:
+          'La entrevista fue reprogramada correctamente.'
     });
+
   } catch (error) {
-    errorResponse(res, error, 'No fue posible actualizar la entrevista.');
+
+    console.error(
+        'Error al reprogramar entrevista:',
+        error
+    );
+
+    errorResponse(
+        res,
+        error,
+        'No fue posible reprogramar la entrevista.'
+    );
   }
 });
 
@@ -940,7 +1129,7 @@ app.patch('/api/documentos/:id', async(req,res)=>{const {nombreDocumento,nombreA
 app.delete('/api/documentos/:id', async(req,res)=>{try{const r=await db.query('DELETE FROM documento WHERE id_documento=$1 RETURNING id_documento',[req.params.id]);if(!r.rowCount)return res.status(404).json({error:'Documento no encontrado.'});res.status(204).end();}catch(error){errorResponse(res,error,'No fue posible eliminar documento.');}});
 
 app.get('/api/evaluaciones', async (_req,res)=>{try{const r=await db.query('SELECT ev.*, e.id_postulacion FROM evaluacion ev JOIN entrevista e ON e.id_entrevista=ev.id_entrevista ORDER BY ev.id_evaluacion DESC');res.json(r.rows);}catch(error){errorResponse(res,error,'No fue posible consultar evaluaciones.');}});
-app.post('/api/evaluaciones', async(req,res)=>{const {preguntas='Evaluación gerencial',calificacion=0,comentarios='',idEntrevista}=req.body;try{const r=await db.query('INSERT INTO evaluacion (preguntas,calificacion,comentarios,id_entrevista) VALUES ($1,$2,$3,$4) RETURNING *',[preguntas,calificacion,comentarios,idEntrevista]);res.status(201).json(r.rows[0]);}catch(error){errorResponse(res,error,'No fue posible guardar evaluación.');}});
+app.post('/api/evaluaciones', async(req,res)=>{const {preguntas='EvaluaciÃ³n gerencial',calificacion=0,comentarios='',idEntrevista}=req.body;try{const r=await db.query('INSERT INTO evaluacion (preguntas,calificacion,comentarios,id_entrevista) VALUES ($1,$2,$3,$4) RETURNING *',[preguntas,calificacion,comentarios,idEntrevista]);res.status(201).json(r.rows[0]);}catch(error){errorResponse(res,error,'No fue posible guardar evaluaciÃ³n.');}});
 
 app.get('/api/contratos', async (req, res) => {
   try {
@@ -962,7 +1151,7 @@ app.post('/api/contratos', requireRoles('Gerente'), async (req, res) => {
     idPostulacion,
     fechaInicio,
     fechaFin = null,
-    tipoContrato = 'Término Fijo',
+    tipoContrato = 'TÃ©rmino Fijo',
     salario = 1423500,
     estado = 'Borrador',
     observaciones = ''
@@ -970,12 +1159,12 @@ app.post('/api/contratos', requireRoles('Gerente'), async (req, res) => {
 
   if (!idPostulacion || !fechaInicio) {
     return res.status(400).json({
-      error: 'La postulación y la fecha de inicio son obligatorias.'
+      error: 'La postulaciÃ³n y la fecha de inicio son obligatorias.'
     });
   }
 
   try {
-    // Verificar que la persona esté lista para contratación
+    // Verificar que la persona estÃ© lista para contrataciÃ³n
     const post = await db.query(`
       SELECT
         p.id_postulacion,
@@ -1003,7 +1192,7 @@ app.post('/api/contratos', requireRoles('Gerente'), async (req, res) => {
 
     if (!post.rowCount) {
       return res.status(400).json({
-        error: 'La persona todavía no está habilitada para generar el contrato.'
+        error: 'La persona todavÃ­a no estÃ¡ habilitada para generar el contrato.'
       });
     }
 
@@ -1015,7 +1204,7 @@ app.post('/api/contratos', requireRoles('Gerente'), async (req, res) => {
 
     if (existente.rowCount) {
       return res.status(409).json({
-        error: 'Esta postulación ya tiene un contrato generado.',
+        error: 'Esta postulaciÃ³n ya tiene un contrato generado.',
         idContrato: existente.rows[0].id_contrato
       });
     }
@@ -1054,11 +1243,15 @@ app.post('/api/contratos', requireRoles('Gerente'), async (req, res) => {
 
 // ============================================================
 // PROGRAMAR FIRMA DE CONTRATO
-// Gerencia agenda la firma después de que RRHH aprueba
-// los exámenes médicos.
+// Gerencia agenda la firma despuÃ©s de que RRHH aprueba
+// los exÃ¡menes mÃ©dicos.
+// ============================================================
+// ============================================================
+// PROGRAMAR / REPROGRAMAR FIRMA DE CONTRATO
+// RRHH o Gerencia pueden programar y reprogramar.
 // ============================================================
 
-app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res) => {
+app.post('/api/contratos/agenda-firma', requireRoles('RRHH', 'Gerente'), async (req, res) => {
 
   const {
     idPostulacion,
@@ -1077,11 +1270,18 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
 
   try {
 
-    // Verificar que la postulación esté lista para contratación
+    // ========================================================
+    // VERIFICAR LA POSTULACIÓN
+    // ========================================================
+
     const post = await db.query(`
       SELECT
         p.id_postulacion,
         p.estado,
+        p.fecha_firma_programada,
+        p.hora_firma,
+        p.lugar_firma,
+        p.direccion_firma,
         a.nombre_completo,
         a.correo,
         a.telefono,
@@ -1099,44 +1299,60 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
         ON s.id_sede = v.id_sede
 
       WHERE p.id_postulacion = $1
-        AND p.estado = 'PENDIENTE_CONTRATO'
     `, [idPostulacion]);
 
-
     if (!post.rowCount) {
+      return res.status(404).json({
+        error: 'La postulación no fue encontrada.'
+      });
+    }
+
+    const candidato = post.rows[0];
+
+    const estadoActual =
+        String(candidato.estado || '').toUpperCase();
+
+
+    // ========================================================
+    // SOLO SE PERMITEN ESTOS DOS CASOS
+    //
+    // 1. PENDIENTE_CONTRATO
+    //    → Primera programación
+    //
+    // 2. FIRMA_CONTRATO_AGENDADA
+    //    → Reprogramación
+    // ========================================================
+
+    const puedeProgramar =
+        estadoActual === 'PENDIENTE_CONTRATO' ||
+        estadoActual === 'FIRMA_CONTRATO_AGENDADA';
+
+    if (!puedeProgramar) {
 
       return res.status(400).json({
         error:
-            'La persona no está disponible para programar la firma. Verifica que RRHH haya aprobado los exámenes.'
+            'La persona no está disponible para programar o reprogramar la firma. ' +
+            'Verifica que RRHH haya aprobado los exámenes.'
       });
 
     }
 
 
-    // Evitar programaciones duplicadas
-    const existente = await db.query(`
-      SELECT
-        fecha_firma_programada,
-        hora_firma,
-        lugar_firma
-      FROM postulacion
-      WHERE id_postulacion = $1
-        AND estado = 'FIRMA_CONTRATO_AGENDADA'
-    `, [idPostulacion]);
+    // ========================================================
+    // DETERMINAR SI ES PROGRAMACIÓN O REPROGRAMACIÓN
+    // ========================================================
+
+    const esReprogramacion =
+        estadoActual === 'FIRMA_CONTRATO_AGENDADA';
 
 
-    if (existente.rowCount) {
+    // ========================================================
+    // GUARDAR / ACTUALIZAR LA FIRMA
+    // ========================================================
 
-      return res.status(409).json({
-        error: 'La firma de esta persona ya está programada.'
-      });
-
-    }
-
-
-    // Guardar la programación de firma
     const resultado = await db.query(`
       UPDATE postulacion
+
       SET
         fecha_firma_programada = $1,
         hora_firma = $2,
@@ -1145,7 +1361,9 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
         responsable_firma = $5,
         observaciones_firma = $6,
         estado = 'FIRMA_CONTRATO_AGENDADA'
+
       WHERE id_postulacion = $7
+
       RETURNING *
     `, [
       fecha,
@@ -1153,17 +1371,29 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
       lugar,
       direccion,
       req.session.id_usuario,
-      observaciones,
+      String(observaciones).trim(),
       idPostulacion
     ]);
 
 
-    // Notificar al candidato
-    const mensaje =
-        `Su proceso de selección ha avanzado satisfactoriamente. ` +
-        `La firma de su contrato ha sido programada para el día ${fecha} ` +
-        `a las ${hora}, en ${lugar}.`;
+    // ========================================================
+    // MENSAJE ESPECÍFICO DE FIRMA
+    // NO ES EL MENSAJE DE LOS EXÁMENES
+    // ========================================================
 
+    const mensaje =
+        `Hola ${candidato.nombre_completo || ''}. ` +
+        `Te informamos que tus exámenes fueron aprobados. ` +
+        `Tu proceso de contratación continúa y estás programado(a) ` +
+        `para la firma de tu contrato el día ${fecha}, ` +
+        `a las ${hora}, en ${lugar}. ` +
+        `${direccion ? `Dirección: ${direccion}. ` : ''}` +
+        `Te esperamos.`;
+
+
+    // ========================================================
+    // GUARDAR NOTIFICACIÓN
+    // ========================================================
 
     await db.query(`
       INSERT INTO notificacion (
@@ -1172,6 +1402,7 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
         id_usuario,
         id_postulacion
       )
+
       VALUES ($1, false, $2, $3)
     `, [
       mensaje,
@@ -1180,6 +1411,10 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
     ]);
 
 
+    // ========================================================
+    // RESPUESTA
+    // ========================================================
+
     res.status(201).json({
 
       ...resultado.rows[0],
@@ -1187,31 +1422,36 @@ app.post('/api/contratos/agenda-firma', requireRoles('Gerente'), async (req, res
       estado_postulacion:
           'FIRMA_CONTRATO_AGENDADA',
 
+      tipo_operacion:
+          esReprogramacion
+              ? 'REPROGRAMACION'
+              : 'PROGRAMACION',
+
       notificacion:
       mensaje,
 
-      candidato:
-          post.rows[0]
+      candidato
 
     });
-
 
   } catch (error) {
 
     console.error(
-        'Error programando firma:',
+        'Error programando/reprogramando firma:',
         error
     );
 
     errorResponse(
         res,
         error,
-        'No fue posible programar la firma del contrato.'
+        'No fue posible programar o reprogramar la firma.'
     );
 
   }
 
 });
+
+
 
 app.patch('/api/contratos/:id', async (req, res) => {
   const { fechaInicio, fechaFin, tipoContrato, salario, estado, observaciones } = req.body;
@@ -1264,23 +1504,23 @@ app.get('/api/reportes', async (_req, res) => {
       ]);
       res.json({ historial: historial.rows, estadisticas: estadisticas.rows });
     } catch (error) {
-      errorResponse(res, error, 'No fue posible cargar reportes y estadísticas.');
+      errorResponse(res, error, 'No fue posible cargar reportes y estadÃ­sticas.');
     }
   }
 });
 
 
 
-// ==================== Flujo ampliado de selección SIDOVI ====================
-const EXAM_TYPES = ['Examen médico ocupacional', 'Examen visual', 'Examen auditivo', 'Examen de laboratorio', 'Otros exámenes requeridos'];
-const INTERVIEW_CRITERIA = ['Presentación personal','Comunicación','Actitud','Experiencia verificada','Conocimiento relacionado con el cargo','Aptitud para el cargo','Trabajo en equipo','Responsabilidad','Puntualidad','Capacidad de resolución de problemas','Manejo de presión','Adaptabilidad','Motivación','Perfil profesional'];
+// ==================== Flujo ampliado de selecciÃ³n SIDOVI ====================
+const EXAM_TYPES = ['Examen mÃ©dico ocupacional', 'Examen visual', 'Examen auditivo', 'Examen de laboratorio', 'Otros exÃ¡menes requeridos'];
+const INTERVIEW_CRITERIA = ['PresentaciÃ³n personal','ComunicaciÃ³n','Actitud','Experiencia verificada','Conocimiento relacionado con el cargo','Aptitud para el cargo','Trabajo en equipo','Responsabilidad','Puntualidad','Capacidad de resoluciÃ³n de problemas','Manejo de presiÃ³n','Adaptabilidad','MotivaciÃ³n','Perfil profesional'];
 const pdfEscape = (value) =>
     String(value ?? '')
         .replace(/\\/g, '\\\\')
         .replace(/\(/g, '\\(')
         .replace(/\)/g, '\\)')
         .replace(/[\r\n]+/g, ' ');
-// Genera un PDF con encabezado, regla, cuerpo y pie de página, sin dependencias externas
+// Genera un PDF con encabezado, regla, cuerpo y pie de pÃ¡gina, sin dependencias externas
 // (sintaxis PDF 1.4 escrita a mano). subtitle es opcional (cargo/fecha/candidato, etc.).
 // Genera un PDF simple para los reportes generales de SIDOVI.
 // El PDF de entrevista utiliza makeInterviewPdf() por separado.
@@ -1383,7 +1623,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
           '';
 
       // ==============================
-      // FUNCIONES DE DISEÑO
+      // FUNCIONES DE DISEÃ‘O
       // ==============================
       function drawHeader() {
 
@@ -1423,12 +1663,12 @@ function makeInterviewPdf(row, preguntas, comentarios) {
                 }
             );
           } catch (e) {
-            // Continúa sin logo si existe algún problema.
+            // ContinÃºa sin logo si existe algÃºn problema.
           }
         }
 
         // ==========================================
-        // TÍTULO
+        // TÃTULO
         // ==========================================
 
         doc
@@ -1446,7 +1686,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
             );
 
         // ==========================================
-        // DESCRIPCIÓN
+        // DESCRIPCIÃ“N
         // ==========================================
 
         doc
@@ -1454,7 +1694,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
             .fontSize(9)
             .fillColor('#D9E2F0')
             .text(
-                'Sistema de Información para la Documentación y Vinculación de Personal',
+                'Sistema de InformaciÃ³n para la DocumentaciÃ³n y VinculaciÃ³n de Personal',
                 205,
                 58,
                 {
@@ -1464,14 +1704,14 @@ function makeInterviewPdf(row, preguntas, comentarios) {
             );
 
         // ==========================================
-        // IDENTIFICACIÓN
+        // IDENTIFICACIÃ“N
         // ==========================================
 
         doc
             .fontSize(8)
             .fillColor('#B8C4D6')
             .text(
-                'SIDOVI · Colviseg Ltda.',
+                'SIDOVI Â· Colviseg Ltda.',
                 205,
                 78,
                 {
@@ -1504,7 +1744,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
               .fontSize(7.5)
               .fillColor(GRAY)
               .text(
-                  'SIDOVI · Colviseg Ltda. · Documento generado por el sistema',
+                  'SIDOVI Â· Colviseg Ltda. Â· Documento generado por el sistema',
                   42,
                   800,
                   {
@@ -1514,7 +1754,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
 
           doc
               .text(
-                  `Página ${i + 1} de ${range.count}`,
+                  `PÃ¡gina ${i + 1} de ${range.count}`,
                   430,
                   800,
                   {
@@ -1526,8 +1766,8 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       }
 
       function sectionTitle(title) {
-        // Deja suficiente espacio para el título
-        // y parte del contenido antes de crear una nueva página.
+        // Deja suficiente espacio para el tÃ­tulo
+        // y parte del contenido antes de crear una nueva pÃ¡gina.
         if (doc.y > 700) {
           doc.addPage();
         }
@@ -1665,10 +1905,10 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       doc.y += 75;
 
       // ==============================
-      // INFORMACIÓN DEL CANDIDATO
+      // INFORMACIÃ“N DEL CANDIDATO
       // ==============================
 
-      sectionTitle('INFORMACIÓN DEL CANDIDATO');
+      sectionTitle('INFORMACIÃ“N DEL CANDIDATO');
 
       const yInfo = doc.y;
 
@@ -1689,7 +1929,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       );
 
       field(
-          'Correo electrónico',
+          'Correo electrÃ³nico',
           correo,
           42,
           yInfo + 48,
@@ -1697,7 +1937,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       );
 
       field(
-          'Teléfono',
+          'TelÃ©fono',
           telefono,
           315,
           yInfo + 48,
@@ -1757,10 +1997,10 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       doc.y = yEnt + 55;
 
       // ==============================
-      // EVALUACIÓN
+      // EVALUACIÃ“N
       // ==============================
 
-      sectionTitle('EVALUACIÓN DEL CANDIDATO');
+      sectionTitle('EVALUACIÃ“N DEL CANDIDATO');
 
       const criterios =
           Array.isArray(comentarios?.criterios)
@@ -1928,7 +2168,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       );
 
       paragraph(
-          'Recomendación',
+          'RecomendaciÃ³n',
           recomendacion
       );
 
@@ -1940,10 +2180,10 @@ function makeInterviewPdf(row, preguntas, comentarios) {
       }
 
       // ==============================
-      // CALIFICACIÓN GENERAL
+      // CALIFICACIÃ“N GENERAL
       // ==============================
 
-      sectionTitle('CALIFICACIÓN GENERAL');
+      sectionTitle('CALIFICACIÃ“N GENERAL');
 
       const calificacion =
           row.calificacion ??
@@ -1965,7 +2205,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
           .fontSize(10)
           .fillColor(DARK)
           .text(
-              'Calificación promedio',
+              'CalificaciÃ³n promedio',
               58,
               doc.y + 17
           );
@@ -2061,7 +2301,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
               }
           );
 // ==============================
-// ELIMINAR PÁGINAS VACÍAS
+// ELIMINAR PÃGINAS VACÃAS
 // ==============================
 
       const range = doc.bufferedPageRange();
@@ -2074,7 +2314,7 @@ function makeInterviewPdf(row, preguntas, comentarios) {
         }
       }
       // ==============================
-      // PIE DE PÁGINA
+      // PIE DE PÃGINA
       // ==============================
 
       drawFooter();
@@ -2191,7 +2431,7 @@ app.get('/api/reportes/historial/:idAspirante', requireRoles('RRHH', 'Gerente'),
 app.get('/api/reportes/pdf', requireRoles('RRHH', 'Gerente'), async (req, res) => {
   try {
     const r = await db.query(`SELECT p.id_postulacion,p.fecha_postulacion,a.nombre_completo,v.nombre_cargo cargo,p.estado FROM postulacion p JOIN aspirante a ON a.id_aspirante=p.id_aspirante JOIN vacante v ON v.id_vacante=p.id_vacante ORDER BY p.fecha_postulacion DESC LIMIT 60`);
-    const pdf = makeSimplePdf(`Reporte SIDOVI · ${req.query.tipo || 'Estadísticas de postulaciones'}`, r.rows.map(x => `${x.fecha_postulacion} | ${x.nombre_completo} | ${x.cargo} | ${x.estado}`));
+    const pdf = makeSimplePdf(`Reporte SIDOVI Â· ${req.query.tipo || 'EstadÃ­sticas de postulaciones'}`, r.rows.map(x => `${x.fecha_postulacion} | ${x.nombre_completo} | ${x.cargo} | ${x.estado}`));
     res.setHeader('Content-Type', 'application/pdf'); res.setHeader('Content-Disposition', 'attachment; filename="sidovi-reporte.pdf"'); res.send(pdf);
   } catch (error) { errorResponse(res, error, 'No fue posible generar el PDF.'); }
 });
@@ -2230,15 +2470,15 @@ app.get('/api/entrevistas/:id/pdf', requireRoles('Gerente'), async (req, res) =>
     try { comentarios = JSON.parse(row.comentarios || '{}'); } catch { comentarios = { observaciones: row.comentarios || '' }; }
     const preguntas = Array.isArray(comentarios.preguntas) ? comentarios.preguntas : [];
     const lines = [
-      `Candidato: ${row.nombre_completo} · Documento: ${row.numero_documento || 'No registrado'}`,
+      `Candidato: ${row.nombre_completo} Â· Documento: ${row.numero_documento || 'No registrado'}`,
       `Cargo: ${row.cargo}`,
-      `Fecha y hora: ${new Date(row.fecha_entrevista).toLocaleString('es-CO')} · Modalidad: ${row.modalidad}`,
+      `Fecha y hora: ${new Date(row.fecha_entrevista).toLocaleString('es-CO')} Â· Modalidad: ${row.modalidad}`,
       `Entrevistador: ${row.entrevistador || 'Gerencia'}`,
       `Resultado: ${comentarios.resultado || row.estado}`,
       `Observaciones: ${comentarios.observaciones || row.observacion || 'Sin observaciones'}`,
       `Fortalezas: ${comentarios.fortalezas || 'Sin registro'}`,
       `Aspectos por mejorar: ${comentarios.aspectosMejora || 'Sin registro'}`,
-      `Recomendación: ${comentarios.recomendacion || 'Sin registro'}`,
+      `RecomendaciÃ³n: ${comentarios.recomendacion || 'Sin registro'}`,
       'Preguntas y respuestas:',
       ...preguntas.flatMap((p, index) => [`${index + 1}. ${p.categoria || 'Entrevista'} - ${p.pregunta}`, `Respuesta: ${p.respuesta || 'Sin respuesta'}`]),
       'Firma entrevistador: ____________________    Firma candidato: ____________________'
@@ -2260,7 +2500,7 @@ app.post('/api/evaluaciones/detallada', requireRoles('Gerente'), async (req, res
   const { idEntrevista, criterios = [], preguntas = [], observaciones = '', fortalezas = '', aspectosMejora = '', recomendacion = '', resultado = 'PENDIENTE', motivoRechazo = '' } = req.body;
 
   if (!idEntrevista) return res.status(400).json({ error: 'La entrevista es obligatoria.' });
-  if (!['APROBADO','RECHAZADO','PENDIENTE'].includes(resultado)) return res.status(400).json({ error: 'Resultado de entrevista no válido.' });
+  if (!['APROBADO','RECHAZADO','PENDIENTE'].includes(resultado)) return res.status(400).json({ error: 'Resultado de entrevista no vÃ¡lido.' });
   if (resultado === 'RECHAZADO' && !String(motivoRechazo).trim()) return res.status(400).json({ error: 'El motivo de rechazo es obligatorio.' });
 
   const client = await db.connect();
@@ -2316,7 +2556,7 @@ app.post('/api/evaluaciones/detallada', requireRoles('Gerente'), async (req, res
 
   } catch (error) {
     await client.query('ROLLBACK');
-    errorResponse(res,error,'No fue posible guardar la evaluación detallada.');
+    errorResponse(res,error,'No fue posible guardar la evaluaciÃ³n detallada.');
   } finally {
     client.release();
   }
@@ -2349,7 +2589,7 @@ app.get('/api/examenes', requireRoles('RRHH', 'Gerente'), async (_req, res) => {
     errorResponse(
         res,
         error,
-        'No fue posible consultar exámenes.'
+        'No fue posible consultar exÃ¡menes.'
     );
   }
 });
@@ -2468,9 +2708,9 @@ app.post('/api/examenes/:id/documentos', requireRoles('RRHH'), async (req, res) 
 });
 
 // ============================================================
-// VERIFICAR RESULTADO DE EXÁMENES
+// VERIFICAR RESULTADO DE EXÃMENES
 // RRHH aprueba o rechaza los resultados.
-// Si aprueba, la postulación pasa a PENDIENTE_CONTRATO
+// Si aprueba, la postulaciÃ³n pasa a PENDIENTE_CONTRATO
 // y queda disponible para Gerencia.
 // ============================================================
 
@@ -2479,7 +2719,7 @@ app.post('/api/examenes/:id/verificar', requireRoles('RRHH'), async (req, res) =
 
   if (!['APROBADO', 'RECHAZADO', 'PENDIENTE'].includes(resultado)) {
     return res.status(400).json({
-      error: 'Resultado inválido.'
+      error: 'Resultado invÃ¡lido.'
     });
   }
 
@@ -2493,7 +2733,7 @@ app.post('/api/examenes/:id/verificar', requireRoles('RRHH'), async (req, res) =
   }
 
   try {
-    // 1. Buscar el examen y su postulación
+    // 1. Buscar el examen y su postulaciÃ³n
     const examenResult = await db.query(`
       SELECT
         ep.id_examen,
@@ -2519,7 +2759,7 @@ app.post('/api/examenes/:id/verificar', requireRoles('RRHH'), async (req, res) =
         documentos.length === 0
     ) {
       return res.status(400).json({
-        error: 'No se puede verificar el examen porque todavía no se ha cargado el resultado.'
+        error: 'No se puede verificar el examen porque todavÃ­a no se ha cargado el resultado.'
       });
     }
 
@@ -2557,7 +2797,7 @@ app.post('/api/examenes/:id/verificar', requireRoles('RRHH'), async (req, res) =
       req.params.id
     ]);
 
-    // 5. CAMBIAR ESTADO DE LA POSTULACIÓN
+    // 5. CAMBIAR ESTADO DE LA POSTULACIÃ“N
     let nuevoEstado;
 
     if (resultado === 'APROBADO') {
@@ -2567,61 +2807,30 @@ app.post('/api/examenes/:id/verificar', requireRoles('RRHH'), async (req, res) =
     } else {
       nuevoEstado = 'EXAMENES_EN_REVISION';
     }
-
     await db.query(`
-      UPDATE postulacion
-      SET
-        estado = $1,
-        motivo_rechazo = $2,
-        fecha_rechazo = CASE
-          WHEN $1 = 'RECHAZADO'
-          THEN CURRENT_DATE
-          ELSE fecha_rechazo
-        END
-      WHERE id_postulacion = $3
-    `, [
-      nuevoEstado,
+  UPDATE postulacion
+  SET
+    estado = $1::text,
+    motivo_rechazo = $2::text,
+    fecha_rechazo = CASE
+      WHEN $1::text = 'RECHAZADO'
+      THEN CURRENT_DATE
+      ELSE fecha_rechazo
+    END
+  WHERE id_postulacion = $3::integer
+`, [
+      String(nuevoEstado),
       resultado === 'RECHAZADO'
           ? String(motivoRechazo).trim()
           : '',
       Number(examen.id_postulacion)
     ]);
-
-    // 6. Crear notificación
-    let mensaje;
-
-    if (resultado === 'APROBADO') {
-      mensaje =
-          'Tus exámenes médicos fueron aprobados. Tu proceso continúa a la etapa de contratación.';
-    } else if (resultado === 'RECHAZADO') {
-      mensaje =
-          'Tus exámenes médicos no fueron aprobados. El proceso de selección ha finalizado.';
-    } else {
-      mensaje =
-          'Tus exámenes médicos quedaron pendientes de revisión.';
-    }
-
-    await db.query(`
-      INSERT INTO notificacion
-      (
-        mensaje,
-        leida,
-        id_usuario,
-        id_postulacion
-      )
-      VALUES
-      (
-        $1,
-        false,
-        $2,
-        $3
-      )
-    `, [
-      mensaje,
-      req.session.id_usuario,
-      Number(examen.id_postulacion)
-    ]);
-
+    const mensaje =
+        resultado === 'APROBADO'
+            ? 'El resultado de los exámenes fue aprobado. La postulación quedó pendiente para programar la firma del contrato.'
+            : resultado === 'RECHAZADO'
+                ? 'El resultado de los exámenes fue rechazado.'
+                : 'El resultado de los exámenes quedó en revisión.';
     // 7. Respuesta
     res.json({
       ...examenActualizado.rows[0],
@@ -2640,7 +2849,7 @@ app.post('/api/examenes/:id/verificar', requireRoles('RRHH'), async (req, res) =
   }
 });
 
-// Consultar notificaciones (uso interno RRHH/Gerencia, filtrable por usuario o postulación).
+// Consultar notificaciones (uso interno RRHH/Gerencia, filtrable por usuario o postulaciÃ³n).
 app.get('/api/notificaciones', requireRoles('RRHH','Gerente'), async (req,res)=>{
   try{
     const values=[]; const where=[];
@@ -2651,13 +2860,13 @@ app.get('/api/notificaciones', requireRoles('RRHH','Gerente'), async (req,res)=>
   }catch(error){errorResponse(res,error,'No fue posible consultar notificaciones.');}
 });
 
-// Consulta pública: el candidato usa su número de postulación (radicado) para ver
+// Consulta pÃºblica: el candidato usa su nÃºmero de postulaciÃ³n (radicado) para ver
 // el estado de su proceso y las notificaciones registradas, sin necesidad de cuenta.
 app.get('/api/postulaciones/:id/notificaciones', async (req,res)=>{
   try{
     const r=await db.query('SELECT id_notificacion,mensaje,creado_en FROM notificacion WHERE id_postulacion=$1 ORDER BY creado_en DESC',[req.params.id]);
     res.json(r.rows);
-  }catch(error){errorResponse(res,error,'No fue posible consultar las notificaciones de la postulación.');}
+  }catch(error){errorResponse(res,error,'No fue posible consultar las notificaciones de la postulaciÃ³n.');}
 });
 app.post('/api/auth/login', async (req, res) => {
   const { correo, contrasena, rolSolicitado } = req.body;
@@ -2679,7 +2888,7 @@ app.post('/api/auth/login', async (req, res) => {
         : rolTexto === 'gerente' || rolTexto === 'gerencia'
             ? 'Gerente'
             : usuario.rol;
-    if (!['RRHH', 'Gerente'].includes(rolNormalizado)) return res.status(403).json({ error: 'Este usuario no tiene acceso al área interna.' });
+    if (!['RRHH', 'Gerente'].includes(rolNormalizado)) return res.status(403).json({ error: 'Este usuario no tiene acceso al Ã¡rea interna.' });
     if (rolSolicitado && String(rolSolicitado).toLowerCase() !== String(rolNormalizado).toLowerCase()) return res.status(403).json({ error: 'El usuario no pertenece al rol seleccionado.' });
     usuario.rol = rolNormalizado;
     delete usuario.contrasena_hash;
@@ -2688,20 +2897,20 @@ app.post('/api/auth/login', async (req, res) => {
     const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
     res.setHeader('Set-Cookie', `sid=${encodeURIComponent(token)}; HttpOnly; SameSite=Lax; Path=/${secure}`);
     res.json({ token, usuario });
-  } catch (error) { errorResponse(res, error, 'No fue posible iniciar sesión.'); }
+  } catch (error) { errorResponse(res, error, 'No fue posible iniciar sesiÃ³n.'); }
 });
 
 app.get('/api/auth/me', requireRoles('RRHH', 'Gerente'), (req, res) => res.json({ usuario: req.session.usuario, rol: req.session.rol }));
 
 app.patch('/api/auth/perfil', requireRoles('RRHH', 'Gerente'), async (req, res) => {
   const { nombreCompleto, tipoDocumento, numeroDocumento, telefono, direccion, cargo, fotoPerfil } = req.body;
-  if (fotoPerfil && String(fotoPerfil).length > 8 * 1024 * 1024) return res.status(413).json({ error: 'La foto supera el límite de 8 MB.' });
+  if (fotoPerfil && String(fotoPerfil).length > 8 * 1024 * 1024) return res.status(413).json({ error: 'La foto supera el lÃ­mite de 8 MB.' });
   try {
     const result = await db.query(`UPDATE usuario SET nombre_completo=COALESCE($1,nombre_completo), tipo_documento=COALESCE($2,tipo_documento), numero_documento=COALESCE($3,numero_documento), telefono=COALESCE($4,telefono), direccion=COALESCE($5,direccion), cargo=COALESCE($6,cargo), foto_perfil=COALESCE($7,foto_perfil) WHERE id_usuario=$8 RETURNING id_usuario,nombre_completo,correo,rol,tipo_documento,numero_documento,telefono,direccion,cargo,foto_perfil`, [nombreCompleto, tipoDocumento, numeroDocumento, telefono, direccion, cargo, fotoPerfil, req.session.id_usuario]);
     if (!result.rowCount) return res.status(404).json({ error: 'Usuario no encontrado.' });
     req.session.usuario = result.rows[0];
     res.json({ usuario: result.rows[0] });
-  } catch (error) { errorResponse(res, error, 'No fue posible actualizar el perfil. Ejecuta primero la migración 005.'); }
+  } catch (error) { errorResponse(res, error, 'No fue posible actualizar el perfil. Ejecuta primero la migraciÃ³n 005.'); }
 });
 
 app.post('/api/auth/logout', requireRoles('RRHH', 'Gerente'), (req, res) => {
@@ -2717,3 +2926,5 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
+

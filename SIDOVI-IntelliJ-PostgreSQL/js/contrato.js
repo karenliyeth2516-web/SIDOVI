@@ -68,79 +68,82 @@ let trabajadores = [];
 
 function esc(value = '') {
 
-  const div = document.createElement('div');
+    const div = document.createElement('div');
 
-  div.textContent = value;
+    div.textContent = value;
 
-  return div.innerHTML;
+    return div.innerHTML;
 }
 
 
 function mostrarAlerta(message, type = 'error') {
 
-  if (!alertBox) return;
+    if (!alertBox) return;
 
-  alertBox.textContent = message;
+    alertBox.textContent = message;
 
-  alertBox.className = `form-alert ${type}`;
+    alertBox.className = `form-alert ${type}`;
 
-  alertBox.hidden = false;
+    alertBox.hidden = false;
 
-  setTimeout(() => {
+    setTimeout(() => {
 
-    alertBox.hidden = true;
+        alertBox.hidden = true;
 
-  }, 5000);
+    }, 5000);
 }
 
 
 function ocultarAlerta() {
 
-  if (!alertBox) return;
+    if (!alertBox) return;
 
-  alertBox.hidden = true;
+    alertBox.hidden = true;
 
-  alertBox.textContent = '';
+    alertBox.textContent = '';
 
 }
 
 
 async function api(url, options = {}) {
 
-  const response = await fetch(url, options);
+    const response = await fetch(url, options);
 
-  let data = null;
+    let data = null;
 
-  const contentType = response.headers.get('content-type') || '';
+    const contentType =
+        response.headers.get('content-type') || '';
 
-  if (response.status !== 204) {
+    if (response.status !== 204) {
 
-    if (contentType.includes('application/json')) {
+        if (contentType.includes('application/json')) {
 
-      data = await response.json();
+            data = await response.json();
 
-    } else {
+        } else {
 
-      const texto = await response.text();
+            const texto = await response.text();
 
-      data = {
-        error: texto || 'Respuesta inesperada del servidor.'
-      };
+            data = {
+                error:
+                    texto ||
+                    'Respuesta inesperada del servidor.'
+            };
+
+        }
 
     }
 
-  }
+    if (!response.ok) {
 
-  if (!response.ok) {
+        throw new Error(
+            data?.error ||
+            'No fue posible completar la operación.'
+        );
 
-    throw new Error(
-        data?.error ||
-        'No fue posible completar la operación.'
-    );
+    }
 
-  }
-
-  return data;
+    return data;
 
 }
 
@@ -151,31 +154,124 @@ async function api(url, options = {}) {
 
 function formatearSalario(valor) {
 
-  return `$${Number(valor || 0).toLocaleString('es-CO')} COP`;
+    return `$${Number(valor || 0).toLocaleString('es-CO')} COP`;
 
 }
 
 
 function formatearFecha(fecha) {
 
-  if (!fecha) return '—';
+    if (!fecha) return '—';
 
-  const fechaTexto = String(fecha).slice(0, 10);
+    const fechaTexto =
+        String(fecha).slice(0, 10);
 
-  const partes = fechaTexto.split('-');
+    const partes =
+        fechaTexto.split('-');
 
-  if (partes.length !== 3) return fechaTexto;
+    if (partes.length !== 3) {
 
-  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        return fechaTexto;
+
+    }
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
 
 }
 
 
 function hoy() {
 
-  return new Date()
-      .toISOString()
-      .slice(0, 10);
+    return new Date()
+        .toISOString()
+        .slice(0, 10);
+
+}
+
+
+// ============================================================
+// NORMALIZAR TELÉFONO PARA WHATSAPP
+// ============================================================
+
+function normalizarTelefonoWhatsApp(telefono) {
+
+    if (!telefono) return '';
+
+    let numero =
+        String(telefono)
+            .replace(/\D/g, '');
+
+    // Si ya viene como 57 + número colombiano
+    if (
+        numero.length === 12 &&
+        numero.startsWith('57')
+    ) {
+
+        return numero;
+
+    }
+
+    // Número colombiano de 10 dígitos
+    if (
+        numero.length === 10 &&
+        numero.startsWith('3')
+    ) {
+
+        return `57${numero}`;
+
+    }
+
+    // Si viene con 57 pero sin formato exacto
+    if (
+        numero.startsWith('57') &&
+        numero.length >= 11
+    ) {
+
+        return numero;
+
+    }
+
+    return numero;
+
+}
+
+
+// ============================================================
+// ABRIR WHATSAPP
+// ============================================================
+
+function abrirWhatsApp(telefono, mensaje) {
+
+    const numero =
+        normalizarTelefonoWhatsApp(telefono);
+
+    if (!numero) {
+
+        mostrarAlerta(
+            'El candidato no tiene un número de teléfono válido para WhatsApp.'
+        );
+
+        return false;
+
+    }
+
+    const url =
+        `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
+    const ventana =
+        window.open(url, '_blank');
+
+    if (!ventana) {
+
+        mostrarAlerta(
+            'El navegador bloqueó la ventana de WhatsApp. Permite ventanas emergentes para este sitio.'
+        );
+
+        return false;
+
+    }
+
+    return true;
 
 }
 
@@ -186,18 +282,22 @@ function hoy() {
 
 function abrirModal() {
 
-  modal.hidden = false;
+    if (!modal) return;
 
-  document.body.style.overflow = 'hidden';
+    modal.hidden = false;
+
+    document.body.style.overflow = 'hidden';
 
 }
 
 
 function cerrarModalContrato() {
 
-  modal.hidden = true;
+    if (!modal) return;
 
-  document.body.style.overflow = '';
+    modal.hidden = true;
+
+    document.body.style.overflow = '';
 
 }
 
@@ -210,36 +310,42 @@ cerrarModal?.addEventListener(
 
 cancelarContrato?.addEventListener(
     'click',
-    () => {
+    cerrarModalContrato
+);
 
-      cerrarModalContrato();
+
+// Cerrar haciendo clic en el fondo
+modal?.addEventListener(
+    'click',
+    (event) => {
+
+        if (event.target === modal) {
+
+            cerrarModalContrato();
+
+        }
 
     }
 );
 
 
-// Cerrar haciendo clic en el fondo
-modal?.addEventListener('click', (event) => {
-
-  if (event.target === modal) {
-
-    cerrarModalContrato();
-
-  }
-
-});
-
-
 // ESC para cerrar
-document.addEventListener('keydown', (event) => {
+document.addEventListener(
+    'keydown',
+    (event) => {
 
-  if (event.key === 'Escape' && !modal.hidden) {
+        if (
+            event.key === 'Escape' &&
+            modal &&
+            !modal.hidden
+        ) {
 
-    cerrarModalContrato();
+            cerrarModalContrato();
 
-  }
+        }
 
-});
+    }
+);
 
 
 // ============================================================
@@ -248,39 +354,65 @@ document.addEventListener('keydown', (event) => {
 
 function resetForm() {
 
-  form.reset();
+    form?.reset();
 
-  contratoId.value = '';
+    contratoId.value = '';
 
-  postulacion.disabled = false;
+    postulacion.disabled = false;
 
-  tipoContrato.value = 'Término Fijo';
+    tipoContrato.value =
+        'Término Fijo';
 
-  salario.value = '1423500';
+    salario.value =
+        '1423500';
 
-  fechaInicio.value = hoy();
+    fechaInicio.value =
+        hoy();
 
-  fechaFin.value = '';
+    fechaFin.value =
+        '';
 
-  fechaFirma.value = '';
+    fechaFirma.value =
+        '';
 
-  horaFirma.value = '';
+    horaFirma.value =
+        '';
 
-  lugarFirma.value = '';
+    lugarFirma.value =
+        '';
 
-  direccionFirma.value = '';
+    direccionFirma.value =
+        '';
 
-  observaciones.value = '';
+    observaciones.value =
+        '';
 
-  guardarContrato.textContent = 'Generar contrato';
+    guardarContrato.textContent =
+        'Generar contrato';
 
-  cancelarContrato.hidden = false;
+    cancelarContrato.hidden =
+        false;
 
-  datosCandidato.hidden = true;
+    datosCandidato.hidden =
+        true;
 
-  contratoDocumento.hidden = true;
+    contratoDocumento.hidden =
+        true;
 
-  ocultarAlerta();
+    if (programarFirma) {
+
+        programarFirma.hidden =
+            false;
+
+        programarFirma.disabled =
+            false;
+
+        programarFirma.textContent =
+            'Enviar mensaje';
+
+    }
+
+    ocultarAlerta();
 
 }
 
@@ -288,38 +420,61 @@ function resetForm() {
 // ============================================================
 // CARGAR POSTULACIONES PRÓXIMAS A CONTRATO
 // ============================================================
+
 async function cargarPostulaciones() {
 
-  try {
+    try {
 
-    const resultados = await Promise.all([
-      api('/api/postulaciones?estado=PENDIENTE_CONTRATO'),
-      api('/api/postulaciones?estado=FIRMA_CONTRATO_AGENDADA')
-    ]);
+        const resultados =
+            await Promise.all([
 
-    const pendientes = Array.isArray(resultados[0])
-        ? resultados[0]
-        : (resultados[0].postulaciones || []);
+                api(
+                    '/api/postulaciones?estado=PENDIENTE_CONTRATO'
+                ),
 
-    const firmas = Array.isArray(resultados[1])
-        ? resultados[1]
-        : (resultados[1].postulaciones || []);
+                api(
+                    '/api/postulaciones?estado=FIRMA_CONTRATO_AGENDADA'
+                )
 
-    postulaciones = [
-      ...pendientes,
-      ...firmas
-    ];
-
-    console.log('POSTULACIONES PARA CONTRATO:', postulaciones);
-
-    pintarPostulaciones();
+            ]);
 
 
-  } catch (error) {
+        const pendientes =
+            Array.isArray(resultados[0])
+                ? resultados[0]
+                : (resultados[0]?.postulaciones || []);
 
-    console.error('Error cargando postulaciones:', error);
 
-    proximosBody.innerHTML = `
+        const firmas =
+            Array.isArray(resultados[1])
+                ? resultados[1]
+                : (resultados[1]?.postulaciones || []);
+
+
+        postulaciones = [
+            ...pendientes,
+            ...firmas
+        ];
+
+
+        console.log(
+            'POSTULACIONES PARA CONTRATO:',
+            postulaciones
+        );
+
+
+        pintarPostulaciones();
+
+
+    } catch (error) {
+
+        console.error(
+            'Error cargando postulaciones:',
+            error
+        );
+
+
+        proximosBody.innerHTML = `
       <tr>
         <td colspan="6" class="sin-registros">
           ${esc(error.message)}
@@ -327,9 +482,10 @@ async function cargarPostulaciones() {
       </tr>
     `;
 
-  }
+    }
 
 }
+
 
 // ============================================================
 // TABLA PERSONAS PRÓXIMAS A CONTRATO
@@ -348,163 +504,171 @@ function pintarPostulaciones() {
     `;
 
         return;
+
     }
 
 
-    proximosBody.innerHTML = postulaciones.map(item => {
+    proximosBody.innerHTML =
+        postulaciones.map(item => {
 
-        const estado =
-            String(item.estado || '').toUpperCase();
-
-        const esFirma =
-            estado === 'FIRMA_CONTRATO_AGENDADA';
-
-
-        const textoEstado =
-            esFirma
-                ? 'Firma programada'
-                : 'Pendiente de contrato';
+            const estado =
+                String(
+                    item.estado || ''
+                ).toUpperCase();
 
 
-        const claseEstado =
-            esFirma
-                ? 'estado-activo'
-                : 'estado-pendiente';
+            const esFirma =
+                estado ===
+                'FIRMA_CONTRATO_AGENDADA';
 
 
-        let informacionFirma = '';
+            const textoEstado =
+                esFirma
+                    ? 'Firma programada'
+                    : 'Pendiente de contrato';
 
 
-        if (esFirma) {
+            const claseEstado =
+                esFirma
+                    ? 'estado-activo'
+                    : 'estado-pendiente';
 
-            informacionFirma = `
-        <div class="info-firma-contrato">
 
-          <strong>
-            ${esc(formatearFecha(item.fecha_firma_programada))}
-          </strong>
+            let informacionFirma =
+                '';
 
-          <span>
-            ${esc(item.hora_firma || 'Sin hora')}
-          </span>
 
-          <small>
-            ${esc(item.lugar_firma || 'Sin lugar')}
-          </small>
+            if (esFirma) {
 
-          ${
-                item.direccion_firma
-                    ? `
-                <small>
-                  ${esc(item.direccion_firma)}
-                </small>
-              `
-                    : ''
+                informacionFirma = `
+            <div class="info-firma-contrato">
+
+              <strong>
+                ${esc(
+                    formatearFecha(
+                        item.fecha_firma_programada
+                    )
+                )}
+              </strong>
+
+              <span>
+                ${esc(
+                    item.hora_firma ||
+                    'Sin hora'
+                )}
+              </span>
+
+              <small>
+                ${esc(
+                    item.lugar_firma ||
+                    'Sin lugar'
+                )}
+              </small>
+
+              ${
+                    item.direccion_firma
+                        ? `
+                      <small>
+                        ${esc(
+                            item.direccion_firma
+                        )}
+                      </small>
+                    `
+                        : ''
+                }
+
+            </div>
+          `;
+
             }
 
-        </div>
-      `;
 
-        }
+            const boton =
+                esFirma
 
+                    ? `
+                  <button
+                    type="button"
+                    class="btn-contrato btn-generar"
+                    data-generar="${item.id_postulacion}"
+                  >
+                    Generar contrato
+                  </button>
+                `
 
-        const boton = esFirma
-
-            ? `
-        <button
-          type="button"
-          class="btn-contrato btn-generar"
-          data-generar="${item.id_postulacion}"
-        >
-          Generar contrato
-        </button>
-      `
-
-            : `
-        <button
-          type="button"
-          class="btn-contrato btn-programar"
-          data-programar="${item.id_postulacion}"
-        >
-          Programar firma
-        </button>
-      `;
+                    : `
+                  <button
+                    type="button"
+                    class="btn-contrato btn-programar"
+                    data-programar="${item.id_postulacion}"
+                  >
+                    Programar firma
+                  </button>
+                `;
 
 
-        return `
-      <tr>
+            return `
+          <tr>
 
-        <td>
-          <strong>
-            ${esc(
-            item.nombre_completo ||
-            'Sin nombre'
-        )}
-          </strong>
-        </td>
+            <td>
+              <strong>
+                ${esc(
+                item.nombre_completo ||
+                'Sin nombre'
+            )}
+              </strong>
+            </td>
 
+            <td>
+              ${esc(
+                item.numero_documento ||
+                '—'
+            )}
+            </td>
 
-        <td>
-          ${esc(
-            item.numero_documento ||
-            '—'
-        )}
-        </td>
+            <td>
+              ${esc(
+                item.cargo ||
+                item.nombre_cargo ||
+                '—'
+            )}
+            </td>
 
+            <td>
+              ${esc(
+                item.nombre_sede ||
+                'Sin sede'
+            )}
+            </td>
 
-        <td>
-          ${esc(
-            item.cargo ||
-            item.nombre_cargo ||
-            '—'
-        )}
-        </td>
+            <td>
 
+              <span
+                class="estado-contrato ${claseEstado}"
+              >
+                ${esc(textoEstado)}
+              </span>
 
-        <td>
-          ${esc(
-            item.nombre_sede ||
-            'Sin sede'
-        )}
-        </td>
+              ${informacionFirma}
 
+            </td>
 
-        <td>
+            <td>
 
-          <span
-            class="estado-contrato ${claseEstado}"
-          >
-            ${esc(textoEstado)}
-          </span>
+              <div class="acciones-contrato">
 
-          ${informacionFirma}
+                ${boton}
 
-        </td>
+              </div>
 
+            </td>
 
-        <td>
+          </tr>
+        `;
 
-          <div class="acciones-contrato">
-
-            ${boton}
-
-          </div>
-
-        </td>
-
-      </tr>
-    `;
-
-    }).join('');
+        }).join('');
 
 }
-
-
-// ============================================================
-// SELECT DEL MODAL
-// ============================================================
-
-
 
 
 // ============================================================
@@ -516,10 +680,15 @@ proximosBody?.addEventListener(
     async (event) => {
 
         const botonGenerar =
-            event.target.closest('[data-generar]');
+            event.target.closest(
+                '[data-generar]'
+            );
+
 
         const botonProgramar =
-            event.target.closest('[data-programar]');
+            event.target.closest(
+                '[data-programar]'
+            );
 
 
         if (botonProgramar) {
@@ -527,9 +696,13 @@ proximosBody?.addEventListener(
             const id =
                 botonProgramar.dataset.programar;
 
-            await abrirContratoParaPostulacion(id);
+            await abrirContratoParaPostulacion(
+                id,
+                'programar'
+            );
 
             return;
+
         }
 
 
@@ -538,7 +711,10 @@ proximosBody?.addEventListener(
             const id =
                 botonGenerar.dataset.generar;
 
-            await abrirContratoParaPostulacion(id);
+            await abrirContratoParaPostulacion(
+                id,
+                'generar'
+            );
 
         }
 
@@ -547,18 +723,25 @@ proximosBody?.addEventListener(
 
 
 // ============================================================
-// ABRIR GENERACIÓN DE CONTRATO
+// ABRIR GENERACIÓN / PROGRAMACIÓN
 // ============================================================
 
-async function abrirContratoParaPostulacion(idPostulacion) {
+async function abrirContratoParaPostulacion(
+    idPostulacion,
+    modo = 'generar'
+) {
 
-  resetForm();
+    resetForm();
 
-  abrirModal();
+    abrirModal();
 
-  postulacion.value = String(idPostulacion);
+    postulacion.value =
+        String(idPostulacion);
 
-  await cargarPostulacionSeleccionada(idPostulacion);
+    await cargarPostulacionSeleccionada(
+        idPostulacion,
+        modo
+    );
 
 }
 
@@ -567,68 +750,188 @@ async function abrirContratoParaPostulacion(idPostulacion) {
 // CARGAR DATOS DEL CANDIDATO
 // ============================================================
 
-async function cargarPostulacionSeleccionada(idForzado = null) {
+async function cargarPostulacionSeleccionada(
+    idForzado = null,
+    modo = 'generar'
+) {
 
-  const id =
-      idForzado ||
-      postulacion.value;
-
-
-  if (!id) {
-
-    datosCandidato.hidden = true;
-
-    return;
-
-  }
+    const id =
+        idForzado ||
+        postulacion.value;
 
 
-  try {
+    if (!id) {
 
-    const candidato =
-        await api(`/api/postulaciones/${id}`);
+        datosCandidato.hidden =
+            true;
 
+        return;
 
-    datoNombre.textContent =
-        candidato.nombre_completo || '—';
-
-    datoDocumento.textContent =
-        candidato.numero_documento || '—';
-
-    datoCorreo.textContent =
-        candidato.correo || '—';
-
-    datoTelefono.textContent =
-        candidato.telefono || '—';
-
-    datoCargo.textContent =
-        candidato.cargo ||
-        candidato.nombre_cargo ||
-        '—';
-
-    datoSede.textContent =
-        candidato.nombre_sede ||
-        '—';
-
-    datoEstado.textContent =
-        candidato.estado ||
-        '—';
+    }
 
 
-    datosCandidato.hidden = false;
+    try {
+
+        const candidato =
+            await api(
+                `/api/postulaciones/${id}`
+            );
 
 
-    // Datos para el documento
-    actualizarDocumentoCandidato(candidato);
+        // --------------------------------------------------------
+        // DATOS PERSONALES
+        // --------------------------------------------------------
+
+        datoNombre.textContent =
+            candidato.nombre_completo ||
+            '—';
 
 
-  } catch (error) {
+        datoDocumento.textContent =
+            candidato.numero_documento ||
+            '—';
 
-    datosCandidato.hidden = true;
 
-    mostrarAlerta(error.message);
+        datoCorreo.textContent =
+            candidato.correo ||
+            '—';
 
-  }
+
+        datoTelefono.textContent =
+            candidato.telefono ||
+            '—';
+
+
+        datoCargo.textContent =
+            candidato.cargo ||
+            candidato.nombre_cargo ||
+            '—';
+
+
+        datoSede.textContent =
+            candidato.nombre_sede ||
+            '—';
+
+
+        datoEstado.textContent =
+            candidato.estado ||
+            '—';
+
+
+        datosCandidato.hidden =
+            false;
+
+
+        // --------------------------------------------------------
+        // CARGAR DATOS DE FIRMA GUARDADOS
+        // --------------------------------------------------------
+
+        if (candidato.fecha_firma_programada) {
+
+            fechaFirma.value =
+                String(
+                    candidato.fecha_firma_programada
+                ).slice(0, 10);
+
+        }
+
+
+        if (candidato.hora_firma) {
+
+            horaFirma.value =
+                String(
+                    candidato.hora_firma
+                ).slice(0, 5);
+
+        }
+
+
+        lugarFirma.value =
+            candidato.lugar_firma ||
+            '';
+
+
+        direccionFirma.value =
+            candidato.direccion_firma ||
+            '';
+
+
+        if (
+            candidato.observaciones_firma
+        ) {
+
+            observaciones.value =
+                candidato.observaciones_firma;
+
+        }
+
+
+        // --------------------------------------------------------
+        // SI YA HAY FIRMA PROGRAMADA
+        // --------------------------------------------------------
+
+        const estado =
+            String(
+                candidato.estado || ''
+            ).toUpperCase();
+
+
+        const firmaProgramada =
+            estado ===
+            'FIRMA_CONTRATO_AGENDADA';
+
+
+        if (firmaProgramada) {
+
+            guardarContrato.textContent =
+                'Generar contrato';
+
+
+            if (programarFirma) {
+
+                programarFirma.hidden =
+                    true;
+
+            }
+
+        } else {
+
+            if (programarFirma) {
+
+                programarFirma.hidden =
+                    false;
+
+                programarFirma.disabled =
+                    false;
+
+                programarFirma.textContent =
+                    'Enviar mensaje';
+
+            }
+
+        }
+
+
+        // Actualizar mensaje
+        actualizarMensajeFirma();
+
+
+        // Datos para el documento
+        actualizarDocumentoCandidato(
+            candidato
+        );
+
+
+    } catch (error) {
+
+        datosCandidato.hidden =
+            true;
+
+        mostrarAlerta(
+            error.message
+        );
+
+    }
 
 }
 
@@ -644,47 +947,51 @@ postulacion?.addEventListener(
 // DOCUMENTO DEL CONTRATO
 // ============================================================
 
-function actualizarDocumentoCandidato(candidato) {
+function actualizarDocumentoCandidato(
+    candidato
+) {
 
-  document.getElementById(
-      'docNombreTrabajador'
-  ).textContent =
-      candidato.nombre_completo || '—';
-
-
-  document.getElementById(
-      'docDocumentoTrabajador'
-  ).textContent =
-      candidato.numero_documento || '—';
+    document.getElementById(
+        'docNombreTrabajador'
+    ).textContent =
+        candidato.nombre_completo ||
+        '—';
 
 
-  document.getElementById(
-      'docCargoTrabajador'
-  ).textContent =
-      candidato.cargo ||
-      candidato.nombre_cargo ||
-      '—';
+    document.getElementById(
+        'docDocumentoTrabajador'
+    ).textContent =
+        candidato.numero_documento ||
+        '—';
 
 
-  document.getElementById(
-      'docSedeTrabajador'
-  ).textContent =
-      candidato.nombre_sede ||
-      '—';
+    document.getElementById(
+        'docCargoTrabajador'
+    ).textContent =
+        candidato.cargo ||
+        candidato.nombre_cargo ||
+        '—';
 
 
-  document.getElementById(
-      'docFirmaTrabajador'
-  ).textContent =
-      candidato.nombre_completo ||
-      'El Trabajador';
+    document.getElementById(
+        'docSedeTrabajador'
+    ).textContent =
+        candidato.nombre_sede ||
+        '—';
 
 
-  document.getElementById(
-      'docFirmaDocumento'
-  ).textContent =
-      candidato.numero_documento ||
-      '—';
+    document.getElementById(
+        'docFirmaTrabajador'
+    ).textContent =
+        candidato.nombre_completo ||
+        'El Trabajador';
+
+
+    document.getElementById(
+        'docFirmaDocumento'
+    ).textContent =
+        candidato.numero_documento ||
+        '—';
 
 }
 
@@ -693,241 +1000,272 @@ function actualizarDocumentoCandidato(candidato) {
 // MOSTRAR DOCUMENTO DEL CONTRATO
 // ============================================================
 
-function mostrarDocumento(contrato, candidato) {
+function mostrarDocumento(
+    contrato,
+    candidato
+) {
 
-  contratoDocumento.hidden = false;
-
-
-  actualizarDocumentoCandidato(candidato);
-
-
-  document.getElementById(
-      'docSalario'
-  ).textContent =
-      formatearSalario(contrato.salario);
+    contratoDocumento.hidden =
+        false;
 
 
-  document.getElementById(
-      'docFechaInicio'
-  ).textContent =
-      formatearFecha(contrato.fecha_inicio);
+    actualizarDocumentoCandidato(
+        candidato
+    );
 
 
-  document.getElementById(
-      'docFechaFin'
-  ).textContent =
-      contrato.fecha_fin
-          ? formatearFecha(contrato.fecha_fin)
-          : 'No definida';
+    document.getElementById(
+        'docSalario'
+    ).textContent =
+        formatearSalario(
+            contrato.salario
+        );
 
 
-  document.getElementById(
-      'docFechaContrato'
-  ).textContent =
-      new Date().toLocaleDateString('es-CO');
+    document.getElementById(
+        'docFechaInicio'
+    ).textContent =
+        formatearFecha(
+            contrato.fecha_inicio
+        );
 
 
-  const numeroContrato =
-      `COL-${new Date().getFullYear()}-` +
-      `${String(contrato.id_contrato).padStart(4, '0')}`;
+    document.getElementById(
+        'docFechaFin'
+    ).textContent =
+        contrato.fecha_fin
+            ? formatearFecha(
+                contrato.fecha_fin
+            )
+            : 'No definida';
 
 
-  document.getElementById(
-      'docNumeroContrato'
-  ).textContent =
-      numeroContrato;
+    document.getElementById(
+        'docFechaContrato'
+    ).textContent =
+        new Date().toLocaleDateString(
+            'es-CO'
+        );
 
 
-  contratoDocumento.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+    const numeroContrato =
+        `COL-${new Date().getFullYear()}-` +
+        `${String(
+            contrato.id_contrato
+        ).padStart(4, '0')}`;
+
+
+    document.getElementById(
+        'docNumeroContrato'
+    ).textContent =
+        numeroContrato;
+
+
+    contratoDocumento.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
 
 }
 
 
 // ============================================================
-// GENERAR CONTRATO
+// GENERAR / GUARDAR CONTRATO
 // ============================================================
 
 form?.addEventListener(
     'submit',
     async (event) => {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      ocultarAlerta();
-
-
-      const id =
-          contratoId.value;
+        ocultarAlerta();
 
 
-      const idPostulacion =
-          Number(postulacion.value);
+        const id =
+            contratoId.value;
 
 
-      const payload = {
-
-        idPostulacion,
-
-        fechaInicio:
-        fechaInicio.value,
-
-        fechaFin:
-            fechaFin.value || null,
-
-        tipoContrato:
-            tipoContrato.value.trim() ||
-            'Término Fijo',
-
-        salario:
-            Number(salario.value || 0),
-
-        estado:
-            'Borrador',
-
-        observaciones:
-            observaciones.value.trim()
-
-      };
+        const idPostulacion =
+            Number(
+                postulacion.value
+            );
 
 
-      if (!idPostulacion) {
+        const payload = {
 
-        mostrarAlerta(
-            'Selecciona una persona antes de generar el contrato.'
-        );
+            idPostulacion,
 
-        return;
+            fechaInicio:
+            fechaInicio.value,
 
-      }
+            fechaFin:
+                fechaFin.value ||
+                null,
 
+            tipoContrato:
+                tipoContrato.value.trim() ||
+                'Término Fijo',
 
-      if (!payload.fechaInicio) {
+            salario:
+                Number(
+                    salario.value || 0
+                ),
 
-        mostrarAlerta(
-            'La fecha de inicio es obligatoria.'
-        );
+            estado:
+                'Borrador',
 
-        return;
+            observaciones:
+                observaciones.value.trim()
 
-      }
-
-
-      if (payload.fechaFin &&
-          payload.fechaFin < payload.fechaInicio) {
-
-        mostrarAlerta(
-            'La fecha de finalización no puede ser anterior a la fecha de inicio.'
-        );
-
-        return;
-
-      }
+        };
 
 
-      try {
+        if (!idPostulacion) {
 
-        guardarContrato.disabled = true;
+            mostrarAlerta(
+                'Selecciona una persona antes de generar el contrato.'
+            );
 
-        guardarContrato.textContent =
-            id
-                ? 'Guardando...'
-                : 'Generando...';
-
-
-        let resultado;
-
-
-        if (id) {
-
-          resultado =
-              await api(
-                  `/api/contratos/${id}`,
-                  {
-                    method: 'PATCH',
-
-                    headers: {
-                      'Content-Type':
-                          'application/json'
-                    },
-
-                    body:
-                        JSON.stringify(payload)
-                  }
-              );
-
-        } else {
-
-          resultado =
-              await api(
-                  '/api/contratos',
-                  {
-                    method: 'POST',
-
-                    headers: {
-                      'Content-Type':
-                          'application/json'
-                    },
-
-                    body:
-                        JSON.stringify(payload)
-                  }
-              );
+            return;
 
         }
 
 
-        contratoId.value =
-            resultado.id_contrato;
+        if (!payload.fechaInicio) {
+
+            mostrarAlerta(
+                'La fecha de inicio es obligatoria.'
+            );
+
+            return;
+
+        }
 
 
-        // Obtener datos completos del candidato
-        const candidato =
-            await api(
-                `/api/postulaciones/${idPostulacion}`
+        if (
+            payload.fechaFin &&
+            payload.fechaFin <
+            payload.fechaInicio
+        ) {
+
+            mostrarAlerta(
+                'La fecha de finalización no puede ser anterior a la fecha de inicio.'
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            guardarContrato.disabled =
+                true;
+
+
+            guardarContrato.textContent =
+                id
+                    ? 'Guardando...'
+                    : 'Generando...';
+
+
+            let resultado;
+
+
+            if (id) {
+
+                resultado =
+                    await api(
+                        `/api/contratos/${id}`,
+                        {
+                            method: 'PATCH',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
+                        }
+                    );
+
+            } else {
+
+                resultado =
+                    await api(
+                        '/api/contratos',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
+                        }
+                    );
+
+            }
+
+
+            contratoId.value =
+                resultado.id_contrato;
+
+
+            const candidato =
+                await api(
+                    `/api/postulaciones/${idPostulacion}`
+                );
+
+
+            mostrarDocumento(
+                resultado,
+                candidato
             );
 
 
-        mostrarDocumento(
-            resultado,
-            candidato
-        );
+            mostrarAlerta(
+                id
+                    ? 'Contrato actualizado correctamente.'
+                    : 'Contrato generado correctamente.',
+                'success'
+            );
 
 
-        mostrarAlerta(
-            id
-                ? 'Contrato actualizado correctamente.'
-                : 'Contrato generado correctamente.',
-            'success'
-        );
+            await cargarPostulaciones();
+
+            await cargarTrabajadores();
 
 
-        await cargarPostulaciones();
+        } catch (error) {
 
-        await cargarTrabajadores();
+            console.error(error);
 
-
-      } catch (error) {
-
-        console.error(error);
-
-        mostrarAlerta(
-            error.message
-        );
+            mostrarAlerta(
+                error.message
+            );
 
 
-      } finally {
+        } finally {
 
-        guardarContrato.disabled = false;
+            guardarContrato.disabled =
+                false;
 
-        guardarContrato.textContent =
-            id
-                ? 'Guardar cambios'
-                : 'Generar contrato';
 
-      }
+            guardarContrato.textContent =
+                id
+                    ? 'Guardar cambios'
+                    : 'Generar contrato';
+
+        }
 
     }
 );
@@ -941,45 +1279,65 @@ function actualizarMensajeFirma() {
 
     if (!mensajeFirma) return;
 
+
     const nombre =
-        datoNombreCandidato?.textContent?.trim() ||
+        datoNombre?.textContent?.trim() ||
         'el candidato';
+
 
     const fecha =
         fechaFirma?.value
-            ? formatearFecha(fechaFirma.value)
+            ? formatearFecha(
+                fechaFirma.value
+            )
             : 'la fecha seleccionada';
+
 
     const hora =
         horaFirma?.value ||
         'la hora seleccionada';
 
+
     const lugar =
         lugarFirma?.value?.trim() ||
         'el lugar indicado';
 
+
     const direccion =
         direccionFirma?.value?.trim();
 
+
     const mensaje =
         `Hola ${nombre}.\n\n` +
+
         `Nos complace informarle que su proceso de selección ` +
         `ha avanzado satisfactoriamente.\n\n` +
+
         `La firma de su contrato ha sido programada para ` +
         `el día ${fecha}, a las ${hora}, ` +
         `en ${lugar}` +
-        `${direccion ? `, dirección ${direccion}` : ''}.\n\n` +
+
+        `${
+            direccion
+                ? `, dirección ${direccion}`
+                : ''
+        }.\n\n` +
+
         `Por favor, esté atento(a) y presente los documentos ` +
         `necesarios para realizar el proceso de firma.\n\n` +
+
         `Cordialmente,\n` +
         `Colviseg Ltda.`;
 
-    mensajeFirma.value = mensaje;
+
+    mensajeFirma.value =
+        mensaje;
+
 }
 
 
 // ============================================================
-// ACTUALIZAR MENSAJE AL CAMBIAR LOS DATOS
+// ACTUALIZAR MENSAJE AL CAMBIAR DATOS
 // ============================================================
 
 fechaFirma?.addEventListener(
@@ -987,15 +1345,18 @@ fechaFirma?.addEventListener(
     actualizarMensajeFirma
 );
 
+
 horaFirma?.addEventListener(
     'change',
     actualizarMensajeFirma
 );
 
+
 lugarFirma?.addEventListener(
     'input',
     actualizarMensajeFirma
 );
+
 
 direccionFirma?.addEventListener(
     'input',
@@ -1004,7 +1365,7 @@ direccionFirma?.addEventListener(
 
 
 // ============================================================
-// ENVIAR MENSAJE Y PROGRAMAR FIRMA
+// PROGRAMAR FIRMA + WHATSAPP
 // ============================================================
 
 programarFirma?.addEventListener(
@@ -1013,20 +1374,28 @@ programarFirma?.addEventListener(
 
         ocultarAlerta();
 
+
         const idPostulacion =
-            Number(postulacion.value);
+            Number(
+                postulacion.value
+            );
+
 
         const fecha =
             fechaFirma.value;
 
+
         const hora =
             horaFirma.value;
+
 
         const lugar =
             lugarFirma.value.trim();
 
+
         const direccion =
             direccionFirma.value.trim();
+
 
         const observacionesTexto =
             observaciones.value.trim();
@@ -1043,6 +1412,7 @@ programarFirma?.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -1053,6 +1423,7 @@ programarFirma?.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -1063,6 +1434,7 @@ programarFirma?.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -1073,25 +1445,122 @@ programarFirma?.addEventListener(
             );
 
             return;
+
         }
 
 
-        // Generar el mensaje
+        // --------------------------------------------------------
+        // GENERAR MENSAJE
+        // --------------------------------------------------------
+
         actualizarMensajeFirma();
 
 
+        const mensaje =
+            mensajeFirma.value;
+
+
         // --------------------------------------------------------
-        // CONFIRMAR ENVÍO
+        // OBTENER TELÉFONO
         // --------------------------------------------------------
 
-        const confirmar = confirm(
-            '¿Deseas enviar este mensaje y programar la firma del contrato?'
-        );
+        let telefono =
+            datoTelefono?.textContent?.trim() ||
+            '';
+
+
+        // Si el dato mostrado no sirve, consultar nuevamente
+        if (
+            !telefono ||
+            telefono === '—'
+        ) {
+
+            try {
+
+                const candidato =
+                    await api(
+                        `/api/postulaciones/${idPostulacion}`
+                    );
+
+                telefono =
+                    candidato.telefono ||
+                    '';
+
+            } catch (error) {
+
+                mostrarAlerta(
+                    'No fue posible obtener el teléfono del candidato.'
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        if (!telefono) {
+
+            mostrarAlerta(
+                'El candidato no tiene un número de teléfono registrado.'
+            );
+
+            return;
+
+        }
+
+
+        // --------------------------------------------------------
+        // CONFIRMAR
+        // --------------------------------------------------------
+
+        const confirmar =
+            confirm(
+                '¿Deseas programar la firma y abrir WhatsApp con el mensaje preparado?'
+            );
 
 
         if (!confirmar) {
+
             return;
+
         }
+
+
+        // --------------------------------------------------------
+        // PREPARAR VENTANA DE WHATSAPP
+        // --------------------------------------------------------
+        //
+        // La abrimos inmediatamente después del clic del usuario
+        // para evitar que el navegador la bloquee.
+        // --------------------------------------------------------
+
+        const numero =
+            normalizarTelefonoWhatsApp(
+                telefono
+            );
+
+
+        if (!numero) {
+
+            mostrarAlerta(
+                'El número de teléfono no tiene un formato válido.'
+            );
+
+            return;
+
+        }
+
+
+        const urlWhatsApp =
+            `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
+
+        const ventanaWhatsApp =
+            window.open(
+                'about:blank',
+                '_blank'
+            );
 
 
         // --------------------------------------------------------
@@ -1100,10 +1569,12 @@ programarFirma?.addEventListener(
 
         try {
 
-            programarFirma.disabled = true;
+            programarFirma.disabled =
+                true;
+
 
             programarFirma.textContent =
-                'Enviando mensaje...';
+                'Programando...';
 
 
             const resultado =
@@ -1117,35 +1588,83 @@ programarFirma?.addEventListener(
                                 'application/json'
                         },
 
-                        body: JSON.stringify({
+                        body:
+                            JSON.stringify({
 
-                            idPostulacion,
+                                idPostulacion,
 
-                            fecha,
+                                fecha,
 
-                            hora,
+                                hora,
 
-                            lugar,
+                                lugar,
 
-                            direccion,
+                                direccion,
 
-                            observaciones:
-                            observacionesTexto
+                                observaciones:
+                                observacionesTexto
 
-                        })
+                            })
+
                     }
                 );
 
 
             // ------------------------------------------------------
-            // ÉXITO
+            // ABRIR WHATSAPP
+            // ------------------------------------------------------
+
+            if (ventanaWhatsApp) {
+
+                ventanaWhatsApp.location.href =
+                    urlWhatsApp;
+
+            } else {
+
+                // Fallback si el navegador bloqueó la ventana
+                window.open(
+                    urlWhatsApp,
+                    '_blank'
+                );
+
+            }
+
+
+            // ------------------------------------------------------
+            // MOSTRAR ÉXITO
             // ------------------------------------------------------
 
             mostrarAlerta(
-                resultado.notificacion ||
-                'Mensaje enviado y firma programada correctamente.',
+                'Firma programada correctamente. WhatsApp se abrió con el mensaje preparado.',
                 'success'
             );
+
+
+            // ------------------------------------------------------
+            // ACTUALIZAR DATOS DEL MODAL
+            // ------------------------------------------------------
+
+            datoEstado.textContent =
+                'FIRMA_CONTRATO_AGENDADA';
+
+
+            fechaFirma.value =
+                fecha;
+
+
+            horaFirma.value =
+                hora;
+
+
+            lugarFirma.value =
+                lugar;
+
+
+            direccionFirma.value =
+                direccion;
+
+
+            actualizarMensajeFirma();
 
 
             // ------------------------------------------------------
@@ -1158,54 +1677,57 @@ programarFirma?.addEventListener(
 
 
             // ------------------------------------------------------
-            // ACTUALIZAR ESTADO
-            // ------------------------------------------------------
-
-            if (datoEstado) {
-
-                datoEstado.textContent =
-                    resultado.estado_postulacion ||
-                    'FIRMA_CONTRATO_AGENDADA';
-
-            }
-
-
-            // ------------------------------------------------------
             // CAMBIAR BOTÓN
             // ------------------------------------------------------
 
             programarFirma.textContent =
-                'Mensaje enviado';
-
-            programarFirma.disabled = true;
+                'WhatsApp abierto';
 
 
-            // ------------------------------------------------------
-            // CERRAR MODAL
-            // ------------------------------------------------------
+            programarFirma.disabled =
+                true;
 
-            setTimeout(() => {
 
-                cerrarModal?.click();
+            // Cerramos después de un momento
+            setTimeout(
+                () => {
 
-            }, 1200);
+                    cerrarModalContrato();
+
+                },
+                1800
+            );
 
 
         } catch (error) {
 
             console.error(
-                'Error enviando mensaje:',
+                'Error programando firma:',
                 error
             );
 
 
+            // Si falló el servidor, cerramos la pestaña
+            // que habíamos abierto en blanco.
+            if (
+                ventanaWhatsApp &&
+                !ventanaWhatsApp.closed
+            ) {
+
+                ventanaWhatsApp.close();
+
+            }
+
+
             mostrarAlerta(
                 error.message ||
-                'No fue posible enviar el mensaje.'
+                'No fue posible programar la firma.'
             );
 
 
-            programarFirma.disabled = false;
+            programarFirma.disabled =
+                false;
+
 
             programarFirma.textContent =
                 'Enviar mensaje';
@@ -1215,25 +1737,28 @@ programarFirma?.addEventListener(
     }
 );
 
+
 // ============================================================
 // CARGAR CONTRATOS
 // ============================================================
 
 async function cargarContratos() {
 
-  try {
+    try {
 
-    contratos =
-        await api('/api/contratos');
+        contratos =
+            await api(
+                '/api/contratos'
+            );
 
-  } catch (error) {
+    } catch (error) {
 
-    console.error(
-        'Error cargando contratos:',
-        error
-    );
+        console.error(
+            'Error cargando contratos:',
+            error
+        );
 
-  }
+    }
 
 }
 
@@ -1244,29 +1769,31 @@ async function cargarContratos() {
 
 async function cargarTrabajadores() {
 
-  try {
+    try {
 
-    trabajadores =
-        await api('/api/trabajadores');
-
-
-    pintarTrabajadores();
-
-
-  } catch (error) {
-
-    console.error(error);
+        trabajadores =
+            await api(
+                '/api/trabajadores'
+            );
 
 
-    contratadosBody.innerHTML = `
-            <tr>
-                <td colspan="6" class="sin-registros">
-                    ${esc(error.message)}
-                </td>
-            </tr>
-        `;
+        pintarTrabajadores();
 
-  }
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        contratadosBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="sin-registros">
+          ${esc(error.message)}
+        </td>
+      </tr>
+    `;
+
+    }
 
 }
 
@@ -1277,119 +1804,121 @@ async function cargarTrabajadores() {
 
 function pintarTrabajadores() {
 
-  if (!trabajadores.length) {
+    if (!trabajadores.length) {
 
-    contratadosBody.innerHTML = `
-            <tr>
-                <td colspan="6" class="sin-registros">
-                    No hay personas contratadas registradas.
-                </td>
-            </tr>
+        contratadosBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="sin-registros">
+          No hay personas contratadas registradas.
+        </td>
+      </tr>
+    `;
+
+        return;
+
+    }
+
+
+    contratadosBody.innerHTML =
+        trabajadores.map(item => {
+
+            const estado =
+                String(
+                    item.estado || ''
+                ).toUpperCase();
+
+
+            let claseEstado =
+                'estado-borrador';
+
+
+            if (
+                estado === 'ACTIVO' ||
+                estado === 'CONTRATADO'
+            ) {
+
+                claseEstado =
+                    'estado-contratado';
+
+            }
+
+
+            return `
+          <tr>
+
+            <td>
+              <strong>
+                ${esc(
+                item.trabajador ||
+                item.nombre_completo ||
+                'Sin nombre'
+            )}
+              </strong>
+            </td>
+
+            <td>
+              ${esc(
+                item.numero_documento ||
+                '—'
+            )}
+            </td>
+
+            <td>
+              ${esc(
+                item.cargo ||
+                '—'
+            )}
+            </td>
+
+            <td>
+              ${esc(
+                formatearFecha(
+                    item.fecha_inicio
+                )
+            )}
+            </td>
+
+            <td>
+
+              <span
+                class="estado-contrato ${claseEstado}"
+              >
+                ${esc(
+                item.estado ||
+                'Borrador'
+            )}
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="acciones-contrato">
+
+                <button
+                  type="button"
+                  class="btn-contrato btn-pdf"
+                  data-ver-contrato="${item.id_contrato}"
+                >
+                  Ver contrato
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-contrato btn-editar"
+                  data-editar-contrato="${item.id_contrato}"
+                >
+                  Editar
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
         `;
 
-    return;
-
-  }
-
-
-  contratadosBody.innerHTML =
-      trabajadores.map(item => {
-
-        const estado =
-            String(
-                item.estado || ''
-            ).toUpperCase();
-
-
-        let claseEstado =
-            'estado-borrador';
-
-
-        if (
-            estado === 'ACTIVO' ||
-            estado === 'CONTRATADO'
-        ) {
-
-          claseEstado =
-              'estado-contratado';
-
-        }
-
-
-        return `
-                <tr>
-
-                    <td>
-                        <strong>
-                            ${esc(
-            item.trabajador ||
-            item.nombre_completo ||
-            'Sin nombre'
-        )}
-                        </strong>
-                    </td>
-
-                    <td>
-                        ${esc(
-            item.numero_documento ||
-            '—'
-        )}
-                    </td>
-
-                    <td>
-                        ${esc(
-            item.cargo ||
-            '—'
-        )}
-                    </td>
-
-                    <td>
-                        ${esc(
-            formatearFecha(
-                item.fecha_inicio
-            )
-        )}
-                    </td>
-
-                    <td>
-
-                        <span class="estado-contrato ${claseEstado}">
-                            ${esc(
-            item.estado ||
-            'Borrador'
-        )}
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <div class="acciones-contrato">
-
-                            <button
-                                type="button"
-                                class="btn-contrato btn-pdf"
-                                data-ver-contrato="${item.id_contrato}"
-                            >
-                                Ver contrato
-                            </button>
-
-                            <button
-                                type="button"
-                                class="btn-contrato btn-editar"
-                                data-editar-contrato="${item.id_contrato}"
-                            >
-                                Editar
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-            `;
-
-      }).join('');
+        }).join('');
 
 }
 
@@ -1402,36 +1931,36 @@ contratadosBody?.addEventListener(
     'click',
     async (event) => {
 
-      const ver =
-          event.target.closest(
-              '[data-ver-contrato]'
-          );
+        const ver =
+            event.target.closest(
+                '[data-ver-contrato]'
+            );
 
 
-      const editar =
-          event.target.closest(
-              '[data-editar-contrato]'
-          );
+        const editar =
+            event.target.closest(
+                '[data-editar-contrato]'
+            );
 
 
-      if (ver) {
+        if (ver) {
 
-        await verContrato(
-            ver.dataset.verContrato
-        );
+            await verContrato(
+                ver.dataset.verContrato
+            );
 
-        return;
+            return;
 
-      }
+        }
 
 
-      if (editar) {
+        if (editar) {
 
-        await editarContrato(
-            editar.dataset.editarContrato
-        );
+            await editarContrato(
+                editar.dataset.editarContrato
+            );
 
-      }
+        }
 
     }
 );
@@ -1443,139 +1972,165 @@ contratadosBody?.addEventListener(
 
 async function verContrato(id) {
 
-  try {
+    try {
 
-    resetForm();
+        resetForm();
 
-    abrirModal();
+        abrirModal();
 
 
-    const contrato =
-        await api(
-            `/api/contratos/${id}`
+        const contrato =
+            await api(
+                `/api/contratos/${id}`
+            );
+
+
+        contratoId.value =
+            contrato.id_contrato;
+
+
+        postulacion.value =
+            contrato.id_postulacion;
+
+
+        postulacion.disabled =
+            true;
+
+
+        fechaInicio.value =
+            contrato.fecha_inicio
+                ?.slice(0, 10) ||
+            '';
+
+
+        fechaFin.value =
+            contrato.fecha_fin
+                ?.slice(0, 10) ||
+            '';
+
+
+        tipoContrato.value =
+            contrato.tipo_contrato ||
+            'Término Fijo';
+
+
+        salario.value =
+            contrato.salario ||
+            0;
+
+
+        fechaFirma.value =
+            contrato.fecha_firma_programada
+                ?.slice(0, 10) ||
+            '';
+
+
+        horaFirma.value =
+            contrato.hora_firma
+                ? String(
+                    contrato.hora_firma
+                ).slice(0, 5)
+                : '';
+
+
+        lugarFirma.value =
+            contrato.lugar_firma ||
+            '';
+
+
+        direccionFirma.value =
+            contrato.direccion_firma ||
+            '';
+
+
+        observaciones.value =
+            contrato.observaciones ||
+            '';
+
+
+        actualizarMensajeFirma();
+
+
+        guardarContrato.textContent =
+            'Guardar cambios';
+
+
+        cancelarContrato.hidden =
+            false;
+
+
+        if (programarFirma) {
+
+            programarFirma.hidden =
+                true;
+
+        }
+
+
+        const candidato =
+            await api(
+                `/api/postulaciones/${contrato.id_postulacion}`
+            );
+
+
+        datoNombre.textContent =
+            candidato.nombre_completo ||
+            '—';
+
+
+        datoDocumento.textContent =
+            candidato.numero_documento ||
+            '—';
+
+
+        datoCorreo.textContent =
+            candidato.correo ||
+            '—';
+
+
+        datoTelefono.textContent =
+            candidato.telefono ||
+            '—';
+
+
+        datoCargo.textContent =
+            candidato.cargo ||
+            candidato.nombre_cargo ||
+            '—';
+
+
+        datoSede.textContent =
+            candidato.nombre_sede ||
+            '—';
+
+
+        datoEstado.textContent =
+            candidato.estado ||
+            '—';
+
+
+        datosCandidato.hidden =
+            false;
+
+
+        actualizarDocumentoCandidato(
+            candidato
         );
 
 
-    contratoId.value =
-        contrato.id_contrato;
-
-
-    postulacion.value =
-        contrato.id_postulacion;
-
-
-    postulacion.disabled =
-        true;
-
-
-    fechaInicio.value =
-        contrato.fecha_inicio
-            ?.slice(0, 10) || '';
-
-
-    fechaFin.value =
-        contrato.fecha_fin
-            ?.slice(0, 10) || '';
-
-
-    tipoContrato.value =
-        contrato.tipo_contrato ||
-        'Término Fijo';
-
-
-    salario.value =
-        contrato.salario ||
-        0;
-
-
-    fechaFirma.value =
-        contrato.fecha_firma_programada
-            ?.slice(0, 10) || '';
-
-
-    horaFirma.value =
-        contrato.hora_firma ||
-        '';
-
-
-    lugarFirma.value =
-        contrato.lugar_firma ||
-        '';
-
-
-    direccionFirma.value =
-        contrato.direccion_firma ||
-        '';
-
-
-    observaciones.value =
-        contrato.observaciones ||
-        '';
-
-
-    guardarContrato.textContent =
-        'Guardar cambios';
-
-
-    cancelarContrato.hidden =
-        false;
-
-
-    const candidato =
-        await api(
-            `/api/postulaciones/${contrato.id_postulacion}`
+        mostrarDocumento(
+            contrato,
+            candidato
         );
 
 
-    datoNombre.textContent =
-        candidato.nombre_completo || '—';
+    } catch (error) {
 
+        mostrarAlerta(
+            error.message
+        );
 
-    datoDocumento.textContent =
-        candidato.numero_documento || '—';
-
-
-    datoCorreo.textContent =
-        candidato.correo || '—';
-
-
-    datoTelefono.textContent =
-        candidato.telefono || '—';
-
-
-    datoCargo.textContent =
-        candidato.cargo ||
-        candidato.nombre_cargo ||
-        '—';
-
-
-    datoSede.textContent =
-        candidato.nombre_sede ||
-        '—';
-
-
-    datoEstado.textContent =
-        candidato.estado ||
-        '—';
-
-
-    datosCandidato.hidden =
-        false;
-
-
-    mostrarDocumento(
-        contrato,
-        candidato
-    );
-
-
-  } catch (error) {
-
-    mostrarAlerta(
-        error.message
-    );
-
-  }
+    }
 
 }
 
@@ -1586,7 +2141,7 @@ async function verContrato(id) {
 
 async function editarContrato(id) {
 
-  await verContrato(id);
+    await verContrato(id);
 
 }
 
@@ -1599,8 +2154,8 @@ cerrarDocumento?.addEventListener(
     'click',
     () => {
 
-      contratoDocumento.hidden =
-          true;
+        contratoDocumento.hidden =
+            true;
 
     }
 );
@@ -1614,7 +2169,7 @@ imprimirContrato?.addEventListener(
     'click',
     () => {
 
-      window.print();
+        window.print();
 
     }
 );
@@ -1623,16 +2178,12 @@ imprimirContrato?.addEventListener(
 // ============================================================
 // EXPORTAR PDF
 // ============================================================
-//
-// El navegador permite elegir "Guardar como PDF"
-// desde el diálogo de impresión.
-// ============================================================
 
 exportarPDF?.addEventListener(
     'click',
     () => {
 
-      window.print();
+        window.print();
 
     }
 );
@@ -1644,41 +2195,48 @@ exportarPDF?.addEventListener(
 
 async function iniciarContratos() {
 
-  try {
+    try {
 
-    resetForm();
-
-
-    await Promise.all([
-      cargarPostulaciones(),
-      cargarContratos(),
-      cargarTrabajadores()
-    ]);
+        resetForm();
 
 
-    // Si la URL trae idPostulacion
-    const idURL =
-        new URLSearchParams(
-            window.location.search
-        ).get('idPostulacion');
+        await Promise.all([
+
+            cargarPostulaciones(),
+
+            cargarContratos(),
+
+            cargarTrabajadores()
+
+        ]);
 
 
-    if (idURL) {
+        const idURL =
+            new URLSearchParams(
+                window.location.search
+            ).get(
+                'idPostulacion'
+            );
 
-      await abrirContratoParaPostulacion(
-          idURL
-      );
+
+        if (idURL) {
+
+            await abrirContratoParaPostulacion(
+                idURL,
+                'generar'
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            'Error inicializando contratos:',
+            error
+        );
 
     }
-
-  } catch (error) {
-
-    console.error(
-        'Error inicializando contratos:',
-        error
-    );
-
-  }
 
 }
 
