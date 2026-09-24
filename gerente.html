@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Gerencia – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" /><link rel="stylesheet" href="css/perfiles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="mi-perfil.html" class="nav-link">Mi perfil</a></li>
+          <li><a href="index.html" class="nav-link">Inicio Público</a></li>
+          <li><a href="gerente.html" class="nav-link active" aria-current="page">Gerencia</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="panel-layout">
+    <aside class="sidebar" aria-label="Menú de gerencia">
+      <span class="sidebar-title">Gerencia</span>
+      <a href="gerente.html" class="sidebar-link active" aria-current="page"><span class="icon">🏢</span> Dashboard</a>
+      <a href="evaluar.html" class="sidebar-link"><span class="icon">📝</span> Evaluar Candidatos</a>
+      <a href="mi-perfil.html" class="sidebar-link profile-sidebar-link"><span class="icon" aria-hidden="true">👤</span> Mi perfil</a>
+      <a href="trabajadores.html" class="sidebar-link"><span class="icon">👷</span> Trabajadores</a>
+      <a href="contrato.html" class="sidebar-link"><span class="icon">📑</span> Contratos</a>
+      <span class="sidebar-title" style="margin-top:1rem;">Información</span>
+      <a href="reporte.html" class="sidebar-link"><span class="icon">📊</span> Reportes</a>
+      <a href="examenes.html" class="sidebar-link"><span class="icon">🧪</span> Exámenes médicos</a>
+    </aside>
+
+    <main class="panel-content" aria-labelledby="ger-title">
+      <div class="panel-header">
+        <h1 id="panelTitle">Panel de Gerencia</h1>
+        <p>Resumen ejecutivo del proceso de vinculación · Colviseg Ltda.</p>
+        <div id="panelIdentity" class="panel-identity" aria-live="polite">Bienvenido, cargando...</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-num">24</div><div class="stat-label">Total Postulaciones</div></div>
+        <div class="stat-box"><div class="stat-num">8</div><div class="stat-label">Listos para Evaluar</div></div>
+        <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Aprobados</div></div>
+        <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Contratos Activos</div></div>
+      </div>
+
+      <h2 style="color:var(--azul-oscuro);margin-bottom:1rem;font-family:var(--font-display);">Candidatos para Decisión Final</h2>
+
+      <div class="kanban" aria-label="Estado de candidatos">
+        <div class="kanban-col">
+          <div class="kanban-col-header en-revision">En Revisión (3)</div>
+          <div class="kanban-col-body">
+            <div class="kanban-card">
+              <h4>Juan Pérez García</h4>
+              <p>Guarda de Seguridad · ⭐ 3.8</p>
+              <div class="card-actions">
+                <a href="evaluar.html" class="btn-xs btn-xs-blue">Evaluar</a>
+                <a href="hdv.html" class="btn-xs btn-xs-blue">HDV</a>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <h4>Ana Martínez Cruz</h4>
+              <p>Técnico CCTV · ⭐ 4.1</p>
+              <div class="card-actions">
+                <a href="evaluar.html" class="btn-xs btn-xs-blue">Evaluar</a>
+                <a href="hdv.html" class="btn-xs btn-xs-blue">HDV</a>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <h4>Santiago Ríos Pardo</h4>
+              <p>Guarda de Seguridad · ⭐ 3.5</p>
+              <div class="card-actions">
+                <a href="evaluar.html" class="btn-xs btn-xs-blue">Evaluar</a>
+                <a href="hdv.html" class="btn-xs btn-xs-blue">HDV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-col">
+          <div class="kanban-col-header aprobados">Aprobados (3)</div>
+          <div class="kanban-col-body">
+            <div class="kanban-card">
+              <h4>Carlos Romero Silva</h4>
+              <p>Supervisor Seguridad · ⭐ 4.6</p>
+              <div class="card-actions">
+                <a href="contrato.html" class="btn-xs btn-xs-green">Generar Contrato</a>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <h4>Valentina Castro G.</h4>
+              <p>Técnico CCTV · ⭐ 4.8</p>
+              <div class="card-actions">
+                <a href="contrato.html" class="btn-xs btn-xs-green">Generar Contrato</a>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <h4>María López Ruiz</h4>
+              <p>Auxiliar RRHH · ⭐ 4.3</p>
+              <div class="card-actions">
+                <a href="contrato.html" class="btn-xs btn-xs-green">Generar Contrato</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-col">
+          <div class="kanban-col-header rechazados">No Clasificaron (2)</div>
+          <div class="kanban-col-body">
+            <div class="kanban-card">
+              <h4>Luis Torres Vega</h4>
+              <p>Guarda de Seguridad · ⭐ 2.1</p>
+              <div class="card-actions">
+                <a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <h4>Pedro Suárez Mora</h4>
+              <p>Técnico CCTV · ⭐ 1.8</p>
+              <div class="card-actions">
+                <a href="hdv.html" class="btn-xs btn-xs-blue">Ver HDV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="evaluar.html" class="btn btn-primary">Evaluar Candidatos</a>
+        <a href="trabajadores.html" class="btn btn-outline" style="border-color:var(--azul-claro);color:var(--azul-claro);">Ver Trabajadores Activos</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+      <nav aria-label="Pie de página"><ul class="footer-nav"><li><a href="index.html">Inicio</a></li><li><a href="login.html">Salir</a></li></ul></nav>
+    </div>
+  </footer>
+  <script src="js/nav.js"></script>
+  <script src="js/panel-identity.js"></script><script src="js/gerente.js"></script>
+</body>
+</html>

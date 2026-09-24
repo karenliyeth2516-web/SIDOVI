@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmación de Postulación – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body class="confirmacion-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Inicio</a></li>
+          <li><a href="ofertas.html" class="nav-link">Ofertas</a></li>
+          <li><a href="postulacion.html" class="nav-link">Postularse</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Acceso Personal</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <main aria-labelledby="confirm-title">
+    <section>
+      <div class="confirm-card">
+        <div class="big-icon" aria-hidden="true">✅</div>
+        <h1 id="confirm-title">¡Postulación Enviada!</h1>
+        <p>Tu información ha sido recibida exitosamente en el sistema SIDOVI de Colviseg Ltda. El equipo de Recursos Humanos revisará tu hoja de vida y se comunicará contigo próximamente.</p>
+
+        <div class="ref-box" aria-label="Número de radicado">
+          <span>Número de Radicado</span>
+          <strong id="radicado">SID-2025-00421</strong>
+        </div>
+
+        <p style="font-size:0.88rem;color:var(--gris-claro);margin-bottom:1.5rem;">
+          Guarda este número de radicado para hacer seguimiento de tu proceso. Recibirás un correo de confirmación en las próximas horas.
+        </p>
+
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="ofertas.html" class="btn btn-outline" style="border-color:var(--azul-claro);color:var(--azul-claro);">Ver Más Vacantes</a>
+          <a href="index.html" class="btn btn-primary">Volver al Inicio</a>
+        </div>
+
+        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+          <h2 style="font-size:1rem;color:var(--azul-oscuro);margin-bottom:1rem;">¿Qué sigue?</h2>
+          <ol style="text-align:left;display:flex;flex-direction:column;gap:0.6rem;list-style:none;">
+            <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--gris-claro);">
+              <span style="color:var(--azul-bright);font-weight:700;">01</span> El equipo de RRHH revisará tu hoja de vida
+            </li>
+            <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--gris-claro);">
+              <span style="color:var(--azul-bright);font-weight:700;">02</span> Si clasificas, recibirás una invitación a entrevista
+            </li>
+            <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--gris-claro);">
+              <span style="color:var(--azul-bright);font-weight:700;">03</span> La gerencia realizará la evaluación final
+            </li>
+            <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--gris-claro);">
+              <span style="color:var(--azul-bright);font-weight:700;">04</span> Se generará tu contrato de vinculación
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+      <nav aria-label="Pie de página"><ul class="footer-nav">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="ofertas.html">Ofertas</a></li>
+        <li><a href="login.html">Acceso</a></li>
+      </ul></nav>
+    </div>
+  </footer>
+  <script src="js/confirmacion.js"></script>
+</body>
+</html>

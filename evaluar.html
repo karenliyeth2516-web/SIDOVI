@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluación Final – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="gerente.html" class="nav-link">Dashboard Gerencia</a></li>
+          <li><a href="evaluar.html" class="nav-link active" aria-current="page">Evaluar</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="panel-layout">
+    <aside class="sidebar" aria-label="Menú de gerencia">
+      <span class="sidebar-title">Gerencia</span>
+      <a href="gerente.html" class="sidebar-link"><span class="icon">🏢</span> Dashboard</a>
+      <a href="evaluar.html" class="sidebar-link active" aria-current="page"><span class="icon">📝</span> Evaluar Candidatos</a>
+      <a href="trabajadores.html" class="sidebar-link"><span class="icon">👷</span> Trabajadores</a>
+      <a href="contrato.html" class="sidebar-link"><span class="icon">📑</span> Contratos</a>
+    </aside>
+
+    <main class="panel-content" aria-labelledby="eval-title">
+      <div class="panel-header">
+        <h1 id="eval-title">Evaluación Final de Candidatos</h1>
+        <p>Toma la decisión de contratación basada en reportes de RRHH y criterios gerenciales.</p>
+      </div>
+
+      <div class="data-table-wrap" style="margin-bottom:2rem;">
+        <h2>Candidatos Pendientes de Decisión</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Candidato</th>
+              <th scope="col">Cargo</th>
+              <th scope="col">Puntaje RRHH</th>
+              <th scope="col">Entrevista</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Decisión Gerencia</th>
+            </tr>
+          </thead>
+          <tbody id="candidatosEvaluarBody">
+            <tr><td colspan="6">Cargando candidatos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="eval-layout">
+        <div class="eval-card" aria-labelledby="eval-form-title">
+          <div class="eval-card-header"><h2 id="eval-form-title">Evaluación Gerencial Detallada</h2></div>
+          <div class="eval-card-body">
+            <div class="field" style="margin-bottom:1rem;">
+              <label for="ev-candidato">Candidato a Evaluar</label>
+              <select id="ev-candidato">
+                <option value="">Cargando candidato...</option>
+              </select>
+            </div>
+
+            <div class="criteria-list">
+              <div class="criterion">
+                <label>Perfil Acorde al Cargo</label>
+                <div class="stars" role="radiogroup" aria-label="Perfil acorde">
+                  <span class="star" tabindex="0">★</span><span class="star" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star" tabindex="0">★</span>
+                </div>
+              </div>
+              <div class="criterion">
+                <label>Documentación Completa</label>
+                <div class="stars" role="radiogroup" aria-label="Documentación">
+                  <span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star" tabindex="0">★</span>
+                </div>
+              </div>
+              <div class="criterion">
+                <label>Disponibilidad Inmediata</label>
+                <div class="stars" role="radiogroup" aria-label="Disponibilidad">
+                  <span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span><span class="star active" tabindex="0">★</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="score-summary">
+              <div class="score-big">4.0</div>
+              <div class="score-label">Puntaje Gerencial / 5.0</div>
+            </div>
+
+            <div class="field" style="margin-top:1.25rem;">
+              <label for="ev-obs">Observaciones Gerenciales</label>
+              <textarea id="ev-obs" rows="3" placeholder="Agrega tus notas finales sobre el candidato..."></textarea>
+            </div>
+
+            <div style="margin-top:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;">
+              <a href="contrato.html" class="btn btn-primary" id="btnGenerarContrato">Aprobar y Generar Contrato</a>
+              <button type="button" class="btn btn-outline" id="btnRechazarCandidato" style="border-color:var(--rojo);color:var(--rojo);">Rechazar Candidato</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="eval-card" aria-labelledby="reporte-rrhh-title">
+          <div class="eval-card-header"><h2 id="reporte-rrhh-title">Reporte de RRHH</h2></div>
+          <div style="padding:1.25rem;display:flex;flex-direction:column;gap:0.85rem;">
+            <div><strong style="font-size:0.85rem;color:var(--azul-oscuro);">Presentación Personal</strong><div class="stars"><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star">★</span></div></div>
+            <div><strong style="font-size:0.85rem;color:var(--azul-oscuro);">Conocimiento del Área</strong><div class="stars"><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star">★</span></div></div>
+            <div><strong style="font-size:0.85rem;color:var(--azul-oscuro);">Comunicación</strong><div class="stars"><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star">★</span><span class="star">★</span></div></div>
+            <div><strong style="font-size:0.85rem;color:var(--azul-oscuro);">Experiencia Verificada</strong><div class="stars"><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star active">★</span><span class="star">★</span></div></div>
+            <div style="padding:1rem;background:var(--gris-bg);border-radius:var(--radius);font-size:0.88rem;color:var(--gris-claro);">
+              <em>El reporte de RRHH aparecerá cuando se seleccione un candidato.</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+      <nav aria-label="Pie de página"><ul class="footer-nav"><li><a href="gerente.html">Gerencia</a></li><li><a href="contrato.html">Contratos</a></li></ul></nav>
+    </div>
+  </footer>
+  <script src="js/evaluar.js"></script>
+</body>
+</html>

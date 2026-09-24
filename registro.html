@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Aspirante – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Inicio</a></li>
+          <li><a href="ofertas.html" class="nav-link">Ofertas</a></li>
+          <li><a href="registro.html" class="nav-link active" aria-current="page">Registro</a></li>
+          <li><a href="postulacion.html" class="nav-link">Postularse</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Acceso Personal</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero" aria-labelledby="reg-title">
+      <div class="container">
+        <h1 id="reg-title">Registro de <span class="accent">Aspirante</span></h1>
+        <p>Crea tu cuenta para iniciar el proceso de vinculación en Colviseg Ltda.</p>
+      </div>
+    </section>
+
+    <section class="registro-section" aria-labelledby="reg-form-title">
+      <div class="container form-container">
+        <h2 id="reg-form-title">Datos de Acceso</h2>
+        <div id="reg-alert" class="form-alert" role="alert" aria-live="polite" hidden></div>
+
+        <div id="regForm">
+          <fieldset class="form-group">
+            <legend>Información Personal</legend>
+            <div class="form-row">
+              <div class="field">
+                <label for="r-nombre">Nombres <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="r-nombre" placeholder="Ej. Juan David" required />
+              </div>
+              <div class="field">
+                <label for="r-apellidos">Apellidos <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="r-apellidos" placeholder="Ej. Pérez García" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="r-cedula">Número de Cédula <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="r-cedula" placeholder="Ej. 1012345678" required />
+              </div>
+              <div class="field">
+                <label for="r-fecha">Fecha de Nacimiento <span class="required" aria-label="requerido">*</span></label>
+                <input type="date" id="r-fecha" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="r-tel">Teléfono <span class="required" aria-label="requerido">*</span></label>
+                <input type="tel" id="r-tel" placeholder="Ej. 3001234567" required />
+              </div>
+              <div class="field">
+                <label for="r-ciudad">Ciudad <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="r-ciudad" placeholder="Ej. Bogotá" required />
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <legend>Credenciales de Acceso</legend>
+            <div class="form-row">
+              <div class="field">
+                <label for="r-email">Correo Electrónico <span class="required" aria-label="requerido">*</span></label>
+                <input type="email" id="r-email" placeholder="correo@ejemplo.com" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="r-user">Usuario <span class="required" aria-label="requerido">*</span></label>
+                <input type="text" id="r-user" placeholder="usuario123" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="r-pass">Contraseña <span class="required" aria-label="requerido">*</span></label>
+                <input type="password" id="r-pass" placeholder="Mín. 8 caracteres" required />
+              </div>
+              <div class="field">
+                <label for="r-pass2">Confirmar Contraseña <span class="required" aria-label="requerido">*</span></label>
+                <input type="password" id="r-pass2" placeholder="Repite tu contraseña" required />
+              </div>
+            </div>
+            <div class="field full-width">
+              <label class="checkbox-label">
+                <input type="checkbox" id="r-terminos" required />
+                Acepto los términos y condiciones y la política de tratamiento de datos de Colviseg Ltda. <span class="required">*</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <a href="login.html" class="btn btn-outline">Ya tengo cuenta</a>
+            <button type="button" class="btn btn-primary" id="btnRegistrar">Crear Cuenta</button>
+          </div>
+        </div>
+
+        <div class="confirmation" id="regSuccess" hidden aria-live="polite">
+          <div class="confirm-icon">🎉</div>
+          <h2>¡Registro Exitoso!</h2>
+          <p>Tu cuenta ha sido creada. Ahora puedes postularte a las vacantes disponibles.</p>
+          <div class="confirm-actions">
+            <a href="ofertas.html" class="btn btn-outline" style="border-color:var(--azul-claro);color:var(--azul-claro)">Ver Vacantes</a>
+            <a href="postulacion.html" class="btn btn-primary">Postularme Ahora</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+      <nav aria-label="Pie de página"><ul class="footer-nav">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="ofertas.html">Ofertas</a></li>
+        <li><a href="registro.html">Registro</a></li>
+        <li><a href="login.html">Acceso</a></li>
+      </ul></nav>
+    </div>
+  </footer>
+  <script src="js/registro.js"></script>
+</body>
+</html>

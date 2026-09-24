@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Cargos – SIDOVI</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Inicio Público</a></li>
+          <li><a href="RRHH.html" class="nav-link active">Panel RRHH</a></li>
+          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="panel-layout">
+    <aside class="sidebar" aria-label="Menú del panel">
+      <span class="sidebar-title">Gestión</span>
+      <a href="RRHH.html" class="sidebar-link"><span class="icon">📋</span> Dashboard</a>
+      <a href="postulantes.html" class="sidebar-link"><span class="icon">👥</span> Postulantes</a>
+      <a href="hojasdevida.html" class="sidebar-link"><span class="icon">📄</span> Hojas de Vida</a>
+      <a href="agenda.html" class="sidebar-link"><span class="icon">📅</span> Agenda</a>
+      <a href="reporte.html" class="sidebar-link"><span class="icon">📊</span> Reportes</a>
+      <a href="cargos.html" class="sidebar-link active" aria-current="page"><span class="icon">🧰</span> Cargos y sedes</a>
+      <span class="sidebar-title" style="margin-top:1rem;">Accesos</span>
+      <a href="trabajadores.html" class="sidebar-link"><span class="icon">👷</span> Trabajadores</a>
+    </aside>
+
+    <main class="panel-content">
+      <div class="panel-header">
+        <h1>Gestión de cargos</h1>
+        <p>Crea y administra los cargos disponibles para cada sede de Colviseg Ltda.</p>
+      </div>
+
+      <div id="cargoAlert" class="form-alert" hidden></div>
+      <section class="data-table-wrap cargo-form-card" aria-labelledby="cargo-form-title">
+        <h2 id="cargo-form-title">Nuevo cargo</h2>
+        <form id="cargoForm">
+          <input type="hidden" id="cargoId" />
+          <fieldset class="form-group">
+            <div class="form-row">
+              <div class="field">
+                <label for="nombreCargo">Nombre del cargo <span class="required">*</span></label>
+                <input id="nombreCargo" type="text" maxlength="100" required placeholder="Ej. Guarda de seguridad" />
+              </div>
+              <div class="field">
+                <label for="sedeCargo">Sede <span class="required">*</span></label>
+                <select id="sedeCargo" required><option value="">Selecciona una sede</option></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="turnosCargo">Turnos</label>
+                <input id="turnosCargo" type="text" maxlength="120" placeholder="Ej. Diurno, nocturno, rotativo" />
+              </div>
+              <div class="field">
+                <label for="descripcionCargo">Descripción</label>
+                <textarea id="descripcionCargo" rows="3" placeholder="Describe las funciones y requisitos principales"></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="cancelarEdicion" hidden>Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="guardarCargo">Crear cargo</button>
+            </div>
+          </fieldset>
+        </form>
+      </section>
+
+      <section class="data-table-wrap" aria-labelledby="cargo-list-title" style="margin-top:1.5rem;">
+        <h2 id="cargo-list-title">Cargos registrados</h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Nombre</th><th>Sede</th><th>Turnos</th><th>Descripción</th><th>Acciones</th></tr></thead>
+            <tbody id="cargosBody"><tr><td colspan="5">Cargando cargos...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/nav.js"></script>
+  <script src="js/cargos.js"></script>
+</body>
+</html>
