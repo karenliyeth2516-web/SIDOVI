@@ -3,19 +3,48 @@
 .social-links{display:flex;align-items:center;gap:18px}.social-links a{color:#fff;font-family:var(--font-display);font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.social-links a:hover{color:#ffccd1}
 @media(max-width:620px){.header-status{display:flex;font-size:.72rem;padding:8px 10px}.social-links{width:100%;justify-content:center}}
 :root { --ink:#121a29; --slate:#536071; --line:#1c3e67; --paper:#fff; --mist:#f3f5f7; --red:#c8192b; --red-dark:#a91424; }
+/* DESPUÉS */
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: #121a29;
-    background-image:
-            linear-gradient(rgba(4,8,18,.22), rgba(4,8,18,.22)),
-            url('../img/imagen_inicio.png');
-    background-position: center top;
-    background-size: 100% auto;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
     color: #fff;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: sidoviSlideshow 25s ease-in-out infinite;
+}
+
+@keyframes sidoviSlideshow {
+    0%    { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_1.jpg'); }
+    2%    { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_1.jpg'); }
+    18%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_1.jpg'); }
+    20%   { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_1.jpg'); }
+    20.1% { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_2.jpg'); }
+    22%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_2.jpg'); }
+    38%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_2.jpg'); }
+    40%   { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_2.jpg'); }
+    40.1% { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_3.jpg'); }
+    42%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_3.jpg'); }
+    58%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_3.jpg'); }
+    60%   { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_3.jpg'); }
+    60.1% { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_4.jpg'); }
+    62%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_4.jpg'); }
+    78%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_4.jpg'); }
+    80%   { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_4.jpg'); }
+    80.1% { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_5.png'); }
+    82%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_5.png'); }
+    98%   { opacity: 1; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_5.png'); }
+    100%  { opacity: 0; background-image: linear-gradient(rgba(4,8,18,.32), rgba(4,8,18,.32)), url('../img/imagen_5.png'); }
 }
 .site-footer { margin-top:auto; min-height:220px; display:flex; align-items:center; background:#123d78!important; border-top:8px solid #0b2b58!important; padding:3.5rem 1.75rem!important; box-shadow:0 -12px 30px rgba(4,17,42,.32); }
 .site-footer p,.social-links a { color:rgba(255,255,255,.9); }
@@ -24,7 +53,7 @@ body {
     top: 0;
     z-index: 30;
     background: linear-gradient(
-            to right,
+            100deg,
             #ffffff 0%,
             #ffffff 50%,
             var(--red) 50%,
@@ -33,7 +62,7 @@ body {
     box-shadow: 0 5px 20px rgba(70,0,10,.28);
     backdrop-filter: none;
 }
-.header-inner { max-width:1240px!important; height:78px!important; margin:auto; padding:0 28px!important; display:flex!important; align-items:center!important; justify-content:space-between!important; }
+.header-inner { width:100%; max-width:1240px!important; height:78px!important; margin:0 auto; padding:0 28px!important; box-sizing:border-box; display:flex!important; align-items:center!important; justify-content:space-between!important; }
 .brand { display:flex; align-items:center; gap:18px; color:#fff; }.brand-logo-img{height:50px;width:auto}.brand-kicker{border-left:2px solid rgba(255,255,255,.75);padding-left:18px;font-family:var(--font-display);font-size:.92rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
 .header-status{display:flex;align-items:center;gap:10px;padding:10px 15px;border:1px solid rgba(255,255,255,.75);border-radius:999px;color:#fff;font-family:var(--font-display);font-size:.84rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.header-status span,.chat-presence,.badge-dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.2)}
 .hero{position:relative;overflow:hidden;padding:72px 28px 58px;background:linear-gradient(115deg,#f8f9fa 0%,#f0f2f4 57%,#e9edf1 100%)}.hero::after{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--red)}.hero-bg-lines{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(20,30,45,.045) 1px,transparent 1px),linear-gradient(rgba(20,30,45,.035) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(90deg,#000,transparent 96%)}
@@ -47,22 +76,25 @@ body {
 /* =========================================
    CAJA SIDOVI
    ========================================= */
+
 .sidovi-box {
     width: 650px;
     max-width: 90%;
     margin: 70px auto 90px;
     padding: 40px;
-    background: rgba(10, 18, 32, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(18, 26, 41, 0.08);
     border-radius: 18px;
     text-align: center;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
     box-sizing: border-box;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 /* Título SIDOVI */
 .sidovi-box h1 {
     margin: 0 0 15px;
-    color: #ffffff;
+    color: #121a29;
     font-size: 48px;
     font-weight: 800;
     letter-spacing: 4px;
@@ -71,7 +103,7 @@ body {
 .sidovi-box p {
     margin: 0 auto 30px;
     max-width: 520px;
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(0, 0, 0, 0.92);
     font-size: 16px;
     line-height: 1.6;
 }
@@ -101,13 +133,13 @@ body {
 }
 /* Postularme */
 .sidovi-box .nav-secondary {
-    background: transparent !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.75);
+    background: #ffffff !important;
+    color: #121a29 !important;
+    border: 1px solid rgba(18, 26, 41, 0.25);
 }
 .sidovi-box .nav-secondary:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
+    background: #f0f1f3 !important;
+    color: #121a29 !important;
 }
 /* =========================================
    BOTÓN ¿NECESITAS AYUDA?
@@ -216,9 +248,9 @@ body {
    ========================================= */
 
 .site-footer {
-    min-height: 100px !important;
+    min-height: 140px !important;
 
-    padding: 18px 28px !important;
+    padding: 22px 28px !important;
 
     border-top: 4px solid #0b2b58 !important;
 }
@@ -228,14 +260,34 @@ body {
 
 .site-footer .footer-inner {
     min-height: 65px;
-
-    display: flex;
-
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
+    gap: 24px;
+}
 
-    justify-content: space-between;
+.footer-contact {
+    text-align: center;
+    line-height: 1.5;
+}
 
-    gap: 20px;
+.footer-contact p {
+    margin: 0;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-contact p strong {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+@media (max-width: 620px) {
+    .site-footer .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
 }
 
 
@@ -252,10 +304,9 @@ body {
 
 .site-footer p {
     margin: 0;
-
     font-size: 13px;
-
     text-align: center;
+    transform: translateX(-30px);
 }
 
 
@@ -432,10 +483,9 @@ body {
 
 .site-footer p {
     margin: 0;
-
     font-size: 13px;
-
     text-align: center;
+    transform: translateX(-15px);
 }
 
 
