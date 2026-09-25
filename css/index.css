@@ -48,9 +48,9 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 .header-inner {max-width: 1120px; margin: 0 auto; padding: 0 1.75rem; display: flex; align-items: center; justify-content: space-between; height: 68px;}
 .brand-logo {height: 46px; width: auto; object-fit: contain;}
 .nav-list {display: flex; align-items: center; gap: 0.15rem;}
-.nav-link {font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--blanco-80); padding: 0.45rem 1.1rem; border-radius: var(--radius); letter-spacing: 0.06em; text-transform: uppercase; transition: background var(--transition), color var(--transition);}
+.nav-link {font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--azul-oscuro); padding: 0.45rem 1.1rem; border-radius: var(--radius); letter-spacing: 0.06em; text-transform: uppercase; transition: background var(--transition), color var(--transition), transform var(--transition);}
 .nav-link:hover,
-.nav-link.active {background: var(--blanco-15); color: var(--blanco);}
+.nav-link.active {background: var(--blanco-15); color: var(--blanco); transform: translateY(-2px);}
 .nav-link.nav-cta {background: var(--rojo); color: var(--blanco); margin-left: 0.75rem; padding: 0.45rem 1.3rem;}
 .nav-link.nav-cta:hover {background: var(--rojo-hover); color: var(--blanco);}
 .menu-toggle {display: none; background: none; border: none; color: var(--blanco); font-size: 1.5rem; cursor: pointer;}
@@ -85,7 +85,7 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 .btn-primary:hover {background: var(--rojo-hover); border-color: var(--rojo-hover); color: var(--blanco); transform: translateY(-2px); box-shadow: 0 6px 22px rgba(200,25,43,0.38);}
 .btn-secondary {background: var(--azul-claro); color: var(--blanco); border-color: var(--azul-claro);}
 .btn-secondary:hover {background: var(--azul-bright); border-color: var(--azul-bright); color: var(--blanco); transform: translateY(-2px);}
-.btn-outline {background: transparent; color: var(--blanco); border-color: rgba(255,255,255,0.35);}
+.btn-outline {background: transparent; color: var(--blanco); border-color: rgba(233, 221, 221, 0.35);}
 .btn-outline:hover {background: var(--blanco-15); border-color: var(--blanco); color: var(--blanco);}
 .btn-sm {padding: 0.45rem 1.2rem; font-size: 0.88rem;}
 .full-btn {width: 100%;}
@@ -93,7 +93,7 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 /* =============================================
    SECCIONES COMUNES
    ============================================= */
-.about, .benefits, .flow, .roles,
+.about, .benefits, .flow, .roles,s
 .ofertas-section, .form-section {padding: 4.5rem 0;}
 .about   {background: var(--blanco);}
 .benefits{background: var(--gris-bg);}
@@ -132,14 +132,6 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 .step-num {font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--rojo); min-width: 2.2rem; line-height: 1;}
 .flow-cta {text-align: center;}
 
-/* =============================================
-   ROLES
-   ============================================= */
-.roles-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem;}
-.role-card {background: var(--gris-bg); border-left: 4px solid var(--rojo); border-radius: var(--radius); padding: 1.5rem; transition: box-shadow var(--transition);}
-.role-card:hover {box-shadow: var(--shadow-md);}
-.role-card h3 {color: var(--azul-oscuro); margin-bottom: 0.5rem;}
-.role-card p {color: var(--gris-texto); font-size: 0.94rem;}
 
 /* =============================================
    PAGE HERO (subpáginas)
@@ -351,41 +343,6 @@ tbody td {padding: 0.85rem 1rem; color: var(--texto); vertical-align: middle;}
 .score-big {font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--azul-oscuro); line-height: 1;}
 .score-label {font-size: 0.84rem; color: var(--gris-texto);}
 
-/* HDV */
-.hdv-layout {display: grid; grid-template-columns: 270px 1fr; gap: 1.5rem;}
-.hdv-sidebar {background: var(--blanco); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--gris-borde); padding: 1.5rem; text-align: center;}
-.hdv-avatar {width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-claro)); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; margin: 0 auto 1rem; border: 3px solid var(--rojo);}
-.hdv-name {font-family: var(--font-display); font-size: 1.2rem; color: var(--azul-oscuro); font-weight: 700;}
-.hdv-cargo {font-size: 0.85rem; color: var(--gris-texto); margin-bottom: 1rem;}
-.hdv-info-list {display: flex; flex-direction: column; gap: 0.6rem; text-align: left; font-size: 0.87rem;}
-.hdv-info-list li {display: flex; gap: 0.5rem;}
-.hdv-info-list li strong {color: var(--azul-oscuro); min-width: 80px;}
-.hdv-main {display: flex; flex-direction: column; gap: 1rem;}
-.hdv-section {background: var(--blanco); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--gris-borde); padding: 1.5rem;}
-.hdv-section h3 {font-family: var(--font-display); color: var(--azul-oscuro); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--rojo); font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;}
-.exp-item {margin-bottom: 1rem;}
-.exp-item h4 {color: var(--azul-oscuro); font-size: 0.95rem;}
-.exp-item span {font-size: 0.82rem; color: var(--azul-bright); font-family: var(--font-display);}
-.exp-item p {font-size: 0.9rem; color: var(--gris-texto); margin-top: 0.25rem;}
-.skills-tags {display: flex; flex-wrap: wrap; gap: 0.5rem;}
-.skill-tag {background: rgba(30,90,173,0.08); color: var(--azul-claro); border: 1px solid rgba(30,90,173,0.2); border-radius: 100px; padding: 0.28rem 0.85rem; font-size: 0.8rem; font-weight: 600; font-family: var(--font-display); letter-spacing: 0.04em;}
-
-/* CONTRATO */
-.contrato-doc {background: var(--blanco); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--gris-borde); max-width: 820px; margin: 0 auto; padding: 3rem; border-top: 4px solid var(--azul-oscuro);}
-.contrato-header {text-align: center; border-bottom: 2px solid var(--azul-oscuro); padding-bottom: 1.5rem; margin-bottom: 2rem;}
-.contrato-header h2 {color: var(--azul-oscuro); font-size: 1.45rem; letter-spacing: 0.12em; text-transform: uppercase;}
-.contrato-header p {font-size: 0.88rem; color: var(--gris-texto); margin-top: 0.25rem;}
-.contrato-clause {margin-bottom: 1.25rem;}
-.contrato-clause h3 {color: var(--azul-oscuro); font-size: 0.93rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem;}
-.contrato-clause p {font-size: 0.9rem; color: #374151; line-height: 1.75;}
-.contrato-firmas {display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; border-top: 1px solid var(--gris-borde); padding-top: 2rem;}
-.firma-box {text-align: center;}
-.firma-line {border-bottom: 1.5px solid var(--azul-oscuro); height: 50px; margin-bottom: 0.5rem;}
-.firma-box p {font-size: 0.82rem; color: var(--gris-texto);}
-.firma-box strong {color: var(--azul-oscuro); display: block;}
-.contrato-actions {display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;}
-.contrato-actions .btn-outline {border-color: var(--azul-claro); color: var(--azul-claro);}
-
 /* FILTROS */
 .filter-bar {display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center;}
 .filter-bar input, .filter-bar select {padding: 0.55rem 1rem; border: 1.5px solid var(--gris-borde); border-radius: var(--radius); font-family: var(--font-body); font-size: 0.9rem; background: var(--blanco); outline: none; transition: border-color var(--transition);}
@@ -474,18 +431,18 @@ tbody td {padding: 0.85rem 1rem; color: var(--texto); vertical-align: middle;}
 @media(max-width:620px){.header-status{display:flex; font-size:.72rem; padding:8px 10px;}.social-links{width:100%; justify-content:center;}}
 :root {--ink:#121a29; --slate:#536071; --line:#1c3e67; --paper:#fff; --mist:#f3f5f7; --red:#c8192b; --red-dark:#a91424;}
 body {min-height: 100vh; display: flex; flex-direction: column; background-color: #121a29; background-image:
-            linear-gradient(rgba(4,8,18,.22), rgba(4,8,18,.22)),
+            linear-gradient(rgba(4,8,18,.38), rgba(4,8,18,.38)),
             url('../img/imagen_1.jpg'); background-position: center top; background-size: cover; background-repeat: no-repeat; background-attachment: scroll; color: #fff; transition: background-image .8s ease-in-out;}
 .site-footer {margin-top:auto; min-height:220px; display:flex; align-items:center; background:#123d78!important; border-top:8px solid #0b2b58!important; padding:3.5rem 1.75rem!important; box-shadow:0 -12px 30px rgba(4,17,42,.32);}
 .site-footer p,.social-links a {color:rgba(255,255,255,.9);}
 .site-header {position: sticky; top: 0; z-index: 30; background: linear-gradient(
-            to right,
+            115deg,
             #ffffff 0%,
             #ffffff 50%,
             var(--red) 50%,
             var(--red) 100%
     ) !important; box-shadow: 0 5px 20px rgba(70,0,10,.28); backdrop-filter: none;}
-.header-inner {max-width:1240px!important; height:78px!important; margin:auto; padding:0 28px!important; display:flex!important; align-items:center!important; justify-content:space-between!important;}
+.header-inner {max-width:1120px!important; height:78px!important; margin:auto; padding:0 28px!important; display:flex!important; align-items:center!important; justify-content:space-between!important;}
 .brand {display:flex; align-items:center; gap:18px; color:#fff;}.brand-logo-img{height:50px; width:auto;}.brand-kicker{border-left:2px solid rgba(255,255,255,.75); padding-left:18px; font-family:var(--font-display); font-size:.92rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#fff;}
 .header-status{display:flex; align-items:center; gap:10px; padding:10px 15px; border:1px solid rgba(255,255,255,.75); border-radius:999px; color:#fff; font-family:var(--font-display); font-size:.84rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase;}.header-status span,.chat-presence,.badge-dot{width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 0 0 5px rgba(255,255,255,.2);}
 .hero{position:relative; overflow:hidden; padding:72px 28px 58px; background:linear-gradient(115deg,#f8f9fa 0%,#f0f2f4 57%,#e9edf1 100%);}.hero::after{content:""; position:absolute; inset:0 0 auto; height:4px; background:var(--red);}.hero-bg-lines{position:absolute; inset:0; background-image:linear-gradient(90deg,rgba(20,30,45,.045) 1px,transparent 1px),linear-gradient(rgba(20,30,45,.035) 1px,transparent 1px); background-size:72px 72px; mask-image:linear-gradient(90deg,#000,transparent 96%);}
@@ -499,11 +456,11 @@ body {min-height: 100vh; display: flex; flex-direction: column; background-color
 /* =========================================
    CAJA SIDOVI
    ========================================= */
-.sidovi-box {width: 650px; max-width: 90%; margin: 70px auto 90px; padding: 40px; background: rgba(97, 104, 115, 0.72); border: 1px solid rgba(255, 255, 255, 0.30); border-radius: 18px; text-align: center; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35); box-sizing: border-box;}
+.sidovi-box {width: 650px; max-width: 90%; margin: 70px auto 90px; padding: 40px; background: rgba(235, 237, 239, 0.937); border: 1px solid rgba(255, 255, 255, 0.30); border-radius: 18px; text-align: center; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35); box-sizing: border-box;}
 /* Título SIDOVI */
 .sidovi-box h1 {margin: 0 0 15px; color: #ffffff; font-size: 48px; font-weight: 800; letter-spacing: 4px;}
 /* Descripción */
-.sidovi-box p {margin: 0 auto 30px; max-width: 520px; color: rgba(255, 255, 255, 0.92); font-size: 19px; line-height: 1.6;}
+.sidovi-box p {margin: 0 auto 30px; max-width: 520px; color: rgba(18, 17, 17, 0.92); font-size: 19px; line-height: 1.6;}
 /* =========================================
    BOTONES VER OFERTAS / POSTULARME
    ========================================= */
@@ -513,7 +470,7 @@ body {min-height: 100vh; display: flex; flex-direction: column; background-color
 .sidovi-box .nav-cta {background: #c8192b !important; color: #ffffff !important; border: 1px solid #c8192b;}
 .sidovi-box .nav-cta:hover {background: #a91424 !important;}
 /* Postularme */
-.sidovi-box .nav-secondary {background: transparent !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.75);}
+.sidovi-box .nav-secondary {background: #c8192b !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.75);}
 .sidovi-box .nav-secondary:hover {background: rgba(255, 255, 255, 0.15) !important; color: #ffffff !important;}
 /* =========================================
    BOTÓN ¿NECESITAS AYUDA?

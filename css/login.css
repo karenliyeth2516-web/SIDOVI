@@ -44,13 +44,13 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 /* =============================================
    HEADER / NAV
    ============================================= */
-.site-header {background: var(--azul-oscuro); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 0 var(--rojo), var(--shadow-lg);}
+.site-header {background: linear-gradient(115deg, #ffffff 0%, #ffffff 50%, var(--rojo) 50%, var(--rojo) 100%); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 0 var(--rojo), var(--shadow-lg);}
 .header-inner {max-width: 1120px; margin: 0 auto; padding: 0 1.75rem; display: flex; align-items: center; justify-content: space-between; height: 68px;}
 .brand-logo {height: 46px; width: auto; object-fit: contain;}
 .nav-list {display: flex; align-items: center; gap: 0.15rem;}
-.nav-link {font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--blanco-80); padding: 0.45rem 1.1rem; border-radius: var(--radius); letter-spacing: 0.06em; text-transform: uppercase; transition: background var(--transition), color var(--transition);}
+.nav-link {font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--azul-oscuro); padding: 0.45rem 1.1rem; border-radius: var(--radius); letter-spacing: 0.06em; text-transform: uppercase; transition: background var(--transition), color var(--transition), transform var(--transition);}
 .nav-link:hover,
-.nav-link.active {background: var(--blanco-15); color: var(--blanco);}
+.nav-link.active {background: var(--blanco-15); color: var(--blanco); transform: translateY(-2px);}
 .nav-link.nav-cta {background: var(--rojo); color: var(--blanco); margin-left: 0.75rem; padding: 0.45rem 1.3rem;}
 .nav-link.nav-cta:hover {background: var(--rojo-hover); color: var(--blanco);}
 .menu-toggle {display: none; background: none; border: none; color: var(--blanco); font-size: 1.5rem; cursor: pointer;}
@@ -220,10 +220,8 @@ input[type="file"] {padding: 0.5rem; font-size: 0.86rem; cursor: pointer;}
 /* =============================================
    LOGIN PAGE
    ============================================= */
-.login-page main.login-main {min-height: calc(100vh - 68px - 76px); display: flex; align-items: center; justify-content: center; padding: 3rem 1.5rem; background: var(--azul-oscuro); background-image:
-    repeating-linear-gradient(90deg, rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px),
-    repeating-linear-gradient(0deg,  rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px);}
-.login-section {width: 100%; display: flex; justify-content: center;}
+.login-page main.login-main {min-height: calc(100vh - 68px - 76px); display: flex; align-items: center; justify-content: center; padding: 3rem 1.5rem; background: linear-gradient(rgba(2,6,33,.38), rgba(2,6,33,.38)), url('../img/accesos.png') center/cover no-repeat;}
+.login-section {width: 100%; max-width: 1120px; display: flex; justify-content: flex-end; padding-right: clamp(0rem, 5vw, 4rem);}
 .login-card {background: var(--blanco); border-radius: var(--radius-lg); padding: 2.75rem 2.5rem; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.45); border-top: 5px solid var(--rojo); animation: fadeUp 0.55s ease both;}
 .login-brand {text-align: center; margin-bottom: 2rem;}
 .login-shield {width: 72px; height: auto; margin: 0 auto 1rem;}
@@ -449,6 +447,7 @@ tbody td {padding: 0.85rem 1rem; color: var(--texto); vertical-align: middle;}
   .hero-eyebrow {justify-content: center;}
   .hero-actions {justify-content: center;}
   .hero-shield {order: -1;}
+   .login-section {justify-content: center; padding-right: 0;}
   .form-row {grid-template-columns: 1fr;}
   .form-actions {justify-content: stretch;}
   .form-actions .btn {width: 100%; text-align: center;}
