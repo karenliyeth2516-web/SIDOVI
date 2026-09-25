@@ -1,1 +1,813 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Exámenes médicos · SIDOVI</title><link rel="stylesheet" href="css/estilos.css"></head><body><header class="site-header"><div class="header-inner"><div class="brand"><img src="img/logo_sidovi.png" alt="SIDOVI" class="brand-logo"></div><nav><ul class="nav-list"><li><a class="nav-link" href="RRHH.html">Dashboard</a></li><li><a class="nav-link active" href="examenes.html">Exámenes médicos</a></li><li><a class="nav-link" href="mi-perfil.html">Mi perfil</a></li><li><a class="nav-link nav-cta" href="login.html">Cerrar sesión</a></li></ul></nav></div></header><div class="panel-layout"><aside class="sidebar"><span class="sidebar-title">Proceso</span><a class="sidebar-link" href="RRHH.html">📋 Dashboard</a><a class="sidebar-link" href="reporte.html">📊 Reportes</a><a class="sidebar-link active" href="examenes.html">🧪 Exámenes médicos</a><a class="sidebar-link" href="mi-perfil.html">👤 Mi perfil</a></aside><main class="panel-content"><div class="panel-header"><h1>Exámenes médicos</h1><p>Agenda, recibe documentos y verifica esta etapa con trazabilidad.</p></div><section id="agendaSection" class="data-table-wrap"><h2>Agendar exámenes (Recursos Humanos)</h2><form id="agendaForm"><div class="form-row"><div class="field"><label>Postulación</label><select id="postulacion" required></select></div><div class="field"><label>Tipos de examen</label><select id="tipos" multiple required><option>Examen médico ocupacional</option><option>Examen visual</option><option>Examen auditivo</option><option>Examen de laboratorio</option><option>Otros exámenes requeridos</option></select></div><div class="field"><label>Fecha</label><input id="fecha" type="date" required></div><div class="field"><label>Hora</label><input id="hora" type="time" required></div></div><div class="form-row"><div class="field"><label>Lugar</label><input id="lugar" required></div><div class="field"><label>Dirección</label><input id="direccion"></div><div class="field"><label>Observaciones</label><input id="observaciones"></div></div><button class="btn btn-primary">Agendar exámenes</button></form></section><section id="cargaSection" class="data-table-wrap"><h2>Cargar resultado (RRHH)</h2><form id="cargaForm"><div class="form-row"><div class="field"><label>Examen programado</label><select id="examenCarga" required></select></div><div class="field"><label>Nombre del documento</label><input id="nombreDocumento" required></div><div class="field"><label>Archivo</label><input id="archivo" type="file" accept=".pdf,.jpg,.jpeg,.png" required></div><div class="field"><label>Observaciones</label><input id="obsCarga"></div></div><button class="btn btn-secondary">Cargar documento</button></form></section><section class="data-table-wrap"><h2>Programaciones y verificación</h2><div id="alerta" class="form-alert" hidden></div><table><thead><tr><th>Aspirante</th><th>Fecha y hora</th><th>Lugar</th><th>Tipos</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="lista"><tr><td colspan="6">Cargando...</td></tr></tbody></table></section></main></div><script src="js/examenes.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exámenes médicos · SIDOVI</title>
+
+    <link rel="stylesheet" href="css/examenes.css">
+
+    
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+
+        <div class="brand">
+            <img src="img/logo_sidovi.png" alt="SIDOVI" class="brand-logo">
+        </div>
+
+        <nav>
+            <ul class="nav-list">
+                <li>
+                    <a class="nav-link" href="RRHH.html">Dashboard</a>
+                </li>
+
+                <li>
+                    <a class="nav-link active" href="examenes.html">
+                        Exámenes médicos
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link" href="mi-perfil.html">
+                        Mi perfil
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link nav-cta" href="login.html">
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
+
+<div class="panel-layout">
+
+    <aside class="sidebar">
+
+    <span class="sidebar-title">
+      Proceso
+    </span>
+
+        <a class="sidebar-link" href="RRHH.html">
+            📋 Dashboard
+        </a>
+
+        <a class="sidebar-link" href="reporte.html">
+            📊 Reportes
+        </a>
+
+        <a class="sidebar-link active" href="examenes.html">
+            🧪 Exámenes médicos
+        </a>
+
+        <a class="sidebar-link" href="mi-perfil.html">
+            👤 Mi perfil
+        </a>
+
+    </aside>
+
+
+    <main class="panel-content">
+
+        <div class="panel-header">
+            <h1>Exámenes médicos</h1>
+
+            <p>
+                Gestiona la programación, resultados y aprobación de los exámenes médicos de los candidatos.
+            </p>
+        </div>
+
+
+        <!-- =====================================================
+             1. AGENDAR EXÁMENES
+             ===================================================== -->
+
+        <section id="agendaSection" class="data-table-wrap">
+
+            <h2>🧪 Agendar exámenes</h2>
+
+            <p class="sidovi-section-description">
+                Programa los exámenes médicos de los candidatos aprobados por Gerencia.
+            </p>
+
+            <form id="agendaForm">
+
+                <div class="form-row">
+
+                    <div class="field">
+                        <label for="postulacion">
+                            Postulación
+                        </label>
+
+                        <select id="postulacion" required>
+                            <option value="">
+                                Cargando candidatos...
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="tipos">
+                            Tipos de examen
+                        </label>
+
+                        <select id="tipos" multiple required>
+
+                            <option value="Examen médico ocupacional">
+                                Examen médico ocupacional
+                            </option>
+
+                            <option value="Examen visual">
+                                Examen visual
+                            </option>
+
+                            <option value="Examen auditivo">
+                                Examen auditivo
+                            </option>
+
+                            <option value="Examen de laboratorio">
+                                Examen de laboratorio
+                            </option>
+
+                            <option value="Otros exámenes requeridos">
+                                Otros exámenes requeridos
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="fecha">
+                            Fecha
+                        </label>
+
+                        <input
+                                id="fecha"
+                                type="date"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="hora">
+                            Hora
+                        </label>
+
+                        <input
+                                id="hora"
+                                type="time"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="field">
+
+                        <label for="lugar">
+                            Lugar
+                        </label>
+
+                        <input
+                                id="lugar"
+                                type="text"
+                                placeholder="Ej. IPS Colviseg"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="direccion">
+                            Dirección
+                        </label>
+
+                        <input
+                                id="direccion"
+                                type="text"
+                                placeholder="Dirección del lugar"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="observaciones">
+                            Observaciones
+                        </label>
+
+                        <input
+                                id="observaciones"
+                                type="text"
+                                placeholder="Información adicional"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button
+                        type="submit"
+                        class="btn btn-primary"
+                >
+                    📅 Agendar exámenes
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- =====================================================
+             2. EXÁMENES PROGRAMADOS
+             ===================================================== -->
+
+        <section
+                id="cargaSection"
+                class="data-table-wrap"
+        >
+
+            <h2>📋 Exámenes programados</h2>
+
+            <p class="sidovi-section-description">
+                Aquí aparecen los candidatos que ya tienen sus exámenes programados.
+                Desde esta sección puedes enviar la citación y gestionar los resultados.
+            </p>
+
+
+            <div
+                    id="alerta"
+                    class="form-alert"
+                    hidden
+            ></div>
+
+
+            <divclass="sidovi-inline-1">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+                        <th>Aspirante</th>
+                        <th>Fecha y hora</th>
+                        <th>Lugar</th>
+                        <th>Tipos</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="lista">
+
+                    <tr>
+                        <td
+                                colspan="6"
+                                class="sidovi-empty"
+                        >
+                            Cargando exámenes...
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             3. PRÓXIMAS FIRMAS
+             ===================================================== -->
+
+        <section
+                id="firmasSection"
+                class="data-table-wrap"
+        >
+
+            <h2>📑 Próximas firmas de contrato</h2>
+
+            <p class="sidovi-section-description">
+                Los candidatos que aprobaron sus exámenes aparecen aquí para programar la firma de su contrato.
+            </p>
+
+
+            <divclass="sidovi-inline-2">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+                        <th>Aspirante</th>
+                        <th>Cargo</th>
+                        <th>Fecha de firma</th>
+                        <th>Hora</th>
+                        <th>Lugar</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="listaFirmas">
+
+                    <tr>
+                        <td
+                                colspan="7"
+                                class="sidovi-empty"
+                        >
+                            Cargando candidatos...
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL: SUBIR RESULTADO
+     ========================================================= -->
+
+<div
+        id="resultadoModal"
+        class="sidovi-modal"
+        hidden
+>
+
+    <div class="sidovi-modal-card">
+
+        <div class="sidovi-modal-header">
+
+            <div>
+
+                <h2>📄 Gestionar resultado</h2>
+
+                <p>
+                    Carga el resultado médico del candidato.
+                </p>
+
+            </div>
+
+            <button
+                    type="button"
+                    class="sidovi-close"
+                    data-close="resultadoModal"
+                    aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="cargaForm">
+
+            <div class="sidovi-modal-body">
+
+                <div
+                        id="resultadoCandidato"
+                        class="sidovi-candidate-box"
+                >
+                    <strong>Selecciona un examen</strong>
+                    <span>Información del candidato</span>
+                </div>
+                <div class="sidovi-modal-field">
+
+                    <label for="examenCarga">
+                        Examen
+                    </label>
+
+                    <select
+                            id="examenCarga"
+                            required
+                    >
+                        <option value="">
+                            Seleccionar examen
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="sidovi-modal-row">
+
+                    <div class="sidovi-modal-field">
+
+                        <label for="nombreDocumento">
+                            Nombre del documento
+                        </label>
+
+                        <input
+                                id="nombreDocumento"
+                                type="text"
+                                placeholder="Ej. Resultado examen médico"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="sidovi-modal-field">
+
+                        <label for="archivo">
+                            Archivo
+                        </label>
+
+                        <input
+                                id="archivo"
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="sidovi-modal-field">
+
+                    <label for="obsCarga">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                            id="obsCarga"
+                            placeholder="Observaciones del resultado..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="sidovi-modal-actions">
+
+                <button
+                        type="button"
+                        class="sidovi-btn-cancel"
+                        data-close="resultadoModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                        type="submit"
+                        class="sidovi-btn-primary"
+                >
+                    📤 Subir resultado
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL: VERIFICAR RESULTADO
+     ========================================================= -->
+
+<div
+        id="verificacionModal"
+        class="sidovi-modal"
+        hidden
+>
+
+    <div class="sidovi-modal-card">
+
+        <div class="sidovi-modal-header">
+
+            <div>
+
+                <h2>🔎 Verificar resultado</h2>
+
+                <p>
+                    Determina si el candidato aprobó esta etapa.
+                </p>
+
+            </div>
+
+            <button
+                    type="button"
+                    class="sidovi-close"
+                    data-close="verificacionModal"
+                    aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="verificacionForm">
+
+            <div class="sidovi-modal-body">
+
+                <div
+                        id="verificacionCandidato"
+                        class="sidovi-candidate-box"
+                >
+                    <strong>Candidato</strong>
+                    <span>Resultado de exámenes</span>
+                </div>
+
+
+                <div class="sidovi-modal-field">
+
+                    <label for="resultadoExamen">
+                        Resultado
+                    </label>
+
+                    <select
+                            id="resultadoExamen"
+                            required
+                    >
+
+                        <option value="">
+                            Seleccionar resultado
+                        </option>
+
+                        <option value="APROBADO">
+                            ✅ APROBADO
+                        </option>
+
+                        <option value="RECHAZADO">
+                            ❌ RECHAZADO
+                        </option>
+
+                        <option value="PENDIENTE">
+                            ⏳ PENDIENTE
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                        id="motivoRechazoWrap"
+                        class="sidovi-modal-field"
+                        hidden
+                >
+
+                    <label for="motivoRechazo">
+                        Motivo del rechazo
+                    </label>
+
+                    <textarea
+                            id="motivoRechazo"
+                            placeholder="Escribe por qué el candidato no aprobó los exámenes..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="sidovi-modal-field">
+
+                    <label for="observacionesVerificacion">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                            id="observacionesVerificacion"
+                            placeholder="Observaciones de RRHH..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="sidovi-modal-actions">
+
+                <button
+                        type="button"
+                        class="sidovi-btn-cancel"
+                        data-close="verificacionModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                        type="submit"
+                        class="sidovi-btn-primary"
+                >
+                    Guardar verificación
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL: PROGRAMAR FIRMA
+     ========================================================= -->
+
+<div
+        id="firmaModal"
+        class="sidovi-modal"
+        hidden
+>
+
+    <div class="sidovi-modal-card">
+
+        <div class="sidovi-modal-header">
+
+            <div>
+
+                <h2>📅 Programar firma de contrato</h2>
+
+                <p>
+                    Programa la cita para la firma del contrato.
+                </p>
+
+            </div>
+
+            <button
+                    type="button"
+                    class="sidovi-close"
+                    data-close="firmaModal"
+                    aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="firmaForm">
+
+            <div class="sidovi-modal-body">
+
+                <div
+                        id="firmaCandidato"
+                        class="sidovi-candidate-box"
+                >
+                    <strong>Candidato</strong>
+                    <span>Exámenes aprobados</span>
+                </div>
+
+
+                <div class="sidovi-modal-row">
+
+                    <div class="sidovi-modal-field">
+
+                        <label for="firmaFecha">
+                            Fecha de firma
+                        </label>
+
+                        <input
+                                id="firmaFecha"
+                                type="date"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="sidovi-modal-field">
+
+                        <label for="firmaHora">
+                            Hora
+                        </label>
+
+                        <input
+                                id="firmaHora"
+                                type="time"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="sidovi-modal-row">
+
+                    <div class="sidovi-modal-field">
+
+                        <label for="firmaLugar">
+                            Lugar
+                        </label>
+
+                        <input
+                                id="firmaLugar"
+                                type="text"
+                                placeholder="Ej. Oficina principal Colviseg"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="sidovi-modal-field">
+
+                        <label for="firmaDireccion">
+                            Dirección
+                        </label>
+
+                        <input
+                                id="firmaDireccion"
+                                type="text"
+                                placeholder="Dirección"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="sidovi-modal-field">
+
+                    <label for="firmaObservaciones">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                            id="firmaObservaciones"
+                            placeholder="Información adicional para el candidato..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="sidovi-modal-actions">
+
+                <button
+                        type="button"
+                        class="sidovi-btn-cancel"
+                        data-close="firmaModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                        type="submit"
+                        class="sidovi-btn-primary"
+                >
+                    📅 Programar firma
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="js/examenes.js"></script>
+
+</body>
+</html>

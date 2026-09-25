@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Estadísticas · SIDOVI</title>
+
+    <link rel="stylesheet" href="css/reporte-estadisticas.css">
+
+    
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <div class="header-inner">
+
+        <div class="brand">
+
+            <img
+                    src="../img/logo_sidovi.png"
+                    alt="SIDOVI"
+                    class="brand-logo"
+            >
+
+        </div>
+
+        <nav>
+
+            <ul class="nav-list">
+
+                <li>
+                    <a class="nav-link" href="../RRHH.html">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link active" href="reporte-estadisticas.html">
+                        Reportes
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link" href="../mi-perfil.html">
+                        Mi perfil
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link nav-cta" href="../login.html">
+                        Cerrar sesión
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Abrir menú"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="panel-layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <span class="sidebar-title">
+            Gestión
+        </span>
+
+        <a
+                class="sidebar-link"
+                href="../RRHH.html"
+        >
+            📋 Dashboard
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="../postulantes.html"
+        >
+            👥 Postulantes
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="../hojasdevida.html"
+        >
+            📄 Hojas de Vida
+        </a>
+
+        <a
+                class="sidebar-link active"
+                href="../reporte.html"
+        >
+            📊 Reportes
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="../examenes.html"
+        >
+            🧪 Exámenes médicos
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="../mi-perfil.html"
+        >
+            👤 Mi perfil
+        </a>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+
+    <main class="panel-content">
+
+        <div class="panel-header">
+
+            <h1>
+                Estadísticas del proceso
+            </h1>
+
+            <p>
+                Consulta las estadísticas generales del proceso
+                de selección por periodo, género, sede, cargo y estado.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             NAVEGACIÓN
+             ===================================================== -->
+
+        <div class="report-navigation">
+
+            <a
+                    href="../reporte.html"
+                    class="btn btn-outline"
+            >
+                📋 Historial individual
+            </a>
+
+            <a
+                    href="reporte-estadisticas.html"
+                    class="btn btn-primary report-active"
+            >
+                📊 Estadísticas
+            </a>
+
+        </div>
+
+
+        <!-- =====================================================
+             ALERTA
+             ===================================================== -->
+
+        <div
+                id="reportAlert"
+                class="form-alert"
+                hidden
+        ></div>
+
+
+        <!-- =====================================================
+             FILTROS
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    🔎 Filtrar estadísticas
+                </h2>
+
+                <p>
+                    Selecciona el periodo que deseas analizar.
+                </p>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label for="desde">
+                        Desde
+                    </label>
+
+                    <input
+                            id="desde"
+                            type="date"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="hasta">
+                        Hasta
+                    </label>
+
+                    <input
+                            id="hasta"
+                            type="date"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        &nbsp;
+                    </label>
+
+                    <button
+                            class="btn btn-primary"
+                            id="btnConsultar"
+                            type="button"
+                    >
+                        🔎 Consultar estadísticas
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             RESUMEN
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📈 Resumen general
+                </h2>
+
+            </div>
+
+            <div
+                    class="stats-row"
+                    id="summary"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             GÉNERO
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    👥 Postulaciones por género
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Género</th>
+                    <th>Cantidad</th>
+                    <th>Porcentaje</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="genero"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             MES
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📅 Postulaciones por mes
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Periodo</th>
+                    <th>Cantidad</th>
+                    <th>Porcentaje</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="monthly"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             SEMANA
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📆 Postulaciones por semana
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Inicio de semana</th>
+                    <th>Fin de semana</th>
+                    <th>Cantidad</th>
+                    <th>Porcentaje</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="weekly"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             SEDES
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    🏢 Postulaciones por sede
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Sede</th>
+                    <th>Total</th>
+                    <th>Hombres</th>
+                    <th>Mujeres</th>
+                    <th>Porcentaje</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="sedes"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             CARGOS
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    💼 Postulaciones por cargo
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Cargo</th>
+                    <th>Cantidad</th>
+                    <th>Porcentaje</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="cargos"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             ESTADOS
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📊 Estado de las postulaciones
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Estado</th>
+                    <th>Cantidad</th>
+                    <th>Porcentaje</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="states"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             SEDE + GÉNERO
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    🏢 Género por sede
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Sede</th>
+                    <th>Género</th>
+                    <th>Cantidad</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="sedeGenero"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             HISTORIAL GENERAL
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📑 Historial general de postulaciones
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Aspirante</th>
+                    <th>Documento</th>
+                    <th>Fecha</th>
+                    <th>Cargo</th>
+                    <th>Sede</th>
+                    <th>Estado</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="history"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =====================================================
+             PDF
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📄 Reporte en PDF
+                </h2>
+
+                <p>
+                    Genera un documento PDF con las estadísticas
+                    del periodo seleccionado.
+                </p>
+
+            </div>
+
+            <div class="pdf-container">
+
+                <button
+                        class="btn btn-primary btn-pdf-grande"
+                        id="btnPdf"
+                        type="button"
+                >
+                    GENERAR PDF
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="../js/reporte.js"></script>
+
+</body>
+</html>

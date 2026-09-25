@@ -1,1 +1,342 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reportes · SIDOVI</title><link rel="stylesheet" href="css/estilos.css"></head><body><header class="site-header"><div class="header-inner"><div class="brand"><img src="img/logo_sidovi.png" alt="SIDOVI" class="brand-logo"></div><nav><ul class="nav-list"><li><a class="nav-link" href="RRHH.html">Dashboard</a></li><li><a class="nav-link active" href="reporte.html">Reportes</a></li><li><a class="nav-link" href="mi-perfil.html">Mi perfil</a></li><li><a class="nav-link nav-cta" href="login.html">Cerrar sesión</a></li></ul></nav><button class="menu-toggle" id="menuToggle">☰</button></div></header><div class="panel-layout"><aside class="sidebar"><span class="sidebar-title">Gestión</span><a class="sidebar-link" href="RRHH.html">📋 Dashboard</a><a class="sidebar-link" href="postulantes.html">👥 Postulantes</a><a class="sidebar-link" href="hojasdevida.html">📄 Hojas de Vida</a><a class="sidebar-link active" href="reporte.html">📊 Reportes</a><a class="sidebar-link" href="examenes.html">🧪 Exámenes médicos</a><a class="sidebar-link" href="mi-perfil.html">👤 Mi perfil</a></aside><main class="panel-content"><div class="panel-header"><h1>Reportes del proceso de selección</h1><p>Estadísticas, historial y trazabilidad con datos reales de PostgreSQL.</p></div><section class="data-table-wrap"><div class="form-row"><div class="field"><label for="desde">Desde</label><input id="desde" type="date"></div><div class="field"><label for="hasta">Hasta</label><input id="hasta" type="date"></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary" id="btnConsultar">Consultar reporte</button></div><div class="field"><label>&nbsp;</label><button class="btn btn-outline" id="btnPdf">Generar PDF</button></div></div><div id="reportAlert" class="form-alert" hidden></div></section><div class="stats-row" id="summary"></div><div class="data-table-wrap"><h2>Postulaciones por mes</h2><table><thead><tr><th>Periodo</th><th>Cantidad</th></tr></thead><tbody id="monthly"></tbody></table></div><div class="data-table-wrap"><h2>Estado, vacante y sede</h2><table><thead><tr><th>Estado</th><th>Cantidad</th></tr></thead><tbody id="states"></tbody></table><table><thead><tr><th>Vacante</th><th>Cargo</th><th>Sede</th><th>Postulantes</th></tr></thead><tbody id="vacancies"></tbody></table></div><div class="data-table-wrap"><h2>Historial completo de postulaciones</h2><table><thead><tr><th>Aspirante</th><th>Documento</th><th>Fecha</th><th>Cargo</th><th>Estado</th></tr></thead><tbody id="history"></tbody></table></div></main></div><script src="js/reporte.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Historial individual · SIDOVI</title>
+
+    <link rel="stylesheet" href="css/reporte.css">
+
+    
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <div class="header-inner">
+
+        <div class="brand">
+            <img
+                    src="img/logo_sidovi.png"
+                    alt="SIDOVI"
+                    class="brand-logo"
+            >
+        </div>
+
+        <nav>
+            <ul class="nav-list">
+
+                <li>
+                    <a class="nav-link" href="RRHH.html">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link active" href="reporte.html">
+                        Reportes
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link" href="mi-perfil.html">
+                        Mi perfil
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link nav-cta" href="login.html">
+                        Cerrar sesión
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Abrir menú"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="panel-layout">
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <span class="sidebar-title">
+            Gestión
+        </span>
+
+        <a
+                class="sidebar-link"
+                href="RRHH.html"
+        >
+            📋 Dashboard
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="postulantes.html"
+        >
+            👥 Postulantes
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="hojasdevida.html"
+        >
+            📄 Hojas de Vida
+        </a>
+
+        <a
+                class="sidebar-link active"
+                href="reporte.html"
+        >
+            📊 Reportes
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="examenes.html"
+        >
+            🧪 Exámenes médicos
+        </a>
+
+        <a
+                class="sidebar-link"
+                href="mi-perfil.html"
+        >
+            👤 Mi perfil
+        </a>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+
+    <main class="panel-content">
+
+        <div class="panel-header">
+
+            <h1>
+                Historial individual
+            </h1>
+
+            <p class="report-description">
+                Consulta el historial completo de postulaciones
+                realizadas por un aspirante.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             NAVEGACIÓN ENTRE REPORTES
+             ===================================================== -->
+
+        <div class="report-navigation">
+
+            <a
+                    href="reporte.html"
+                    class="btn btn-primary report-active"
+            >
+                📋 Historial individual
+            </a>
+
+            <a
+                    href="reporte-estadisticas.html"
+                    class="btn btn-outline"
+            >
+                📊 Estadísticas
+            </a>
+
+        </div>
+
+
+        <!-- =====================================================
+             ALERTA
+             ===================================================== -->
+
+        <div
+                id="reportAlert"
+                class="form-alert"
+                hidden
+        ></div>
+
+
+        <!-- =====================================================
+             CONSULTA DEL ASPIRANTE
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📋 Consultar aspirante
+                </h2>
+
+                <p>
+                    Selecciona una persona para consultar todas sus
+                    postulaciones y el historial de su proceso.
+                </p>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label for="aspiranteReporte">
+                        Aspirante
+                    </label>
+
+                    <select id="aspiranteReporte">
+
+                        <option value="">
+                            Seleccione un aspirante
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        &nbsp;
+                    </label>
+
+                    <button
+                            class="btn btn-primary"
+                            id="btnConsultarHistorial"
+                            type="button"
+                    >
+                        🔎 Consultar historial
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INFORMACIÓN DEL ASPIRANTE
+             ===================================================== -->
+
+        <section
+                class="data-table-wrap"
+                id="datosAspirante"
+                hidden
+        >
+
+            <div class="panel-header">
+
+                <h2>
+                    👤 Información del aspirante
+                </h2>
+
+            </div>
+
+            <div
+                    id="resumenAspirante"
+                    class="resumen-aspirante"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             HISTORIAL
+             ===================================================== -->
+
+        <section
+                class="data-table-wrap"
+                id="historialAspirante"
+                hidden
+        >
+
+            <div class="panel-header">
+
+                <h2>
+                    📑 Historial de postulaciones
+                </h2>
+
+                <p>
+                    Aquí se muestran las postulaciones anteriores,
+                    cargos, sedes, estados, etapas, motivos de rechazo,
+                    entrevistas, exámenes y demás información disponible.
+                </p>
+
+            </div>
+
+            <div id="detalleHistorial"></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             GENERAR PDF
+             ===================================================== -->
+
+        <section class="data-table-wrap">
+
+            <div class="panel-header">
+
+                <h2>
+                    📄 Reporte en PDF
+                </h2>
+
+                <p>
+                    Genera un documento PDF con el historial completo
+                    del aspirante seleccionado.
+                </p>
+
+            </div>
+
+            <div class="pdf-container">
+
+                <button
+                        class="btn btn-primary btn-pdf-grande"
+                        id="btnPdfHistorial"
+                        type="button"
+                        disabled
+                >
+                    GENERAR PDF
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/reporte.js"></script>
+
+</body>
+</html>

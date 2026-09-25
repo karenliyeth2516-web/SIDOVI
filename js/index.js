@@ -2,6 +2,24 @@ const chatPanel = document.getElementById('chatPanel');
 const chatTrigger = document.getElementById('chatTrigger');
 const chatClose = document.getElementById('chatClose');
 const chatMessages = document.getElementById('chatMessages');
+const indexBackgrounds = [
+  'img/imagen_1.jpg',
+  'img/imagen_2.jpg',
+  'img/imagen_3.jpg',
+  'img/imagen_4.jpg'
+];
+
+indexBackgrounds.forEach((source) => {
+  const image = new Image();
+  image.src = source;
+});
+
+let currentBackground = 0;
+setInterval(() => {
+  currentBackground = (currentBackground + 1) % indexBackgrounds.length;
+  document.body.style.backgroundImage = `linear-gradient(rgba(4,8,18,.22), rgba(4,8,18,.22)), url('${indexBackgrounds[currentBackground]}')`;
+}, 7000);
+
 const answers = {
   'Quiero ver ofertas de empleo': 'Puedes consultar las vacantes disponibles en “Ver ofertas” y elegir la que mejor se ajuste a tu perfil.',
   'Necesito ayuda para postularme': 'Para postularte, selecciona una oferta y completa tus datos y documentos. Te avisaremos cuando haya novedades.',

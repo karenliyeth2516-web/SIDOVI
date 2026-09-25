@@ -23,10 +23,9 @@
     return 0;
   }
 
-  function accion(item, index) {
-    if (index === 0) return `<a href="evaluacion.html?id=${item.id_entrevista || item.id_postulacion}" class="btn-xs btn-xs-blue">Abrir entrevista</a>`;
-    if (index === 1) return `<a href="contrato.html?idPostulacion=${item.id_postulacion}" class="btn-xs btn-xs-green">Gestionar contrato</a>`;
-    return `<a href="perfil.html?id=${item.id_postulacion}" class="btn-xs btn-xs-blue">Perfil</a>`;
+
+  function accion(item) {
+    return `<a href="perfil.html?id=${item.id_postulacion}" class="btn-xs btn-xs-blue">Ver perfil</a>`;
   }
 
   function pintarColumna(index, titulo, items) {
@@ -37,7 +36,7 @@
     body.innerHTML = items.length ? items.slice(0, 12).map((item) => {
       const nombre = item.candidato || item.nombre_completo || 'Postulante';
       const fecha = item.fecha_entrevista ? `${String(item.fecha_entrevista).slice(0, 10)} ${String(item.hora_entrevista || '').slice(0, 5)}` : (item.estado || '');
-      return `<div class="kanban-card"><h4>${esc(nombre)}</h4><p>${esc(item.cargo || 'Cargo no especificado')} · ${esc(fecha || item.nombre_sede || 'Sin sede')}</p><div class="card-actions">${accion(item, index)}</div></div>`;
+      return `<div class="kanban-card"><h4>${esc(nombre)}</h4><p>${esc(item.cargo || 'Cargo no especificado')} · ${esc(fecha || item.nombre_sede || 'Sin sede')}</p><div class="card-actions">${accion(item)}</div></div>`;
     }).join('') : '<p class="form-alert">No hay candidatos en este estado.</p>';
   }
 

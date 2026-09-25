@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agenda de Entrevistas – SIDOVI</title>
-  <link rel="stylesheet" href="css/estilos.css" />
+  <link rel="stylesheet" href="css/agenda.css">
 </head>
 <body>
   <header class="site-header">
@@ -30,7 +30,7 @@
       <a href="hojasdevida.html" class="sidebar-link"><span class="icon">📄</span> Hojas de Vida</a>
       <a href="agenda.html" class="sidebar-link active" aria-current="page"><span class="icon">📅</span> Agenda</a>
       <a href="reporte.html" class="sidebar-link"><span class="icon">📊</span> Reportes</a>
-      <span class="sidebar-title" style="margin-top:1rem;">Accesos</span>
+      <span class="sidebar-title sidovi-inline-1">Accesos</span>
       <a href="trabajadores.html" class="sidebar-link"><span class="icon">👷</span> Trabajadores</a>
     </aside>
 
@@ -41,9 +41,9 @@
       </div>
 
       <!-- NUEVA ENTREVISTA -->
-      <div class="data-table-wrap" style="margin-bottom:1.5rem;">
+      <div class="data-table-wrap sidovi-inline-2">
         <h2>Programar Nueva Entrevista</h2>
-        <div style="padding:1.5rem;">
+        <divclass="sidovi-inline-5">
           <div id="agenda-alert" class="form-alert" role="alert" aria-live="polite" hidden></div>
           <div class="form-row">
             <div class="field">
@@ -78,7 +78,7 @@
               <input type="time" id="ag-hora" required />
             </div>
           </div>
-          <div class="field" style="margin-bottom:1rem;">
+          <div class="field sidovi-inline-3">
             <label for="ag-modalidad">Modalidad</label>
             <select id="ag-modalidad">
               <option>Presencial – Sede principal</option>
@@ -102,11 +102,11 @@
       <div class="agenda-grid">
         <div class="calendar-mock" aria-label="Calendario de abril 2025">
           <div class="cal-header">
-            <button style="background:none;border:none;color:var(--blanco);cursor:pointer;font-size:1.2rem;" aria-label="Mes anterior">‹</button>
+            <buttonclass="sidovi-inline-6" aria-label="Mes anterior">‹</button>
             <span>Abril 2025</span>
-            <button style="background:none;border:none;color:var(--blanco);cursor:pointer;font-size:1.2rem;" aria-label="Mes siguiente">›</button>
+            <buttonclass="sidovi-inline-7" aria-label="Mes siguiente">›</button>
           </div>
-          <div class="cal-grid" style="padding:0.75rem;">
+          <div class="cal-grid sidovi-inline-4">
             <div class="cal-day-name">Dom</div><div class="cal-day-name">Lun</div>
             <div class="cal-day-name">Mar</div><div class="cal-day-name">Mié</div>
             <div class="cal-day-name">Jue</div><div class="cal-day-name">Vie</div>

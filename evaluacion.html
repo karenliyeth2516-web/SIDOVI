@@ -1,97 +1,463 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Entrevista Gerencial - SIDOVI</title>
-  <link rel="stylesheet" href="css/estilos.css" />
-  <style>
-    .resultado-toggle { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.35rem; }
-    .resultado-opcion {
-      display: flex; align-items: center; gap: 0.5rem;
-      border: 1px solid var(--gris-borde); border-radius: var(--radius);
-      padding: 0.6rem 1rem; font-weight: 600; font-size: 0.92rem;
-      color: var(--gris-texto); cursor: pointer; user-select: none;
-    }
-    .resultado-opcion input { accent-color: var(--azul-claro); }
-    .resultado-opcion--ok:has(input:checked) { background: rgba(31,122,77,0.1); border-color: #1f7a4d; color: #1f7a4d; }
-    .resultado-opcion--no:has(input:checked) { background: var(--rojo-suave); border-color: var(--rojo); color: var(--rojo); }
-  </style>
+
+  <link rel="stylesheet" href="css/evaluacion.css">
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
-      <nav aria-label="Navegación principal">
-        <ul class="nav-list">
-          <li><a href="gerente.html" class="nav-link">Gerencia</a></li>
-          <li><a href="evaluar.html" class="nav-link">Evaluar</a></li>
-          <li><a href="evaluacion.html" class="nav-link active" aria-current="page">Entrevista</a></li>
-          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
-        </ul>
-      </nav>
-      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
+
+<header class="site-header">
+
+  <div class="header-inner">
+
+    <div class="brand">
+      <img
+              src="img/logo_sidovi.png"
+              alt="Logo SIDOVI"
+              class="brand-logo"
+      >
     </div>
-  </header>
 
-  <main style="padding:2.5rem 1.5rem;background:var(--gris-bg);min-height:calc(100vh - 150px);" aria-labelledby="entrevista-title">
-    <div class="container">
-      <h1 id="entrevista-title" style="color:var(--azul-oscuro);margin-bottom:0.5rem;">Entrevista Gerencial</h1>
-      <p style="color:var(--gris-claro);margin-bottom:2rem;">Registra respuestas, observaciones y resultado final del candidato.</p>
+    <nav aria-label="Navegación principal">
 
-      <section class="data-table-wrap" style="margin-bottom:1.5rem;">
-        <h2>Información de la entrevista</h2>
-        <div class="form-row" style="padding:1.25rem;">
-          <div class="field"><strong>Candidato</strong><p id="datoCandidato">Cargando...</p></div>
-          <div class="field"><strong>Cargo</strong><p id="datoCargo">-</p></div>
-          <div class="field"><strong>Fecha y hora</strong><p id="datoFecha">-</p></div>
-          <div class="field"><strong>Entrevistador</strong><p id="datoEntrevistador">-</p></div>
+      <ul class="nav-list">
+
+        <li>
+          <a href="gerente.html" class="nav-link">
+            Gerencia
+          </a>
+        </li>
+
+        <li>
+          <a href="evaluar.html" class="nav-link">
+            Evaluar
+          </a>
+        </li>
+
+        <li>
+          <a
+                  href="evaluacion.html"
+                  class="nav-link active"
+                  aria-current="page"
+          >
+            Entrevista
+          </a>
+        </li>
+
+        <li>
+          <a href="login.html" class="nav-link nav-cta">
+            Cerrar Sesión
+          </a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+    <button
+            class="menu-toggle"
+            aria-label="Abrir menú"
+            id="menuToggle"
+    >
+      ☰
+    </button>
+
+  </div>
+
+</header>
+
+
+<main
+       class="sidovi-inline-8"
+        aria-labelledby="entrevista-title"
+>
+
+  <div class="container">
+
+    <h1
+            id="entrevista-title"
+           class="sidovi-inline-9"
+    >
+      Entrevista Gerencial
+    </h1>
+
+    <p
+           class="sidovi-inline-10"
+    >
+      Revisa el reporte de RRHH y registra la evaluación del candidato.
+    </p>
+
+
+    <!-- ================================================= -->
+    <!-- INFORMACIÓN DE LA ENTREVISTA -->
+    <!-- ================================================= -->
+
+    <section
+            class="data-table-wrap sidovi-inline-1"
+           
+    >
+
+      <h2>
+        Información de la entrevista
+      </h2>
+
+      <div
+              class="form-row sidovi-inline-2"
+             
+      >
+
+        <div class="field">
+          <strong>Candidato</strong>
+          <p id="datoCandidato">Cargando...</p>
         </div>
-      </section>
 
-      <form id="entrevistaForm" class="data-table-wrap">
-        <h2>Preguntas de entrevista laboral</h2>
-        <div id="preguntasWrap" style="padding:1.25rem;"></div>
-        <div style="padding:0 1.25rem 1.25rem;">
-          <div class="form-row">
-            <div class="field">
-              <label>Resultado de la entrevista</label>
-              <div class="resultado-toggle" role="radiogroup" aria-label="Resultado de la entrevista">
-                <label class="resultado-opcion resultado-opcion--ok">
-                  <input type="radio" name="resultado" value="APROBADO" required> Aprobado
-                </label>
-                <label class="resultado-opcion resultado-opcion--no">
-                  <input type="radio" name="resultado" value="RECHAZADO"> No aprobado
-                </label>
-              </div>
-            </div>
-            <div class="field">
-              <label for="calificacion">Calificación general (1 a 5)</label>
-              <input id="calificacion" type="number" min="1" max="5" value="4" required />
-            </div>
-          </div>
-          <div class="field"><label for="observaciones">Observaciones</label><textarea id="observaciones" rows="3"></textarea></div>
-          <div class="field"><label for="fortalezas">Fortalezas</label><textarea id="fortalezas" rows="2"></textarea></div>
-          <div class="field"><label for="aspectosMejora">Aspectos por mejorar</label><textarea id="aspectosMejora" rows="2"></textarea></div>
-          <div class="field"><label for="recomendacion">Recomendación</label><textarea id="recomendacion" rows="2"></textarea></div>
-          <div class="field"><label for="motivoRechazo">Motivo de no aprobación</label><textarea id="motivoRechazo" rows="2"></textarea></div>
-          <div id="entrevistaAlert" class="form-alert" hidden></div>
-          <div class="form-actions" style="margin-top:1rem;display:flex;gap:1rem;flex-wrap:wrap;">
-            <button type="submit" class="btn btn-primary">Guardar entrevista</button>
-            <button type="button" class="btn btn-outline" id="btnPdf">Generar PDF</button>
-            <a href="gerente.html" class="btn btn-outline">Volver</a>
-          </div>
+        <div class="field">
+          <strong>Cargo</strong>
+          <p id="datoCargo">-</p>
         </div>
-      </form>
-    </div>
-  </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
-      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
-    </div>
-  </footer>
-  <script src="js/evaluacion.js"></script>
+        <div class="field">
+          <strong>Fecha y hora</strong>
+          <p id="datoFecha">-</p>
+        </div>
+
+        <div class="field">
+          <strong>Entrevistador</strong>
+          <p id="datoEntrevistador">-</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- REPORTE DE RRHH -->
+    <!-- ================================================= -->
+
+    <section
+            id="reporteRrhh"
+            class="data-table-wrap sidovi-inline-3"
+           
+    >
+
+      <divclass="sidovi-inline-11">
+
+        <h2
+               class="sidovi-inline-12"
+        >
+          📝 Reporte de Recursos Humanos
+        </h2>
+
+        <p
+               class="sidovi-inline-13"
+        >
+          Concepto registrado por Recursos Humanos sobre la hoja de vida
+          del candidato.
+        </p>
+
+
+        <div
+                id="reporteRrhhAlert"
+                class="form-alert"
+        >
+          Cargando reporte de RRHH...
+        </div>
+
+
+        <div id="reporteRrhhContenido" hidden>
+
+
+          <div
+                  class="field sidovi-inline-4"
+                 
+          >
+
+            <label>
+              Concepto sobre la hoja de vida
+            </label>
+
+            <div
+                    id="reporteConcepto"
+                   class="sidovi-inline-14"
+            ></div>
+
+          </div>
+
+
+          <div
+                  class="field sidovi-inline-5"
+                 
+          >
+
+            <label>
+              Fortalezas
+            </label>
+
+            <div
+                    id="reporteFortalezas"
+                   class="sidovi-inline-15"
+            ></div>
+
+          </div>
+
+
+          <div
+                  class="field sidovi-inline-6"
+                 
+          >
+
+            <label>
+              Aspectos a considerar
+            </label>
+
+            <div
+                    id="reporteAspectos"
+                   class="sidovi-inline-16"
+            ></div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Recomendación de RRHH
+            </label>
+
+            <div
+                    id="reporteRecomendacion"
+                   class="sidovi-inline-17"
+            ></div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- ENTREVISTA -->
+    <!-- ================================================= -->
+
+    <form
+            id="entrevistaForm"
+            class="data-table-wrap"
+    >
+
+      <h2>
+        Preguntas de entrevista laboral
+      </h2>
+
+
+      <div
+              id="preguntasWrap"
+             class="sidovi-inline-18"
+      ></div>
+
+
+      <div
+             class="sidovi-inline-19"
+      >
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label for="resultado">
+              Evaluación final
+            </label>
+
+            <select
+                    id="resultado"
+                    required
+            >
+
+              <option value="APROBADO">
+                Aprobado
+              </option>
+
+              <option value="RECHAZADO">
+                No aprobado
+              </option>
+
+              <option value="PENDIENTE">
+                Pendiente
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="calificacion">
+              Calificación general (1 a 5)
+            </label>
+
+            <input
+                    id="calificacion"
+                    type="number"
+                    min="1"
+                    max="5"
+                    value="4"
+                    required
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="observaciones">
+            Observaciones
+          </label>
+
+          <textarea
+                  id="observaciones"
+                  rows="3"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="fortalezas">
+            Fortalezas
+          </label>
+
+          <textarea
+                  id="fortalezas"
+                  rows="2"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="aspectosMejora">
+            Aspectos por mejorar
+          </label>
+
+          <textarea
+                  id="aspectosMejora"
+                  rows="2"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="recomendacion">
+            Recomendación
+          </label>
+
+          <textarea
+                  id="recomendacion"
+                  rows="2"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="motivoRechazo">
+            Motivo de no aprobación
+          </label>
+
+          <textarea
+                  id="motivoRechazo"
+                  rows="2"
+          ></textarea>
+
+        </div>
+
+
+        <div
+                id="entrevistaAlert"
+                class="form-alert"
+                hidden
+        ></div>
+
+
+        <div
+                class="form-actions sidovi-inline-7"
+               
+        >
+
+          <button
+                  type="submit"
+                  class="btn btn-primary"
+          >
+            Guardar entrevista
+          </button>
+
+
+          <button
+                  type="button"
+                  class="btn btn-outline"
+                  id="btnPdf"
+          >
+            Generar PDF
+          </button>
+
+
+          <a
+                  href="gerente.html"
+                  class="btn btn-outline"
+          >
+            Volver
+          </a>
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <img
+            src="img/logo_sidovi.png"
+            alt="SIDOVI"
+            class="footer-logo"
+    >
+
+    <p>
+      &copy; 2025 SIDOVI · Colviseg Ltda.
+    </p>
+
+  </div>
+
+</footer>
+
+
+<script src="js/evaluacion.js"></script>
+
 </body>
+
 </html>

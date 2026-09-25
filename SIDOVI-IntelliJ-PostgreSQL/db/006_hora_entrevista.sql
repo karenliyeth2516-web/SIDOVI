@@ -1,1 +1,0 @@
-ALTER TABLE entrevista ADD COLUMN IF NOT EXISTS hora_entrevista time NOT NULL DEFAULT '09:00';
