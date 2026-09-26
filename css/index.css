@@ -67,7 +67,7 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 .hero::after {content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--rojo);}
 
 .hero-bg-lines {position: absolute; inset: 0; background-image:
-    repeating-linear-gradient(90deg, rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px),
+    repeating-linear-gradient(30deg, rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px),
     repeating-linear-gradient(0deg,  rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px); pointer-events: none;}
 .hero-content {max-width: 580px; z-index: 1; animation: fadeUp 0.75s ease both;}
 .hero-eyebrow {font-family: var(--font-display); font-size: 0.82rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rojo); display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.1rem;}
@@ -456,11 +456,30 @@ body {min-height: 100vh; display: flex; flex-direction: column; background-color
 /* =========================================
    CAJA SIDOVI
    ========================================= */
-.sidovi-box {width: 650px; max-width: 90%; margin: 70px auto 90px; padding: 40px; background: rgba(235, 237, 239, 0.937); border: 1px solid rgba(255, 255, 255, 0.30); border-radius: 18px; text-align: center; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35); box-sizing: border-box;}
+.sidovi-box {
+    background: transparent;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    /* resto igual */
+}
+.sidovi-box p {
+    text-shadow: 0 1px 6px rgba(255,255,255,0.6);
+}
+
 /* Título SIDOVI */
 .sidovi-box h1 {margin: 0 0 15px; color: #ffffff; font-size: 48px; font-weight: 800; letter-spacing: 4px;}
 /* Descripción */
-.sidovi-box p {margin: 0 auto 30px; max-width: 520px; color: rgba(18, 17, 17, 0.92); font-size: 19px; line-height: 1.6;}
+.sidovi-box p {
+    margin: 0 auto 30px;
+    max-width: 520px;
+    color: #000000;
+    font-size: 19px;
+    line-height: 1.6;
+    text-shadow:
+            0 0 8px rgba(255,255,255,0.8),
+            0 0 8px rgba(255,255,255,0.8);
+}
 /* =========================================
    BOTONES VER OFERTAS / POSTULARME
    ========================================= */
@@ -480,13 +499,19 @@ body {min-height: 100vh; display: flex; flex-direction: column; background-color
 /* =========================================
    CELULAR
    ========================================= */
-@media (max-width: 620px) {
-    .sidovi-box {width: calc(100% - 30px); max-width: none; margin: 45px auto 60px; padding: 30px 20px;}
-    .sidovi-box h1 {font-size: 38px;}
-    .sidovi-box p {font-size: 15px;}
-    .sidovi-box .hero-actions {flex-direction: column; width: 100%;}
-    .sidovi-box .nav-link {width: 100%; min-width: 0;}
-    .chat-trigger {right: 16px; bottom: 16px; padding: 12px 16px;}
+.sidovi-box {
+    width: 520px;
+    max-width: 88%;
+    margin: 60px auto 80px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
 }
 /* =========================================
    ICONOS REDES SOCIALES

@@ -48,8 +48,45 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 .header-inner {max-width: 1120px; margin: 0 auto; padding: 0 1.75rem; display: flex; align-items: center; justify-content: space-between; height: 68px;}
 .brand-logo {height: 46px; width: auto; object-fit: contain;}
 .nav-list {display: flex; align-items: center; gap: 0.15rem;}
-.nav-link {font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--azul-oscuro); padding: 0.45rem 1.1rem; border-radius: var(--radius); letter-spacing: 0.06em; text-transform: uppercase; transition: background var(--transition), color var(--transition), transform var(--transition);}
-.nav-link:hover,
+.nav-list {gap: 0.5rem;}
+
+.nav-link {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blanco);
+  padding: 0.55rem 1.2rem;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: var(--blanco);
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background: var(--blanco);
+  color: var(--rojo);
+  border-color: var(--blanco);
+}
+
+.nav-link.nav-cta {
+  background: var(--azul-oscuro);
+  color: var(--blanco);
+  border-color: var(--azul-oscuro);
+}
+
+.nav-link.nav-cta:hover {
+  background: var(--azul-claro);
+  border-color: var(--azul-claro);
+}
+.nav-link:hover
 .nav-link.active {background: rgba(255,255,255,0.2); color: var(--blanco); transform: translateY(-2px);}
 .nav-link.nav-cta:hover {background: var(--rojo-hover); color: var(--blanco);}
 .menu-toggle {display: none; background: none; border: none; color: var(--blanco); font-size: 1.5rem; cursor: pointer;}
@@ -143,7 +180,7 @@ h3 {font-size: 1.25rem; font-weight: 700;}
 /* =============================================
    PAGE HERO (subpáginas)
    ============================================= */
-.page-hero {background: linear-gradient(rgba(2,6,33,.62), rgba(2,6,33,.62)), url('../img/ofertass.jpeg') center/cover no-repeat; border-bottom: 3px solid var(--rojo); padding: 3.5rem 1.75rem; text-align: center; position: relative; overflow: hidden;}
+.page-hero {background: linear-gradient(rgba(2,6,33,.62), rgba(2,6,33,.62)), url('../img/ofertass.jpeg') center 30% /cover no-repeat; border-bottom: 3px solid var(--rojo); padding: 6.5rem 1.75rem; text-align: center; position: relative; overflow: hidden;}
 .page-hero::before {content: ''; position: absolute; inset: 0; background-image:
     repeating-linear-gradient(90deg, rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px),
     repeating-linear-gradient(0deg,  rgba(59,130,208,0.04) 0px, rgba(59,130,208,0.04) 1px, transparent 1px, transparent 70px); pointer-events: none;}
@@ -252,7 +289,11 @@ input[type="file"] {padding: 0.5rem; font-size: 0.86rem; cursor: pointer;}
 /* =============================================
    FOOTER
    ============================================= */
-.site-footer {background: var(--azul-oscuro); border-top: 3px solid var(--rojo); padding: 1.75rem 1.75rem;}
+.site-footer {
+  background: linear-gradient(rgba(2,6,33,.75), rgba(2,6,33,.75)), url('../img/tu-imagen.jpg') center/cover no-repeat;
+  border-top: 3px solid var(--rojo);
+  padding: 1.75rem 1.75rem;
+}
 .footer-inner {max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;}
 .footer-logo {height: 34px; width: auto;}
 .site-footer p {color: var(--blanco-50); font-size: 0.85rem;}

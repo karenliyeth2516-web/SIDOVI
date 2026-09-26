@@ -253,7 +253,11 @@ input[type="file"] {padding: 0.5rem; font-size: 0.86rem; cursor: pointer;}
 /* =============================================
    FOOTER
    ============================================= */
-.site-footer {background: var(--azul-oscuro); border-top: 3px solid var(--rojo); padding: 1.75rem 1.75rem;}
+.site-footer {
+  background: linear-gradient(rgba(2,6,33,.75), rgba(2,6,33,.75)), url('../img/pie_de_pagina.png') center/cover no-repeat;
+  border-top: 3px solid var(--rojo);
+  padding: 1.75rem 1.75rem;
+}
 .footer-inner {max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;}
 .footer-logo {height: 34px; width: auto;}
 .site-footer p {color: var(--blanco-50); font-size: 0.85rem;}
