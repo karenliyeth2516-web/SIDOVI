@@ -107,100 +107,6 @@
 
 
 <!-- =====================================================
-     BOTÓN DEL CHATBOT
-     ===================================================== -->
-
-<button
-        class="chat-trigger"
-        id="chatTrigger"
-        aria-label="Abrir asistente SIDOVI"
->
-
-    <span
-            class="chat-icon"
-            aria-hidden="true"
-    >
-      💬
-    </span>
-
-  <span>
-      ¿Necesitas ayuda?
-    </span>
-
-</button>
-
-
-<!-- =====================================================
-     VENTANA DEL CHATBOT
-     ===================================================== -->
-
-<aside
-        class="chat-panel"
-        id="chatPanel"
-        aria-label="Asistente virtual SIDOVI"
-        hidden
->
-
-  <div class="chat-head">
-
-    <div>
-
-      <span class="chat-presence"></span>
-
-      <strong>
-        Asistente SIDOVI
-      </strong>
-
-      <small>
-        En línea
-      </small>
-
-    </div>
-
-
-    <button
-            id="chatClose"
-            aria-label="Cerrar chat"
-    >
-      ×
-    </button>
-
-  </div>
-
-
-  <div
-          class="chat-body"
-          id="chatMessages"
-  >
-
-    <p class="bot-message">
-      ¡Hola! Soy el asistente virtual de SIDOVI.
-      ¿En qué puedo orientarte?
-    </p>
-
-  </div>
-
-
-  <div class="chat-options">
-
-    <button data-answer="Quiero ver ofertas de empleo">
-      Ver ofertas
-    </button>
-
-    <button data-answer="Necesito ayuda para postularme">
-      Postularme
-    </button>
-
-    <button data-answer="Quiero acceder a mi cuenta">
-      Acceso personal
-    </button>
-
-  </div>
-
-</aside>
-
-
-<!-- =====================================================
      PIE DE PÁGINA
      ===================================================== -->
 
@@ -276,5 +182,66 @@
 
 <!-- JavaScript del index -->
 <script src="js/index.js"></script>
+<!-- CHATBOT SIDOVI -->
+<button
+        id="chatbotButton"
+        class="chatbot-button"
+        type="button"
+        aria-label="Abrir chatbot SIDOVI"
+        title="Abrir chatbot"
+>
+  💬
+</button>
+
+<section
+        id="chatbotContainer"
+        class="chatbot-container"
+        aria-label="Chatbot SIDOVI"
+>
+  <header class="chatbot-header">
+    <div class="bot-information">
+      <div class="bot-avatar" aria-hidden="true">🤖</div>
+      <div>
+        <h3>Asistente SIDOVI</h3>
+        <span>En línea</span>
+      </div>
+    </div>
+
+    <button
+            id="closeChat"
+            class="close-chat"
+            type="button"
+            aria-label="Cerrar chatbot"
+    >
+      ×
+    </button>
+  </header>
+
+  <div id="chatMessages" class="chatbot-messages" aria-live="polite">
+    <div class="message bot-message">
+      <p>¡Hola! Soy el asistente virtual de SIDOVI. ¿Cómo puedo ayudarte?</p>
+    </div>
+  </div>
+
+
+  <div class="chat-input-container">
+    <div class="input-top">
+      <input
+              id="chatInput"
+              type="text"
+              placeholder="Escribe tu mensaje..."
+              aria-label="Mensaje"
+      >
+    </div>
+
+    <div class="input-bottom">
+      <button id="emojiButton" class="input-button" type="button" aria-label="Agregar emoji">😊</button>
+      <button id="sendButton" class="send-button" type="button" aria-label="Enviar mensaje">➤</button>
+    </div>
+  </div>
+</section>
+
+<link rel="stylesheet" href="css/chatbot.css">
+<script src="js/chatbot.js"></script>
 </body>
 </html>

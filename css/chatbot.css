@@ -1,0 +1,338 @@
+/* =========================================
+   CHATBOT SIDOVI
+========================================= */
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* =========================================
+   BOTÓN FLOTANTE
+========================================= */
+.chatbot-button {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 65px;
+    height: 65px;
+    border: none;
+    border-radius: 50%;
+    background: #d71920;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    transition: 0.3s;
+}
+
+.chatbot-button:hover {
+    transform: scale(1.08);
+}
+/* =========================================
+   CONTENEDOR PRINCIPAL
+========================================= */
+
+.chatbot-container {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 360px;
+    height: 570px;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+    z-index: 10000;
+}
+
+
+/* Cuando está abierto */
+.chatbot-container.active {
+    display: flex;
+}
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+.chatbot-header {
+    height: 90px;
+    background: #182333;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+}
+
+/* Información del bot */
+
+.bot-information {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* Avatar */
+
+.bot-avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: #7dd9f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    border: 3px solid white;
+}
+/* Nombre */
+
+.bot-information h3 {
+    margin: 0;
+    font-size: 19px;
+}
+
+
+/* Descripción */
+
+.bot-information span {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #e1e1e1;
+}
+
+
+/* Botón cerrar */
+
+.close-chat {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 27px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+
+/* =========================================
+   ÁREA DE MENSAJES
+========================================= */
+
+.chatbot-messages {
+    flex: 1;
+    padding: 18px;
+    overflow-y: auto;
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(235, 248, 255, 0.95),
+            rgba(248, 252, 255, 0.95)
+        );
+}
+
+
+/* Scroll */
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   MENSAJES
+========================================= */
+
+.message {
+    max-width: 82%;
+    padding: 12px 16px;
+    margin-bottom: 13px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    animation: messageAppear 0.25s ease;
+}
+
+
+.message p {
+    margin: 0;
+}
+
+
+/* Mensaje del BOT */
+
+.bot-message {
+    background: #a9a9a9;
+    color: white;
+    border-bottom-left-radius: 5px;
+    margin-right: auto;
+}
+
+
+/* Mensaje del USUARIO */
+.user-message {
+
+    background: #d71920;
+    color: white;
+    border-bottom-right-radius: 5px;
+    margin-left: auto;
+}
+
+
+/* Animación */
+
+@keyframes messageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   VALORACIÓN
+========================================= */
+
+.chat-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+    background: #edf6ff;
+    font-size: 12px;
+    color: #555;
+}
+
+.chat-rating button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+.chat-rating button:hover {
+    transform: scale(1.12);
+    background: #e3e3e3;
+}
+
+/* =========================================
+   INPUT
+========================================= */
+
+.chat-input-container {
+    margin: 8px;
+    border: 2px solid #111;
+    border-radius: 14px;
+    background: white;
+    overflow: hidden;
+}
+
+
+/* Input */
+
+.input-top {
+    padding: 5px 10px;
+}
+
+
+.input-top input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 7px;
+    color: #333;
+}
+
+.input-top input::placeholder {
+    color: #999;
+}
+
+
+/* =========================================
+   BOTONES DEL INPUT
+========================================= */
+
+.input-bottom {
+    display: flex;
+    align-items: center;
+    padding: 3px 7px 7px;
+}
+
+
+.input-button {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.attachment-button {
+    cursor: pointer;
+}
+
+
+/* Botón enviar */
+
+.send-button {
+    margin-left: auto;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #d71920;
+    font-size: 28px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.send-button:hover {
+    transform: scale(1.1);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 500px) {
+
+    .chatbot-container {
+        width: calc(100% - 20px);
+        height: calc(100vh - 30px);
+        right: 10px;
+        bottom: 10px;
+        border-radius: 18px;
+    }
+    .chatbot-button {
+        right: 18px;
+        bottom: 18px;
+    }
+
+}
