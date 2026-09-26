@@ -21,7 +21,7 @@ const postgresConfig = process.env.DATABASE_URL
       port: Number(process.env.DB_PORT || 5432),
       database: process.env.DB_NAME || 'SIDOVI',
       user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'KAREN123',
+      password: process.env.DB_PASSWORD || 'julian123',
       ssl: String(sslSetting).toLowerCase() === 'true' ? { rejectUnauthorized: false } : false
     };
 const db = new Pool(postgresConfig);
