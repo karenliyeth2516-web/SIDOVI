@@ -7,91 +7,107 @@
   <link rel="stylesheet" href="css/RRHH.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand"><img src="img/logo_sidovi.png" alt="Logo SIDOVI" class="brand-logo" /></div>
-      <nav aria-label="Navegación principal">
-        <ul class="nav-list">
-          <li><a href="mi-perfil.html" class="nav-link">Mi perfil</a></li>
-          <li><a href="index.html" class="nav-link">Inicio Público</a></li>
-          <li><a href="RRHH.html" class="nav-link active" aria-current="page">Panel RRHH</a></li>
-          <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
-        </ul>
-      </nav>
-      <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
-    </div>
-  </header>
-
-  <div class="panel-layout">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Menú del panel">
-      <span class="sidebar-title">Gestión</span>
-      <a href="RRHH.html" class="sidebar-link active" aria-current="page"><span class="icon" aria-hidden="true">📋</span> Dashboard</a>
-      <a href="postulantes.html" class="sidebar-link"><span class="icon" aria-hidden="true">👥</span> Postulantes</a>
-      <a href="mi-perfil.html" class="sidebar-link profile-sidebar-link"><span class="icon" aria-hidden="true">👤</span> Mi perfil</a>
-      <a href="hojasdevida.html" class="sidebar-link"><span class="icon" aria-hidden="true">📄</span> Hojas de Vida</a>
-      <a href="agenda.html" class="sidebar-link"><span class="icon" aria-hidden="true">📅</span> Agenda</a>
-      <a href="reporte.html" class="sidebar-link"><span class="icon" aria-hidden="true">📊</span> Reportes</a>
-      <a href="cargos.html" class="sidebar-link"><span class="icon" aria-hidden="true">🧰</span> Cargos y sedes</a>
-      <span class="sidebar-title sidovi-inline-1">Accesos</span>
-      <a href="ofertas.html" class="sidebar-link"><span class="icon" aria-hidden="true">📢</span> Ofertas públicas</a>
-    </aside>
-
-    <!-- CONTENT -->
-    <main class="panel-content" aria-labelledby="rrhh-title">
-      <div class="panel-header">
-        <h1 id="panelTitle">Dashboard · Recursos Humanos</h1>
-        <p>Resumen general del proceso de vinculación — Colviseg Ltda.</p>
-        <div id="panelIdentity" class="panel-identity" aria-live="polite">Bienvenido, cargando...</div>
-      </div>
-
-      <divclass="sidovi-inline-3">
-        <label for="rrhhSedeFiltro"class="sidovi-inline-4">Consultar sede:</label>
-        <select id="rrhhSedeFiltro"class="sidovi-inline-5"><option value="">Todas las sedes</option></select>
-      </div>
-      <div class="stats-row">
-        <div class="stat-box"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Postulaciones Recibidas</div></div>
-        <div class="stat-box"><div class="stat-num" id="statRevision">0</div><div class="stat-label">En Revisión</div></div>
-        <div class="stat-box"><div class="stat-num" id="statEntrevistas">0</div><div class="stat-label">Entrevistas Agendadas</div></div>
-        <div class="stat-box"><div class="stat-num" id="statAprobados">0</div><div class="stat-label">Aprobados para Contrato</div></div>
-      </div>
-
-      <div class="data-table-wrap" aria-label="Últimas postulaciones">
-        <h2>Últimas Postulaciones</h2>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Aspirante</th>
-              <th scope="col">Cargo</th>
-              <th scope="col">Sede</th>
-              <th scope="col">Fecha</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="rrhhPostulacionesBody">
-            <tr><td colspan="6">Cargando postulaciones...</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <divclass="sidovi-inline-6">
-        <a href="postulantes.html" class="btn btn-primary">Ver Todos los Postulantes</a>
-        <a href="agenda.html" class="btn btn-outline sidovi-inline-2">Ir a la Agenda</a>
-      </div>
-    </main>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand"><img src="img/colviseg.png" alt="Logo SIDOVI" class="brand-logo" /></div>
+    <nav aria-label="Navegación principal">
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Inicio Público</a></li>
+        <li><a href="login.html" class="nav-link nav-cta">Cerrar Sesión</a></li>
+      </ul>
+    </nav>
+    <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">&#9776;</button>
   </div>
+</header>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
-      <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
-      <nav aria-label="Pie de página"><ul class="footer-nav">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="login.html">Cerrar Sesión</a></li>
-      </ul></nav>
+<div class="panel-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Menú del panel">
+    <span class="sidebar-title">Gestión</span>
+    <a href="RRHH.html" class="sidebar-link active" aria-current="page">Dashboard</a>
+    <a href="postulantes.html" class="sidebar-link">Postulantes</a>
+    <a href="mi-perfil.html" class="sidebar-link profile-sidebar-link">Mi perfil</a>
+    <a href="hojasdevida.html" class="sidebar-link">Hojas de Vida</a>
+    <a href="agenda.html" class="sidebar-link">Agenda</a>
+    <a href="reporte.html" class="sidebar-link">Reportes</a>
+    <a href="cargos.html" class="sidebar-link">Cargos y sedes</a>
+    <span class="sidebar-title sidovi-inline-1">Accesos</span>
+    <a href="ofertas.html" class="sidebar-link">Ofertas públicas</a>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="panel-content" aria-labelledby="rrhh-title">
+    <div class="panel-header">
+      <div id="panelIdentity" class="panel-identity" aria-live="polite">Bienvenido, cargando...</div>
     </div>
-  </footer>
-  <script src="js/panel-identity.js"></script><script src="js/RRHH.js"></script>
+
+    <div class="sidovi-inline-3">
+      <label for="rrhhSedeFiltro" class="sidovi-inline-4">
+        Consultar sede:
+      </label>
+
+      <select id="rrhhSedeFiltro" class="sidovi-inline-5">
+        <option value="">Todas las sedes</option>
+      </select>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">Postulaciones Recibidas</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-num" id="statRevision">0</div>
+        <div class="stat-label">En Revisión</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-num" id="statEntrevistas">0</div>
+        <div class="stat-label">Entrevistas Agendadas</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-num" id="statAprobados">0</div>
+        <div class="stat-label">Aprobados para Contrato</div>
+      </div>
+    </div>
+    <div class="data-table-wrap" aria-label="Últimas postulaciones">
+      <h2>Últimas Postulaciones</h2>
+      <table>
+        <thead>
+        <tr>
+          <th scope="col">Aspirante</th>
+          <th scope="col">Cargo</th>
+          <th scope="col">Sede</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody id="rrhhPostulacionesBody">
+        <tr><td colspan="6">Cargando postulaciones...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sidovi-inline-6">
+      <a href="postulantes.html" class="btn btn-primary">Ver Todos los Postulantes</a>
+      <a href="agenda.html" class="btn btn-outline sidovi-inline-2">Ir a la Agenda</a>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <img src="img/logo_sidovi.png" alt="SIDOVI" class="footer-logo" />
+    <p>&copy; 2025 SIDOVI · Colviseg Ltda.</p>
+    <nav aria-label="Pie de página"><ul class="footer-nav">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="login.html">Cerrar Sesión</a></li>
+    </ul></nav>
+  </div>
+</footer>
+<script src="js/panel-identity.js"></script><script src="js/RRHH.js"></script>
 </body>
 </html>
