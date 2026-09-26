@@ -21,7 +21,7 @@ const postgresConfig = process.env.DATABASE_URL
       port: Number(process.env.DB_PORT || 5432),
       database: process.env.DB_NAME || 'SIDOVI',
       user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'julian123',
+      password: process.env.DB_PASSWORD || 'KAREN123',
       ssl: String(sslSetting).toLowerCase() === 'true' ? { rejectUnauthorized: false } : false
     };
 const db = new Pool(postgresConfig);
@@ -2305,6 +2305,64 @@ function tituloSeccionPdf(
 // HISTORIAL INDIVIDUAL
 // ============================================================
 
+// ============================================================
+// CONFIGURACIÓN GENERAL DEL PDF
+// ============================================================
+
+function configurarReportePdf(doc, titulo, subtitulo = '') {
+
+  const logo = getReportLogo();
+
+  if (logo) {
+    try {
+      doc.image(logo, 42, 35, {
+        fit: [90, 45],
+        align: 'left',
+        valign: 'center'
+      });
+    } catch (error) {
+      console.warn('No fue posible cargar el logo:', error.message);
+    }
+  }
+
+  const tituloFontSize = 15;
+
+  doc.font('Helvetica-Bold').fontSize(tituloFontSize);
+
+  const alturaTitulo = doc.heightOfString(titulo, {
+    width: 511,
+    align: 'center'
+  });
+
+  doc
+      .fillColor('#17365D')
+      .text(titulo, 42, 92, {
+        width: 511,
+        align: 'center'
+      });
+
+  const yLinea = 92 + alturaTitulo + 10;
+
+  doc
+      .moveTo(42, yLinea)
+      .lineTo(553, yLinea)
+      .lineWidth(1)
+      .strokeColor('#7A1F3D')
+      .stroke();
+
+  if (subtitulo) {
+    doc
+        .font('Helvetica')
+        .fontSize(9)
+        .fillColor('#555555')
+        .text(subtitulo, 42, yLinea + 8, {
+          width: 511,
+          align: 'center'
+        });
+  }
+
+  doc.y = yLinea + 30;
+}
 function makeHistoryReportPdf(data) {
 
   return new Promise((resolve, reject) => {

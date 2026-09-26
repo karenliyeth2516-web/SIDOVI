@@ -456,7 +456,27 @@ body {min-height: 100vh; display: flex; flex-direction: column; background-color
 /* =========================================
    CAJA SIDOVI
    ========================================= */
-.sidovi-box {width: 650px; max-width: 90%; margin: 70px auto 90px; padding: 40px; background: rgba(235, 237, 239, 0.937); border: 1px solid rgba(255, 255, 255, 0.30); border-radius: 18px; text-align: center; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35); box-sizing: border-box;}
+.sidovi-box {
+    width: 500px;
+    max-width: 300%;
+    margin: 70px auto 90px;
+    padding: 40px;
+
+    /* Transparencia */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* Efecto vidrio */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+}
 /* Título SIDOVI */
 .sidovi-box h1 {margin: 0 0 15px; color: #ffffff; font-size: 48px; font-weight: 800; letter-spacing: 4px;}
 /* Descripción */
@@ -542,4 +562,24 @@ body {min-height: 100vh; display: flex; flex-direction: column; background-color
 
     .site-footer p {font-size: 11px;}
 
+}
+/* =========================================
+   SIDOVI BOX - MEJOR CONTRASTE DE TEXTO
+   ========================================= */
+
+.sidovi-box {
+    background: rgba(2, 6, 33, 0.55) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.sidovi-box h1 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.sidovi-box p {
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }

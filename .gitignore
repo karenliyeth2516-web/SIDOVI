@@ -1,0 +1,18 @@
+# Variables de entorno
+.env
+
+# Dependencias de Node
+node_modules/
+
+# IntelliJ IDEA
+.idea/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp
