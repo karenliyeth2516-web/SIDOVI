@@ -19,9 +19,9 @@ const postgresConfig = process.env.DATABASE_URL
     : {
       host: process.env.DB_HOST || 'localhost',
       port: Number(process.env.DB_PORT || 5432),
-      database: process.env.DB_NAME || 'SIDOVI',
+      database: process.env.DB_NAME || 'sidovi',
       user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgrespassword',
+      password: process.env.DB_PASSWORD || '',
       ssl: String(sslSetting).toLowerCase() === 'true' ? { rejectUnauthorized: false } : false
     };
 const db = new Pool(postgresConfig);
