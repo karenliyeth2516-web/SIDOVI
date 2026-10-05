@@ -7,6 +7,8 @@
   <title>Contratos – SIDOVI</title>
 
   <link rel="stylesheet" href="css/contrato.css">
+  <link rel="stylesheet" href="css/rrhh-sidebar.css">
+  <link rel="stylesheet" href="css/page-transition.css">
 
   
 </head>
@@ -31,27 +33,7 @@
     <nav aria-label="Navegación principal">
       <ul class="nav-list">
 
-        <li>
-          <a href="gerente.html" class="nav-link">
-            Gerencia
-          </a>
-        </li>
-
-        <li>
-          <a href="evaluar.html" class="nav-link">
-            Evaluaciones
-          </a>
-        </li>
-
-        <li>
-          <a
-                  href="contrato.html"
-                  class="nav-link active"
-                  aria-current="page"
-          >
-            Contratos
-          </a>
-        </li>
+        <li><a href="index.html" class="nav-link">Inicio Público</a></li>
 
         <li>
           <a href="login.html" class="nav-link nav-cta">
@@ -77,6 +59,19 @@
 <!-- ============================= -->
 <!-- CONTENIDO PRINCIPAL -->
 <!-- ============================= -->
+
+<div class="panel-layout">
+
+  <aside class="sidebar" aria-label="Menú de gerencia">
+    <span class="sidebar-title">Gerencia</span>
+    <a href="gerente.html" class="sidebar-link">Dashboard</a>
+    <a href="evaluar.html" class="sidebar-link">Evaluar Candidatos</a>
+    <a href="trabajadores.html" class="sidebar-link">Trabajadores</a>
+    <a href="mi-perfil.html" class="sidebar-link profile-sidebar-link">Mi perfil</a>
+    <a href="contrato.html" class="sidebar-link active" aria-current="page">Contratos</a>
+    <span class="sidebar-title">Información</span>
+    <a href="reporte.html" class="sidebar-link">Reportes</a>
+  </aside>
 
 <main
         class="contratos-page"
@@ -200,6 +195,8 @@
   </div>
 
 </main>
+
+</div>
 
 
 <!-- ================================================= -->

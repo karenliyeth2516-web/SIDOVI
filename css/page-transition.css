@@ -1,0 +1,43 @@
+```css
+@media (prefers-reduced-motion: no-preference) {
+
+  body .sidebar[aria-label="Menú de gerencia"] .sidebar-link.active {
+
+    animation:
+      sidovi-manager-active-enter
+      450ms
+      cubic-bezier(0.25, 0.8, 0.25, 1)
+      both;
+
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  body .sidebar[aria-label="Menú de gerencia"] .sidebar-link.active {
+
+    animation: none;
+
+  }
+
+}
+
+@keyframes sidovi-manager-active-enter {
+
+  from {
+
+    background-color: transparent;
+    border-left-color: transparent;
+
+  }
+
+  to {
+
+    background-color: rgba(200, 25, 43, 0.18);
+    border-left-color: #c8192b;
+
+  }
+
+}
+```
