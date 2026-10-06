@@ -46,7 +46,7 @@ h3 {font-size: 1.25rem; font-weight: 700;}
    ============================================= */
 .site-header {background: linear-gradient(115deg, #ffffff 0%, #ffffff 50%, var(--rojo) 50%, var(--rojo) 100%); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 0 var(--rojo), var(--shadow-lg);}
 .header-inner {max-width: 1120px; margin: 0 auto; padding: 0 1.75rem; display: flex; align-items: center; justify-content: space-between; height: 68px;}
-.brand-logo {height: 46px; width: auto; object-fit: contain;}
+.brand-logo {height: 40px; width: auto; object-fit: contain;}
 .nav-list {display: flex; align-items: center; gap: 0.15rem;}
 .nav-link {font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--azul-oscuro); padding: 0.45rem 1.1rem; border-radius: var(--radius); letter-spacing: 0.06em; text-transform: uppercase; transition: background var(--transition), color var(--transition), transform var(--transition);}
 .nav-link:hover,
@@ -255,7 +255,7 @@ input[type="file"] {padding: 0.5rem; font-size: 0.86rem; cursor: pointer;}
    ============================================= */
 .site-footer {background: var(--azul-oscuro); border-top: 3px solid var(--rojo); padding: 1.75rem 1.75rem;}
 .footer-inner {max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;}
-.footer-logo {height: 34px; width: auto;}
+.footer-logo {height: 40px; width: auto;}
 .site-footer p {color: var(--blanco-50); font-size: 0.85rem;}
 .footer-nav {display: flex; gap: 1.25rem; flex-wrap: wrap;}
 .footer-nav a {color: var(--blanco-50); font-size: 0.88rem; transition: color var(--transition);}
@@ -468,6 +468,65 @@ tbody td {padding: 0.85rem 1rem; color: var(--texto); vertical-align: middle;}
 }
 
 /* ===== ESTILOS PROPIOS DE REPORTE-ESTADISTICAS.HTML ===== */
+main.panel-content {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+}
+
+.panel-header h1,
+.panel-header h2,
+.panel-header > p {
+    text-align: center;
+}
+
+.report-navigation {
+    justify-content: center;
+}
+
+.report-navigation .btn {
+    min-height: 48px;
+    padding: 0.7rem 1.35rem;
+    border: 2px solid #1e5aad;
+    border-radius: 8px;
+    font-weight: 700;
+    opacity: 1;
+    transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.report-navigation .btn-primary,
+.report-navigation .report-active {
+    border-color: #10193f;
+    background: #10193f;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(16, 25, 63, 0.2);
+}
+
+.report-navigation .btn-outline {
+    border-color: #1e5aad;
+    background: #fff;
+    color: #1e5aad;
+}
+
+.report-navigation .btn-outline:hover {
+    border-color: #10193f;
+    background: #10193f;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.stats-filter-form {
+    grid-template-columns: repeat(2, minmax(180px, 220px)) auto;
+    justify-content: start;
+    align-items: end;
+    gap: 1rem;
+}
+
+.stats-filter-form .field .btn {
+    min-height: 44px;
+    white-space: nowrap;
+}
+
 /* Botón PDF grande */
         .btn-pdf-grande {min-width: 230px; min-height: 58px; padding: 14px 28px; font-size: 17px; font-weight: 800; letter-spacing: 0.5px;}
 
@@ -475,7 +534,7 @@ tbody td {padding: 0.85rem 1rem; color: var(--texto); vertical-align: middle;}
 
         .report-navigation a {text-decoration: none;}
 
-        .report-navigation .report-active {pointer-events: none; opacity: 0.7;}
+        .report-navigation .report-active {pointer-events: none; cursor: default;}
 
         .pdf-container {display: flex; align-items: center; justify-content: center;}
 
@@ -483,4 +542,8 @@ tbody td {padding: 0.85rem 1rem; color: var(--texto); vertical-align: middle;}
             .btn-pdf-grande {width: 100%;}
 
             .pdf-container {width: 100%;}
+
+            .stats-filter-form {grid-template-columns: minmax(0, 1fr);}
+
+            .stats-filter-form .field .btn {width: 100%;}
         }

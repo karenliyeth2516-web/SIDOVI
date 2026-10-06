@@ -46,7 +46,7 @@ h3 {font-size: 1.25rem; font-weight: 700;}
    ============================================= */
 .site-header {background: linear-gradient(115deg, #ffffff 0%, #ffffff 50%, var(--rojo) 50%, var(--rojo) 100%); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 0 var(--rojo), var(--shadow-lg);}
 .header-inner {max-width: 1120px; margin: 0 auto; padding: 0 1.75rem; display: flex; align-items: center; justify-content: space-between; height: 68px;}
-.brand-logo {height: 46px; width: auto; object-fit: contain;}
+.brand-logo {height: 40px; width: auto; object-fit: contain;}
 .nav-list {display: flex; align-items: center; gap: 0.15rem;}
 .nav-list {gap: 0.5rem;}
 
@@ -286,7 +286,7 @@ input[type="file"] {padding: 0.5rem; font-size: 0.86rem; cursor: pointer;}
    ============================================= */
 .site-footer {background: var(--azul-oscuro); border-top: 3px solid var(--rojo); padding: 1.75rem 1.75rem;}
 .footer-inner {max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;}
-.footer-logo {height: 34px; width: auto;}
+.footer-logo {height: 40px; width: auto;}
 .site-footer p {color: var(--blanco-50); font-size: 0.85rem;}
 .footer-nav {display: flex; gap: 1.25rem; flex-wrap: wrap;}
 .footer-nav a {color: var(--blanco-50); font-size: 0.88rem; transition: color var(--transition);}

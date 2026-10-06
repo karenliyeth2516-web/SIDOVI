@@ -35,8 +35,14 @@ body .header-inner {
 
 body .brand-logo {
   width: auto;
-  height: 50px;
+  height: 55px;
   content: url('../img/colviseg.png');
+  object-fit: contain;
+}
+
+body .footer-logo {
+  width: auto;
+  height: 55px;
   object-fit: contain;
 }
 
