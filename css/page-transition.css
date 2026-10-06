@@ -40,4 +40,60 @@
   }
 
 }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  body {
+    animation: sidovi-page-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  body.page-leaving {
+    animation: sidovi-page-leave 180ms ease-in both;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  body,
+  body.page-leaving {
+    animation: none;
+  }
+
+}
+
+.site-footer {
+  background: #020621 !important;
+}
+
+.panel-layout ~ .site-footer {
+  background: #10193f !important;
+}
+
+img[src$="logo_sidovi.png"] {
+  width: auto !important;
+  height: 55px !important;
+  max-height: none !important;
+  object-fit: contain;
+}
+
+@keyframes sidovi-page-enter {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+@keyframes sidovi-page-leave {
+
+  to {
+    opacity: 0;
+  }
+
+}
 ```

@@ -13,7 +13,7 @@
         // El título de la página (#panelTitle) NO se toca: debe conservar
         // el nombre del panel ("Dashboard · Recursos Humanos"), no el
         // nombre del usuario logueado.
-        el.innerHTML = `${foto}<span><strong>Bienvenido, ${u.rol === 'Gerente' ? 'gerente' : 'equipo de RRHH'} ${u.nombre_completo || ''}</strong><small>${u.correo || ''}</small></span>`;
+        el.innerHTML = `${foto}<span><strong>Bienvenido, ${u.rol === 'Gerente' ? 'gerente' : 'equipo de RRHH'} ${u.nombre_completo || ''}</strong></span>`;
     } catch (e) {
         el.textContent = 'Sesión no disponible';
     }
