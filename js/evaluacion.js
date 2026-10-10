@@ -442,11 +442,16 @@ document
 
             aviso(
                 resultado === 'APROBADO'
-                    ? 'Entrevista guardada. El candidato pasó a exámenes pendientes.'
-                    : 'Entrevista guardada correctamente.',
+                    ? 'Entrevista guardada. El candidato pasó a exámenes pendientes. Redirigiendo...'
+                    : 'Entrevista guardada correctamente. Redirigiendo al dashboard...',
                 'success'
             );
 
+            window.setTimeout(() => {
+              window.location.href = resultado === 'APROBADO'
+                  ? 'examenes.html'
+                  : 'gerente.html';
+            }, 900);
 
           } catch (error) {
 

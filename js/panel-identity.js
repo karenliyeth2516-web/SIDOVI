@@ -1,20 +1,34 @@
 (async () => {
     const el = document.getElementById('panelIdentity');
-    if (!el) return;
+    const loader = document.getElementById('panelLoader');
+    document.body.classList.add('panel-loading');
+
+    if (!el) {
+        if (loader) {
+            document.body.classList.add('panel-ready');
+            setTimeout(() => loader.remove(), 250);
+        }
+        return;
+    }
+
     try {
         const r = await fetch('/api/auth/me');
         const d = await r.json();
-        if (!r.ok) throw new Error(d.error);
+        if (!r.ok) throw new Error(d.error || 'Sesión no disponible');
+
         const u = d.usuario || {};
+        const nombre = u.nombre_completo || 'usuario';
         const foto = u.foto_perfil?.startsWith('data:image')
-            ? `<img src="${u.foto_perfil}" alt="Foto de ${u.nombre_completo}">`
+            ? `<img src="${u.foto_perfil}" alt="Foto de ${nombre}" class="panel-user-photo" />`
             : '';
-        // Nota: aquí solo se actualiza el bloque de bienvenida (#panelIdentity).
-        // El título de la página (#panelTitle) NO se toca: debe conservar
-        // el nombre del panel ("Dashboard · Recursos Humanos"), no el
-        // nombre del usuario logueado.
-        el.innerHTML = `${foto}<span><strong>Bienvenido, ${u.rol === 'Gerente' ? 'gerente' : 'equipo de RRHH'} ${u.nombre_completo || ''}</strong></span>`;
+        el.innerHTML = `${foto}<span><strong>Bienvenido, ${nombre}</strong></span>`;
     } catch (e) {
-        el.textContent = 'Sesión no disponible';
+        el.innerHTML = '<span><strong>Bienvenido</strong></span>';
+    } finally {
+        document.body.classList.remove('panel-loading');
+        document.body.classList.add('panel-ready');
+        if (loader) {
+            setTimeout(() => loader.remove(), 250);
+        }
     }
 })();

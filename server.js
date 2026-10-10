@@ -5288,29 +5288,49 @@ app.post('/api/evaluaciones/detallada', requireRoles('Gerente'), async (req, res
       motivoRechazo
     });
 
+    const entrevistaResult = await client.query(
+        `SELECT e.id_postulacion, p.estado AS estado_actual
+         FROM entrevista e
+         JOIN postulacion p ON p.id_postulacion = e.id_postulacion
+         WHERE e.id_entrevista = $1
+         FOR UPDATE OF e, p`,
+        [idEntrevista]
+    );
+    if (!entrevistaResult.rowCount) {
+      throw Object.assign(new Error('No se encontró la entrevista indicada.'), { status: 404 });
+    }
+
     const ev = await client.query(
         'INSERT INTO evaluacion (preguntas,calificacion,comentarios,id_entrevista) VALUES ($1,$2,$3,$4) RETURNING *',
         [JSON.stringify(preguntas), Math.round(score), payload, idEntrevista]
     );
 
-    const p = await client.query(
-        'SELECT id_postulacion FROM entrevista WHERE id_entrevista=$1',
-        [idEntrevista]
+    const estadoNuevo = resultado === 'APROBADO'
+        ? 'EXAMENES_PENDIENTES'
+        : resultado === 'RECHAZADO'
+            ? 'RECHAZADO'
+            : 'ENTREVISTA_AGENDADA';
+    const postulacionId = entrevistaResult.rows[0].id_postulacion;
+    const estadoAnterior = entrevistaResult.rows[0].estado_actual;
+    const postulacionResult = await client.query(
+        'UPDATE postulacion SET estado = $1 WHERE id_postulacion = $2 RETURNING id_postulacion',
+        [estadoNuevo, postulacionId]
     );
-
-    if (p.rowCount) {
-      await logTransition(
-          client,
-          p.rows[0].id_postulacion,
-          resultado === 'APROBADO'
-              ? 'EXAMENES_PENDIENTES'
-              : resultado === 'RECHAZADO'
-                  ? 'RECHAZADO'
-                  : 'ENTREVISTA_AGENDADA',
-          motivoRechazo || recomendacion || observaciones,
-          req.session.id_usuario
-      );
+    if (!postulacionResult.rowCount) {
+      throw new Error('No se encontró la postulación asociada a la entrevista.');
     }
+    await client.query(
+        `INSERT INTO historial_proceso
+           (id_postulacion, estado_anterior, estado_nuevo, detalle, usuario_id)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          postulacionId,
+          estadoAnterior,
+          estadoNuevo,
+          motivoRechazo || recomendacion || observaciones || 'Resultado de entrevista registrado.',
+          req.session.id_usuario
+        ]
+    );
 
     await client.query(
         'UPDATE entrevista SET estado=$1, observacion=$2 WHERE id_entrevista=$3',
@@ -5319,7 +5339,7 @@ app.post('/api/evaluaciones/detallada', requireRoles('Gerente'), async (req, res
 
     await client.query('COMMIT');
 
-    res.status(201).json(ev.rows[0]);
+    res.status(201).json({ ...ev.rows[0], estado_postulacion: estadoNuevo });
 
   } catch (error) {
     await client.query('ROLLBACK');
@@ -5693,5 +5713,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
-
 
