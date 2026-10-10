@@ -276,6 +276,18 @@ input[type="file"] {padding: 0.5rem; font-size: 0.86rem; cursor: pointer;}
 .login-success h2 {color: #15803d; margin-bottom: 0.75rem;}
 .login-denied p, .login-success p {color: var(--gris-texto); font-size: 0.94rem; margin-bottom: 1.5rem;}
 .login-denied .btn-outline {border-color: var(--azul-claro); color: var(--azul-claro);}
+.login-page.login-complete main.login-main {min-height: calc(100vh - 78px - 76px); padding: 1.5rem;}
+.login-page.login-complete .login-section {justify-content: center; padding-right: 0;}
+.login-page.login-complete .login-card {max-width: 760px; padding: clamp(2rem, 5vw, 4rem);}
+.login-page.login-complete .login-success {padding: clamp(1.5rem, 4vw, 3rem) 1rem;}
+.login-page.login-complete .success-icon {font-size: clamp(4rem, 8vw, 6rem);}
+.login-page.login-complete .login-success h2 {font-size: clamp(2rem, 5vw, 3rem);}
+.login-page.login-complete #welcomeMsg {font-size: clamp(1.1rem, 2.5vw, 1.5rem); margin: 1.25rem 0 0;}
+@media (max-height: 600px) {
+  .login-page.login-complete main.login-main {min-height: auto; padding-block: 1rem;}
+  .login-page.login-complete .login-card {padding: 1.25rem;}
+  .login-page.login-complete .login-success {padding: 0.75rem;}
+}
 .success-loader {display: flex; justify-content: center; gap: 0.5rem;}
 .success-loader span {width: 10px; height: 10px; background: var(--azul-claro); border-radius: 50%; animation: bounce 0.8s ease infinite;}
 .success-loader span:nth-child(2) {animation-delay: 0.15s;}

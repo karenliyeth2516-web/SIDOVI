@@ -96,4 +96,105 @@ img[src$="logo_sidovi.png"] {
   }
 
 }
+
+.panel-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  background: rgba(2, 6, 33, 0.8);
+  backdrop-filter: blur(5px);
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.panel-loader .loader-ring {
+  width: 58px;
+  height: 58px;
+  border: 4px solid rgba(255, 255, 255, 0.22);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: sidovi-spin 0.9s linear infinite;
+}
+
+.panel-loader span {
+  color: #ffffff;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.panel-identity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  min-height: 112px;
+  width: min(100%, 820px);
+  margin: 1.25rem auto 0;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(44, 79, 148, 0.12);
+  border-left: 5px solid #c8192b;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+  text-align: center;
+}
+
+.panel-identity .panel-user-photo {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 3px solid rgba(44, 79, 148, 0.12);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  display: block;
+  flex-shrink: 0;
+}
+
+.panel-identity span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.panel-identity strong {
+  font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+}
+
+@media (max-width: 600px) {
+  .panel-identity {
+    min-height: 96px;
+    padding: 0.8rem;
+  }
+
+  .panel-identity .panel-user-photo {
+    width: 72px;
+    height: 72px;
+  }
+  justify-content: center;
+}
+
+body.panel-loading .panel-content {
+  opacity: 0.7;
+  filter: saturate(0.8);
+}
+
+body.panel-ready .panel-loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes sidovi-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 ```

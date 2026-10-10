@@ -33,8 +33,15 @@ loginButton.addEventListener('click', async () => {
     sessionStorage.setItem('sidoviRol', data.usuario.rol);
     sessionStorage.setItem('sidoviUsuario', JSON.stringify(data.usuario));
     loginForm.hidden = true;
-    document.getElementById('welcomeMsg').textContent = `Bienvenido ${data.usuario.rol === 'Gerente' ? 'gerente' : 'a Recursos Humanos'}, ${data.usuario.nombre_completo}. Redirigiendo...`;
-    if (data.usuario.foto_perfil?.startsWith('data:image')) document.getElementById('welcomeProfile').innerHTML = `<img class="profile-photo" src="${data.usuario.foto_perfil}" alt="Foto de ${data.usuario.nombre_completo}">`;
+    const welcomeEl = document.getElementById('welcomeMsg');
+    if (welcomeEl) {
+      welcomeEl.textContent = `Bienvenido, ${data.usuario.nombre_completo}. Redirigiendo...`;
+    }
+    const welcomeProfile = document.getElementById('welcomeProfile');
+    if (welcomeProfile) {
+      welcomeProfile.innerHTML = '';
+    }
+    document.body.classList.add('login-complete');
     document.getElementById('loginSuccess').hidden = false;
     setTimeout(() => { window.location.href = data.usuario.rol === 'RRHH' ? 'RRHH.html' : 'gerente.html'; }, 700);
   } catch (error) {

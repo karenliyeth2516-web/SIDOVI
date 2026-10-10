@@ -41,7 +41,6 @@
     <span class="sidebar-title">Gerencia</span>
     <a href="gerente.html" class="sidebar-link active" aria-current="page">Dashboard</a>
     <a href="evaluar.html" class="sidebar-link">Evaluar Candidatos</a>
-    <a href="trabajadores.html" class="sidebar-link">Trabajadores</a>
     <a href="mi-perfil.html" class="sidebar-link profile-sidebar-link">Mi perfil</a>
     <a href="contrato.html" class="sidebar-link">Contratos</a>
     <span class="sidebar-title sidovi-inline-1">Información</span>
@@ -51,6 +50,10 @@
 
 
   <main class="panel-content" aria-labelledby="ger-title">
+    <div id="panelLoader" class="panel-loader" aria-live="polite" aria-label="Cargando panel">
+      <div class="loader-ring"></div>
+      <span>Cargando panel...</span>
+    </div>
 
     <div class="panel-header">
 
@@ -94,7 +97,7 @@
     </div>
 
 
-    <h2class="sidovi-inline-2">
+    <h2 class="sidovi-inline-2">
       Candidatos para Decisión Final
     </h2>
 
@@ -244,7 +247,7 @@
     </div>
 
 
-    <divclass="sidovi-inline-3">
+    <div class="sidovi-inline-3">
 
       <a href="evaluar.html" class="btn btn-primary">
         Evaluar Candidatos
