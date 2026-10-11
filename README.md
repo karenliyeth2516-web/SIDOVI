@@ -27,7 +27,7 @@ DB_PASSWORD=<tu_clave_de_postgres>
 PGSSL=false
 ```
 
-`PGSSL=false` es el valor recomendado para una instalación PostgreSQL local. Usa `PGSSL=true` solo si un proveedor remoto exige SSL. El servidor prioriza las variables `DB_*` explícitas sobre cualquier `DATABASE_URL` reservado por otro entorno.
+`PGSSL=false` es el valor recomendado para una instalación PostgreSQL local. Usa `PGSSL=true` solo si un proveedor remoto exige SSL. Si existen variables `DB_HOST`, `DB_NAME`, `DB_USER` o `DB_PASSWORD`, el servidor las prioriza sobre una `DATABASE_URL` heredada de otro entorno. Si una conexión inactiva se cae, el pool registra el error, descarta ese cliente y crea una conexión nueva cuando llegue la siguiente consulta; una consulta que coincida con la interrupción todavía puede fallar y reintentarse desde la aplicación. Las conexiones nuevas tienen un límite de espera de 10 segundos.
 
 ## Configuración desde IntelliJ IDEA
 

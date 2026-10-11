@@ -6,25 +6,18 @@ const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
+const { createPostgresConfig } = require('./server/postgres-config');
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const sessions = new Map();
-const sslSetting = process.env.PGSSL ?? process.env.DB_SSL;
-const postgresConfig = process.env.DATABASE_URL
-    ? {
-      connectionString: process.env.DATABASE_URL,
-      ssl: String(sslSetting).toLowerCase() === 'true' ? { rejectUnauthorized: false } : false
-    }
-    : {
-      host: process.env.DB_HOST || 'localhost',
-      port: Number(process.env.DB_PORT || 5432),
-      database: process.env.DB_NAME || 'sidovi',
-      user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || '',
-      ssl: String(sslSetting).toLowerCase() === 'true' ? { rejectUnauthorized: false } : false
-    };
-const db = new Pool(postgresConfig);
+const db = new Pool({
+  ...createPostgresConfig(process.env),
+  connectionTimeoutMillis: 10000
+});
+db.on('error', (error) => {
+  console.error('[PostgreSQL] Se perdió una conexión inactiva; el pool la descartó y volverá a conectarse en la siguiente consulta:', error.message);
+});
 
 app.use(cors());
 app.use(express.json({ limit: '18mb' }));
@@ -2309,7 +2302,7 @@ function tituloSeccionPdf(
 // CONFIGURACIÓN GENERAL DEL PDF
 // ============================================================
 
-function configurarReportePdf(doc, titulo, subtitulo = '') {
+function configurarReportePdfEstadistico(doc, titulo, subtitulo = '') {
 
   const logo = getReportLogo();
 
@@ -3171,7 +3164,7 @@ function makeStatisticsReportPdf(data) {
           data.historial || [];
 
 
-      configurarReportePdf(
+      configurarReportePdfEstadistico(
           doc,
           'REPORTE ESTADÍSTICO DEL PROCESO DE SELECCIÓN',
           `Generado el ${new Date().toLocaleString('es-CO')}`
@@ -5713,4 +5706,3 @@ if (require.main === module) {
 }
 
 module.exports = app;
-
