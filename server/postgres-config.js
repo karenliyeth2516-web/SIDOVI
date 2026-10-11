@@ -17,7 +17,7 @@ function createPostgresConfig(env = process.env) {
   return {
     host: env.DB_HOST || 'localhost',
     port: Number(env.DB_PORT || 5432),
-    database: env.DB_NAME || 'sidovi',
+    database: env.DB_NAME || 'SIDOVI',
     user: env.DB_USER || 'postgres',
     password: env.DB_PASSWORD || '',
     ssl,

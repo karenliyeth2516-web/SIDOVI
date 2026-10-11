@@ -10,10 +10,11 @@ El script completo está en `db/Postgres.sql`. Incluye las tablas `empresa`, `ca
 
 ## Configuración PostgreSQL local
 
-El script reinicia la base `sidovi_colviseg`; no lo ejecutes sobre información que quieras conservar. Desde una terminal con PostgreSQL instalado, ejecuta:
+El script reinicia el esquema `public` de la base `SIDOVI` (elimina sus tablas y datos actuales); no lo ejecutes si quieres conservar información. Si todavía no existe la base, créala una sola vez; luego conecta el script a la base correcta:
 
 ```bash
-psql -U postgres -f db/Postgres.sql
+psql -U postgres -c 'CREATE DATABASE "SIDOVI";'
+psql -U postgres -d SIDOVI -f db/Postgres.sql
 ```
 
 La aplicación puede conectarse mediante estas variables. Crea el archivo `.env` localmente o configúralas en IntelliJ IDEA; no guardes la contraseña en Git. En la validación final del sandbox, `PGSSL=false` fue respetado y el error observado fue exclusivamente `ECONNREFUSED ::1:5432` y `ECONNREFUSED 127.0.0.1:5432`, lo que confirma que allí no existe una instancia PostgreSQL escuchando en el puerto local:
@@ -21,13 +22,15 @@ La aplicación puede conectarse mediante estas variables. Crea el archivo `.env`
 ```env
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=sidovi_colviseg
+DB_NAME=SIDOVI
 DB_USER=postgres
 DB_PASSWORD=<tu_clave_de_postgres>
 PGSSL=false
 ```
 
 `PGSSL=false` es el valor recomendado para una instalación PostgreSQL local. Usa `PGSSL=true` solo si un proveedor remoto exige SSL. Si existen variables `DB_HOST`, `DB_NAME`, `DB_USER` o `DB_PASSWORD`, el servidor las prioriza sobre una `DATABASE_URL` heredada de otro entorno. Si una conexión inactiva se cae, el pool registra el error, descarta ese cliente y crea una conexión nueva cuando llegue la siguiente consulta; una consulta que coincida con la interrupción todavía puede fallar y reintentarse desde la aplicación. Las conexiones nuevas tienen un límite de espera de 10 segundos.
+
+En la instalación SIDOVI confirmada en pgAdmin, el usuario es `postgres` y el nombre exacto de la base es `SIDOVI`. PostgreSQL distingue ese identificador citado de `sidovi`; usa `DB_NAME=SIDOVI`. La consulta de diagnóstico mostró `idle_session_timeout=0` e `idle_in_transaction_session_timeout=0`, así que esos dos temporizadores no están cerrando las sesiones.
 
 ## Configuración desde IntelliJ IDEA
 

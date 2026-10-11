@@ -35,7 +35,7 @@ describe("PostgreSQL configuration", () => {
     expect(createPostgresConfig({})).toEqual({
       host: "localhost",
       port: 5432,
-      database: "sidovi",
+      database: "SIDOVI",
       user: "postgres",
       password: "",
       ssl: false,
