@@ -94,7 +94,10 @@ const splitName = (value = '') => { const parts = String(value).trim().split(/\s
 const errorResponse = (res, error, fallback) => { console.error(error); const status = error.status || (error.code === '23503' ? 400 : error.code === '23505' ? 409 : 500); res.status(status).json({ error: error.code === '23505' ? 'El registro ya existe.' : error.message || fallback }); };
 
 app.get('/api/health', async (_req, res) => {
-  try { await db.query('SELECT 1'); res.json({ ok: true, servicio: 'SIDOVI API', baseDatos: 'SIDOVI' }); }
+  try {
+    const result = await db.query('SELECT current_database() AS base_datos');
+    res.json({ ok: true, servicio: 'SIDOVI API', baseDatos: result.rows[0].base_datos });
+  }
   catch (error) { errorResponse(res, error, 'No fue posible conectar con PostgreSQL.'); }
 });
 

@@ -4,6 +4,9 @@ import pg from "pg";
 const { Pool } = pg;
 
 const fakeRows = (sql: string) => {
+  if (sql.includes("current_database() AS base_datos")) {
+    return [{ base_datos: "SIDOVI" }];
+  }
   if (sql.includes("FROM vista_estadistica_postulaciones")) {
     return [{ periodo_id: 1, tipo_periodo: "MES", total_postulaciones: 3 }];
   }
@@ -52,6 +55,12 @@ describe("SIDOVI REST endpoints", () => {
   });
 
   const authed = () => ({ headers: { Authorization: `Bearer ${token}` } });
+
+  it("reports the database name returned by PostgreSQL in the health endpoint", async () => {
+    const response = await fetch(`${baseUrl}/api/health`);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ ok: true, baseDatos: "SIDOVI" });
+  });
 
   it("loads vacancies through the existing endpoint", async () => {
     const response = await fetch(`${baseUrl}/api/vacantes`, authed());
